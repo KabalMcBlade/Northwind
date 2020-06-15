@@ -1,6 +1,8 @@
 # Undead
 
-![Undead Engine Logo](/Pictures/UndeadEngineLogo.png)
+<p align="center">
+  <img width="460" height="300" src="./Pictures/UndeadEngineLogo.png">
+</p>
 
 Undead is a Vulkan  Engine, mainly focus on rendering.
 
