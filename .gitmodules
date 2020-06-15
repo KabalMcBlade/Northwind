@@ -1,0 +1,6 @@
+[submodule "Undead/Dependencies/Eos"]
+	path = Undead/Dependencies/Eos
+	url = https://github.com/KabalMcBlade/Eos.git
+[submodule "Undead/Dependencies/Nix"]
+	path = Undead/Dependencies/Nix
+	url = https://github.com/KabalMcBlade/Nix.git
