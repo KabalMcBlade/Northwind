@@ -2,8 +2,9 @@
 
 ![Undead Engine Logo](/Pictures/UndeadEngineLogo.png)
 
-Undead is a Vulkan  Engine, mainly focus on rendering.  
-I will work on this engine in order to let it be a proper engine and I'm writing this out of my experience of my previous engine Ion (https://github.com/KabalMcBlade/Ion)
+Undead is a Vulkan  Engine, mainly focus on rendering.
+
+I will work on this engine in order to let it be a proper engine and I'm writing this out of my experience of my previous engine [Ion](https://github.com/KabalMcBlade/Ion)
 
 
 ## Status
