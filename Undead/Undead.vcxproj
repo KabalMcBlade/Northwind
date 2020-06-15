@@ -96,6 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -114,6 +115,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,6 +137,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,6 +161,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,7 +176,55 @@
   <ItemGroup>
     <ClInclude Include="Core\BasicDefines.h" />
     <ClInclude Include="Core\BasicTypes.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\FreeListAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\LinearAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\PoolAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\Assertions.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\BasicDefines.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\BasicTypes.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\NoCopyable.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\NumberUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\PointerUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\DoublyLinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\LinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\StackLinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Eos.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemCpy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAllocationPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAreaPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryBasicDefines.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryBoundsCheckPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryFunctions.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryHeaderPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryLayoutUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryLogPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryTagPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryThreadPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\SmartPointer.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\StlAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\StlAllocatorsTypes.h" />
     <ClInclude Include="Dependencies\json.hpp" />
+    <ClInclude Include="Dependencies\Nix\Nix\BasicMathFunctions.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Boolean.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Constants.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Conversion.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\Architecture.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\Assertions.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\BasicDefines.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\BasicTypes.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Dependencies\sse_mathfun.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\MathAligned.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\MathBase.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Matrix4x4.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Nix.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Permute.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Quaternion.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Scalar.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Swizzle.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Trigonometry.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Utilities.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Vector4.h" />
     <ClInclude Include="Dependencies\stb_image.h" />
     <ClInclude Include="Dependencies\stb_image_write.h" />
     <ClInclude Include="Dependencies\tiny_gltf.h" />

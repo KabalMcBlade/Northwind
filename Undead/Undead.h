@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Dependencies/Eos/Eos/Eos.h"
+#include "Dependencies/Nix/Nix/Nix.h"
 
 #include "Core/BasicDefines.h"
 #include "Core/BasicTypes.h"
