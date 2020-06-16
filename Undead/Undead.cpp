@@ -1,8 +1,6 @@
 // Undead.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "stdafx.h"
-
 #include "Undead.h"
 
 UD_NAMESPACE_BEGIN

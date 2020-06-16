@@ -13,10 +13,11 @@ class UD_DLL Settings final : public eos::NoCopyableMoveable
 public:
 	static Settings& Instance();
 
-private:
-	using SettingsAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
-	SettingsAllocator* GetAllocator();
+public:
+	// This is hard-coded, the file is MemorySettings.json, and it is at the root level
+	void LoadMemorySettings();
 
+private:
 	Settings();
 	~Settings();
 };

@@ -10,6 +10,8 @@ int main()
 {
 	UndeadExporter exporter;
 
+	Settings::Instance().LoadMemorySettings();
+
 	std::cout << "Undead Engine Version: " << exporter.GetVersion();
 }
 
