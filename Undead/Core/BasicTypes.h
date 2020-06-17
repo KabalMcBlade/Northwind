@@ -2,6 +2,7 @@
 
 #include <cstddef>	// for size_t
 #include <cstdint>	// for everything else
+#include <iostream>
 
 #include "BasicDefines.h"
 

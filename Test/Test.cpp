@@ -4,14 +4,31 @@
 #include "pch.h"
 #include <iostream>
 
+#include "App.h"
+
+
 UD_USING_NAMESPACE
 
 int main()
 {
-	UndeadExporter exporter;
-
+	// in this main I will write for now just the theoretically sequence of calls to initialize the engine, but eventually they will be wrapped in 1 call only
+	//////////////////////////////////////////////////////////////////////////
 	Settings::Instance().LoadMemorySettings();
 
+	App demo(800, 600, "Test", VK_MAKE_VERSION(0, 0, 1));
+
+	GpuMemoryManager::Instance().Init(demo.GetPhysicalDevice(), demo.GetDevice(), demo.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+
+	RenderInstance instance;
+	instance.Create("Test");
+
+	GpuMemoryManager::Instance().Shutdown();
+	//////////////////////////////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// was used to force the library to build
+	UndeadExporter exporter;
 	std::cout << "Undead Engine Version: " << exporter.GetVersion();
 }
 

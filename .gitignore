@@ -348,3 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/Test/VulkanMemoryAllocator.csv
+/Test/RenderQueueFamilyAllocator.csv
+/Test/RenderInstanceMemoryAllocator.csv
+/Test/RenderDeviceAllocator.csv
+/Test/MemorySettings.json
+/Test/GPUAllocator.csv

@@ -236,6 +236,15 @@
     <ClInclude Include="Dependencies\stb_image_write.h" />
     <ClInclude Include="Dependencies\tiny_gltf.h" />
     <ClInclude Include="Core\Settings.h" />
+    <ClInclude Include="GPU\GpuAllocator.h" />
+    <ClInclude Include="GPU\GpuDataStructure.h" />
+    <ClInclude Include="GPU\GpuMemoryAllocator.h" />
+    <ClInclude Include="GPU\GpuMemoryList.h" />
+    <ClInclude Include="GPU\GpuMemoryManager.h" />
+    <ClInclude Include="GPU\VulkanAllocator.h" />
+    <ClInclude Include="Renderer\RenderDevice.h" />
+    <ClInclude Include="Renderer\RenderInstance.h" />
+    <ClInclude Include="Renderer\RenderQueueFamily.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Undead.h" />
   </ItemGroup>
@@ -243,6 +252,13 @@
     <ClCompile Include="Core\MemoryWrapper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Core\Settings.cpp" />
+    <ClCompile Include="GPU\GpuMemoryAllocator.cpp" />
+    <ClCompile Include="GPU\GpuMemoryList.cpp" />
+    <ClCompile Include="GPU\GpuMemoryManager.cpp" />
+    <ClCompile Include="GPU\VulkanAllocator.cpp" />
+    <ClCompile Include="Renderer\RenderDevice.cpp" />
+    <ClCompile Include="Renderer\RenderInstance.cpp" />
+    <ClCompile Include="Renderer\RenderQueueFamily.cpp" />
     <ClCompile Include="Undead.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

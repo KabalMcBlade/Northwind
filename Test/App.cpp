@@ -1,0 +1,70 @@
+#include "pch.h"
+#include "App.h"
+
+
+UD_USING_NAMESPACE
+
+App::App(uint32 _width, uint32 _height, const char* _name, uint32 _version) 
+	: m_width(_width)
+	, m_height(_height)
+	, m_name(_name)
+	, m_enabledFeatures({})
+{
+	m_instance.Create(_name, _version);
+
+
+	// GLFW
+	//////////////////////////////////////////////////////////////////////////
+	glfwInit();
+
+	int isVulkanSupported = glfwVulkanSupported();
+	udAssertReturnVoid(isVulkanSupported == GLFW_TRUE, "No Vulkan Support.");
+
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+	bool fullScreen = false;
+	bool showcursor = true;
+
+	if (fullScreen)
+	{
+		m_window = glfwCreateWindow(m_width, m_height, m_name, glfwGetPrimaryMonitor(), nullptr);
+	}
+	else
+	{
+		m_window = glfwCreateWindow(m_width, m_height, m_name, nullptr, nullptr);
+	}
+
+	if (!showcursor)
+	{
+		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+
+	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameheight);
+
+	VkResult result = glfwCreateWindowSurface(m_instance.GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
+	udAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
+
+	//////////////////////////////////////////////////////////////////////////
+
+	m_enabledFeatures = {};
+	m_enabledFeatures.shaderStorageImageExtendedFormats = VK_TRUE;
+	m_enabledFeatures.geometryShader = VK_TRUE;
+
+	m_device.Create(m_instance.GetInstance(), m_surface, m_enabledFeatures);
+}
+
+App::~App()
+{
+	m_device.Destroy();
+
+	vkDestroySurfaceKHR(m_instance.GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
+
+	// m_instance.Destroy();
+
+	glfwDestroyWindow(m_window);
+
+	glfwTerminate();
+
+	m_instance.Destroy();
+}

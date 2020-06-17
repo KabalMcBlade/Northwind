@@ -31,14 +31,21 @@ void Settings::LoadMemorySettings()
 	std::ifstream is(kMemorySettingsFileName);
 	if (!is.is_open())
 	{
-		// create the file and read again
+		// create the file with the default values and read again
 		nlohmann::json nj = {
 			{"Engine", {
-				//{"None", 0}
+				{"Vulkan", SettingsDefines::Engine::kVulkanAllocatorSize},
+				{"GPU", SettingsDefines::Engine::kGPUAllocatorSize},
+				{"StagingBuffer", SettingsDefines::Engine::kStagingBufferSize},
+				{"DeviceLocal", SettingsDefines::Engine::kGpuDeviceLocalSize},
+				{"HostVisible", SettingsDefines::Engine::kGpuHostVisibleSize},
+				{"RenderInstance", SettingsDefines::Engine::kRenderInstanceAllocatorSize},
+				{"RenderQueueFamily", SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize},
+				{"RenderDevice", SettingsDefines::Engine::kRenderDeviceAllocatorSize},
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
-				{"String", SettingsDefines::Generic::kStringAllocatorSize}
+				{"String", SettingsDefines::Generic::kStringAllocatorSize},
 			}}
 		};
 
@@ -54,7 +61,17 @@ void Settings::LoadMemorySettings()
 	is >> json;
 	is.close();
 
-	// actual settings
+	// actual settings - Engine
+	SettingsDefines::Engine::kVulkanAllocatorSize = json["Engine"]["Vulkan"];
+	SettingsDefines::Engine::kGPUAllocatorSize = json["Engine"]["GPU"];
+	SettingsDefines::Engine::kVulkanAllocatorSize = json["Engine"]["StagingBuffer"];
+	SettingsDefines::Engine::kGPUAllocatorSize = json["Engine"]["DeviceLocal"];
+	SettingsDefines::Engine::kGPUAllocatorSize = json["Engine"]["HostVisible"];
+	SettingsDefines::Engine::kRenderInstanceAllocatorSize = json["Engine"]["RenderInstance"];
+	SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize = json["Engine"]["RenderQueueFamily"];
+	SettingsDefines::Engine::kRenderDeviceAllocatorSize = json["Engine"]["RenderDevice"];
+
+	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];
 	SettingsDefines::Generic::kStringAllocatorSize = json["Generic"]["String"];
 }

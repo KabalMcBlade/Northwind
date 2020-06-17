@@ -40,3 +40,11 @@
 // tells the compiler to never inline a particular function
 #define UD_NO_INLINE  __declspec(noinline)
 
+// default memory align
+#define UD_MEMORY_ALIGNMENT_SIZE 16
+
+// Memory alignment
+#define UD_MEMORY_ALIGNMENT(x)			__declspec(align(x))
+#define UD_IS_ALIGNED(ptr, alignment)   ((std::uintptr_t)ptr & (alignment - 1)) == 0
+#define UD_MEMORY_ALIGNED				UD_MEMORY_ALIGNMENT(UD_MEMORY_ALIGNMENT_SIZE)
+
