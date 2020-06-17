@@ -17,12 +17,9 @@ int main()
 
 	App demo(800, 600, "Test", VK_MAKE_VERSION(0, 0, 1));
 
-	GpuMemoryManager::Instance().Init(demo.GetPhysicalDevice(), demo.GetDevice(), demo.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+	demo.Execute();
 
-	RenderInstance instance;
-	instance.Create("Test");
-
-	GpuMemoryManager::Instance().Shutdown();
+	
 	//////////////////////////////////////////////////////////////////////////
 
 

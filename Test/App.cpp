@@ -4,17 +4,9 @@
 
 UD_USING_NAMESPACE
 
-App::App(uint32 _width, uint32 _height, const char* _name, uint32 _version) 
-	: m_width(_width)
-	, m_height(_height)
-	, m_name(_name)
-	, m_enabledFeatures({})
+
+void App::InitWindow()
 {
-	m_instance.Create(_name, _version);
-
-
-	// GLFW
-	//////////////////////////////////////////////////////////////////////////
 	glfwInit();
 
 	int isVulkanSupported = glfwVulkanSupported();
@@ -45,26 +37,31 @@ App::App(uint32 _width, uint32 _height, const char* _name, uint32 _version)
 	VkResult result = glfwCreateWindowSurface(m_instance.GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
 	udAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
 
-	//////////////////////////////////////////////////////////////////////////
-
 	m_enabledFeatures = {};
 	m_enabledFeatures.shaderStorageImageExtendedFormats = VK_TRUE;
 	m_enabledFeatures.geometryShader = VK_TRUE;
-
-	m_device.Create(m_instance.GetInstance(), m_surface, m_enabledFeatures);
 }
 
-App::~App()
+void App::InitEngine()
 {
-	m_device.Destroy();
+	GpuMemoryManager::Instance().Init(GetPhysicalDevice(), GetDevice(), GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+}
 
+void App::MainLoop()
+{
+	while (!glfwWindowShouldClose(m_window))
+	{
+		glfwPollEvents();
+	}
+}
+
+void App::Cleanup()
+{
 	vkDestroySurfaceKHR(m_instance.GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
-
-	// m_instance.Destroy();
 
 	glfwDestroyWindow(m_window);
 
 	glfwTerminate();
 
-	m_instance.Destroy();
+	GpuMemoryManager::Instance().Shutdown();
 }

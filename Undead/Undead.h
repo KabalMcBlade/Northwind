@@ -23,6 +23,7 @@
 #include "Renderer/RenderDevice.h"
 #include "Renderer/RenderInstance.h"
 
+#include "Client/EngineApp.h"
 
 UD_NAMESPACE_BEGIN
 

@@ -222,6 +222,9 @@
     <ClInclude Include="Renderer\RenderDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Client\EngineApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Undead.cpp">
@@ -255,6 +258,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\RenderDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\EngineApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
