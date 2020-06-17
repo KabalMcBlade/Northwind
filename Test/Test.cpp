@@ -11,17 +11,11 @@ UD_USING_NAMESPACE
 
 int main()
 {
-	// in this main I will write for now just the theoretically sequence of calls to initialize the engine, but eventually they will be wrapped in 1 call only
-	//////////////////////////////////////////////////////////////////////////
 	Settings::Instance().LoadMemorySettings();
 
 	App demo(800, 600, "Test", VK_MAKE_VERSION(0, 0, 1));
 
 	demo.Execute();
-
-	
-	//////////////////////////////////////////////////////////////////////////
-
 
 	//////////////////////////////////////////////////////////////////////////
 	// was used to force the library to build
