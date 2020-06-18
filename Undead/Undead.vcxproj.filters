@@ -231,6 +231,9 @@
     <ClInclude Include="Client\CommandLineParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\VertexLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Undead.cpp">

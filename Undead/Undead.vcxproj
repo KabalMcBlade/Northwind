@@ -248,6 +248,7 @@
     <ClInclude Include="Renderer\RenderDevice.h" />
     <ClInclude Include="Renderer\RenderInstance.h" />
     <ClInclude Include="Renderer\RenderQueueFamily.h" />
+    <ClInclude Include="Renderer\VertexLayout.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Undead.h" />
   </ItemGroup>
