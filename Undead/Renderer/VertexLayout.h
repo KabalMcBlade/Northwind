@@ -83,10 +83,10 @@ UD_MEMORY_ALIGNED struct Vertex
 	UD_INLINE void SetColor(float _r, float _g, float _b, float _a) { m_color = nix::Vector4(_r, _g, _b, _a); }
 	UD_INLINE void SetWeights(float _x, float _y, float _z, float _w) 
 	{ 
-		m_weights[0] = _x / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		m_weights[1] = _y / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		m_weights[2] = _z / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		m_weights[3] = _w / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
+		m_weights[0] = static_cast<uint16>(_x / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
+		m_weights[1] = static_cast<uint16>(_y / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
+		m_weights[2] = static_cast<uint16>(_z / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
+		m_weights[3] = static_cast<uint16>(_w / UD_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
 	}
 	UD_INLINE void SetBiTangentSign(float _sign) { nix::MathFunctions::InsertOnW(m_tangent, _sign < 0.0f ? 0.0f : 1.0f); }
 	UD_INLINE void SetBiTangent(const nix::Vector4& _tangent)

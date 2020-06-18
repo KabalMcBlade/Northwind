@@ -22,6 +22,7 @@
 #include "Renderer/RenderQueueFamily.h"
 #include "Renderer/RenderDevice.h"
 #include "Renderer/RenderInstance.h"
+#include "Renderer/VertexLayout.h"
 
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"
