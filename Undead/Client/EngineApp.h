@@ -5,9 +5,6 @@
 
 #include "../Dependencies/Eos/Eos/Eos.h"
 
-#define VK_USE_PLATFORM_WIN32_KHR
-#include <vulkan/vulkan.h>
-
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
@@ -18,10 +15,11 @@
 
 UD_NAMESPACE_BEGIN
 
+class CommandLineParser;
 class UD_DLL EngineApp
 {
 public:
-	EngineApp(uint32 _width, uint32 _height, const char* _name, uint32 _version, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
+	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
 	~EngineApp();
 
 	UD_INLINE const VkInstance& GetInstance() const { return m_instance.GetInstance(); }
@@ -29,12 +27,6 @@ public:
 	UD_INLINE const VkPhysicalDevice& GetPhysicalDevice() const { return m_device.GetPhysicalDevice(); }
 	UD_INLINE const VkPhysicalDeviceFeatures& GetEnabledFeatures() const { return m_enabledFeatures; }
 	UD_INLINE const VkPhysicalDeviceProperties& GetPhysicalDeviceProperties() const { return m_device.GetPhysicalDeviceProperties(); }
-
-	UD_INLINE int32 GetFrameWidth() const { return m_frameWidth; }
-	UD_INLINE int32 GetFrameHeight() const { return m_frameheight; }
-
-	UD_INLINE uint32 GetWidth() const { return m_width; }
-	UD_INLINE uint32 GetHeight() const { return m_height; }
 
 	virtual const VkSurfaceKHR& GetSurafe() const = 0;
 
@@ -52,19 +44,15 @@ private:
 	void InternalMainLoop();
 	void InternalCleanup();
 
-protected:
+
+private:
 	RenderInstance m_instance;
 	RenderDevice m_device;
 
+protected:
+	const CommandLineParser& m_commandLine;
 	VkPhysicalDeviceFeatures m_enabledFeatures;
-
 	uint32 m_version;
-
-	int32 m_frameWidth;
-	int32 m_frameheight;
-	uint32 m_width;
-	uint32 m_height;
-
 	const char* m_name;
 };
 

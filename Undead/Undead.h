@@ -23,20 +23,6 @@
 #include "Renderer/RenderDevice.h"
 #include "Renderer/RenderInstance.h"
 
+#include "Client/FileSystem.h"
+#include "Client/CommandLineParser.h"
 #include "Client/EngineApp.h"
-
-UD_NAMESPACE_BEGIN
-
-class UD_DLL UndeadExporter
-{
-public:
-	UndeadExporter();
-	~UndeadExporter();
-
-	int32 GetVersion();
-
-private:
-	int32 m_version;
-};
-
-UD_NAMESPACE_END

@@ -46,6 +46,7 @@ void Settings::LoadMemorySettings()
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
 				{"String", SettingsDefines::Generic::kStringAllocatorSize},
+				{"ClientOptions", SettingsDefines::Generic::kClientOptionAllocatorSize},
 			}}
 		};
 
@@ -74,6 +75,7 @@ void Settings::LoadMemorySettings()
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];
 	SettingsDefines::Generic::kStringAllocatorSize = json["Generic"]["String"];
+	SettingsDefines::Generic::kClientOptionAllocatorSize = json["Generic"]["ClientOptions"];
 }
 
 UD_NAMESPACE_END

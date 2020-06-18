@@ -47,6 +47,7 @@ namespace SettingsDefines
 	{
 		static uint32 kCommonAllocatorSize = UD_MEMORY_4_MB;
 		static uint32 kStringAllocatorSize = UD_MEMORY_8_MB;
+		static uint32 kClientOptionAllocatorSize = UD_MEMORY_4_KB;
 	}
 }
 

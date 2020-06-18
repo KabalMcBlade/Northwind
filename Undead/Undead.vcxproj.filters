@@ -225,6 +225,12 @@
     <ClInclude Include="Client\EngineApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Client\FileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\CommandLineParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Undead.cpp">
@@ -261,6 +267,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Client\EngineApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\CommandLineParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

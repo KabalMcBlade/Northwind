@@ -178,7 +178,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Client\CommandLineParser.h" />
     <ClInclude Include="Client\EngineApp.h" />
+    <ClInclude Include="Client\FileSystem.h" />
     <ClInclude Include="Core\Assertions.h" />
     <ClInclude Include="Core\BasicDefines.h" />
     <ClInclude Include="Core\BasicTypes.h" />
@@ -250,7 +252,9 @@
     <ClInclude Include="Undead.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Client\CommandLineParser.cpp" />
     <ClCompile Include="Client\EngineApp.cpp" />
+    <ClCompile Include="Client\FileSystem.cpp" />
     <ClCompile Include="Core\MemoryWrapper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Core\Settings.cpp" />

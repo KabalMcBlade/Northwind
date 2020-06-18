@@ -7,6 +7,9 @@ UD_USING_NAMESPACE
 
 void App::InitWindow()
 {
+	m_width = m_commandLine.GetValue<uint32>("-width", 1024);
+	m_height = m_commandLine.GetValue<uint32>("-height", 768);
+
 	glfwInit();
 
 	int isVulkanSupported = glfwVulkanSupported();
@@ -15,8 +18,8 @@ void App::InitWindow()
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	bool fullScreen = false;
-	bool showcursor = true;
+	bool fullScreen = m_commandLine.GetValue<bool>("-fullscreen", false);
+	bool showcursor = m_commandLine.GetValue<bool>("-showcursor", true);
 
 	if (fullScreen)
 	{
@@ -34,7 +37,7 @@ void App::InitWindow()
 
 	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameheight);
 
-	VkResult result = glfwCreateWindowSurface(m_instance.GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
+	VkResult result = glfwCreateWindowSurface(GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
 	udAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
 
 	m_enabledFeatures = {};
@@ -52,12 +55,17 @@ void App::MainLoop()
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwPollEvents();
+
+		if (glfwGetKey(m_window, GLFW_KEY_ESCAPE))
+		{
+			glfwTerminate();
+		}
 	}
 }
 
 void App::Cleanup()
 {
-	vkDestroySurfaceKHR(m_instance.GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
+	vkDestroySurfaceKHR(GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
 
 	glfwDestroyWindow(m_window);
 

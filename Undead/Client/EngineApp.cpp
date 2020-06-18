@@ -4,14 +4,15 @@
 #include "../Core/SettingsDefines.h"
 #include "../Core/Assertions.h"
 
+#include "CommandLineParser.h"
+
 
 UD_NAMESPACE_BEGIN
 
-EngineApp::EngineApp(uint32 _width, uint32 _height, const char* _name, uint32 _version, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
-	: m_width(_width)
-	, m_height(_height)
-	, m_name(_name)
+EngineApp::EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
+	: m_name(_name)
 	, m_version(_version)
+	, m_commandLine(_commandLine)
 	, m_enabledFeatures(_enabledFeatures)
 {
 }

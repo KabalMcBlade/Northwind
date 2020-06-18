@@ -9,18 +9,23 @@
 
 UD_USING_NAMESPACE
 
-int main()
+static constexpr uint32 kWidth = 1024;
+static constexpr uint32 kHeight = 768;
+
+int main(int argc, char **argv)
 {
 	Settings::Instance().LoadMemorySettings();
 
-	App demo(800, 600, "Test", VK_MAKE_VERSION(0, 0, 1));
+	CommandLineParser cmdLine;
+	cmdLine.AddWithValueAndDefault("-width", false, kWidth);
+	cmdLine.AddWithValueAndDefault("-height", false, kHeight);
+	cmdLine.AddWithValueAndDefault("-fullscreen", false, false);
+	cmdLine.AddWithValueAndDefault("-showcursor", false, true);
+	cmdLine.Parse(argc, argv);
+
+	App demo("Test", VK_MAKE_VERSION(0, 0, 1), cmdLine);
 
 	demo.Execute();
-
-	//////////////////////////////////////////////////////////////////////////
-	// was used to force the library to build
-	UndeadExporter exporter;
-	std::cout << "Undead Engine Version: " << exporter.GetVersion();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

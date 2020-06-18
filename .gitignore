@@ -354,3 +354,5 @@ MigrationBackup/
 /Test/RenderDeviceAllocator.csv
 /Test/MemorySettings.json
 /Test/GPUAllocator.csv
+/Test/GenericCommonAllocator.csv
+/Test/ClientOptionAllocator.csv
