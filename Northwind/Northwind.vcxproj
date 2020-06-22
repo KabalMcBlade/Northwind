@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{7C3EDA15-A27A-43EC-918A-871D7467CCBF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Northwind</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>Northwind</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;NORTHWIND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;NORTHWIND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;NORTHWIND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;NORTHWIND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(VK_SDK_PATH)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Client\CommandLineParser.h" />
+    <ClInclude Include="Client\EngineApp.h" />
+    <ClInclude Include="Client\FileSystem.h" />
+    <ClInclude Include="Core\Assertions.h" />
+    <ClInclude Include="Core\BasicDefines.h" />
+    <ClInclude Include="Core\BasicTypes.h" />
+    <ClInclude Include="Core\MemoryWrapper.h" />
+    <ClInclude Include="Core\SettingsDefines.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\FreeListAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\LinearAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Allocators\PoolAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\Assertions.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\BasicDefines.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\BasicTypes.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\NoCopyable.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\NumberUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Core\PointerUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\DoublyLinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\LinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\DataStructures\StackLinkedList.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\Eos.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemCpy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAllocationPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryAreaPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryBasicDefines.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryBoundsCheckPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryFunctions.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryHeaderPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryLayoutUtils.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryLogPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryTagPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\MemoryThreadPolicy.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\SmartPointer.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\StlAllocator.h" />
+    <ClInclude Include="Dependencies\Eos\Eos\StlAllocatorsTypes.h" />
+    <ClInclude Include="Dependencies\json.hpp" />
+    <ClInclude Include="Dependencies\Nix\Nix\BasicMathFunctions.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Boolean.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Constants.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Conversion.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\Architecture.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\Assertions.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\BasicDefines.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Core\BasicTypes.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Dependencies\sse_mathfun.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\MathAligned.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\MathBase.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Matrix4x4.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Nix.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Permute.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Quaternion.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Scalar.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Swizzle.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Trigonometry.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Utilities.h" />
+    <ClInclude Include="Dependencies\Nix\Nix\Vector4.h" />
+    <ClInclude Include="Dependencies\stb_image.h" />
+    <ClInclude Include="Dependencies\stb_image_write.h" />
+    <ClInclude Include="Dependencies\tiny_gltf.h" />
+    <ClInclude Include="Core\Settings.h" />
+    <ClInclude Include="GPU\GpuAllocator.h" />
+    <ClInclude Include="GPU\GpuDataStructure.h" />
+    <ClInclude Include="GPU\GpuMemoryAllocator.h" />
+    <ClInclude Include="GPU\GpuMemoryList.h" />
+    <ClInclude Include="GPU\GpuMemoryManager.h" />
+    <ClInclude Include="GPU\VulkanAllocator.h" />
+    <ClInclude Include="Renderer\RenderDevice.h" />
+    <ClInclude Include="Renderer\RenderInstance.h" />
+    <ClInclude Include="Renderer\RenderQueueFamily.h" />
+    <ClInclude Include="Renderer\VertexLayout.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Northwind.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Client\CommandLineParser.cpp" />
+    <ClCompile Include="Client\EngineApp.cpp" />
+    <ClCompile Include="Client\FileSystem.cpp" />
+    <ClCompile Include="Core\MemoryWrapper.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Core\Settings.cpp" />
+    <ClCompile Include="GPU\GpuMemoryAllocator.cpp" />
+    <ClCompile Include="GPU\GpuMemoryList.cpp" />
+    <ClCompile Include="GPU\GpuMemoryManager.cpp" />
+    <ClCompile Include="GPU\VulkanAllocator.cpp" />
+    <ClCompile Include="Renderer\RenderDevice.cpp" />
+    <ClCompile Include="Renderer\RenderInstance.cpp" />
+    <ClCompile Include="Renderer\RenderQueueFamily.cpp" />
+    <ClCompile Include="Northwind.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

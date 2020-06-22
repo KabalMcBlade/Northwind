@@ -7,7 +7,7 @@
 #include "App.h"
 
 
-UD_USING_NAMESPACE
+NW_USING_NAMESPACE
 
 static constexpr uint32 kWidth = 1024;
 static constexpr uint32 kHeight = 768;

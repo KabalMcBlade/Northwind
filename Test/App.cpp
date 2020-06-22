@@ -2,7 +2,7 @@
 #include "App.h"
 
 
-UD_USING_NAMESPACE
+NW_USING_NAMESPACE
 
 
 void App::InitWindow()
