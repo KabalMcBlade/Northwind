@@ -55,7 +55,7 @@ void Settings::LoadMemorySettings()
 		os.close();
 
 		is.open(kMemorySettingsFileName);
-		udAssertReturnVoid(is.is_open(), "Cannot open nor create the %s file", kMemorySettingsFileName);
+		nwAssertReturnVoid(is.is_open(), "Cannot open nor create the %s file", kMemorySettingsFileName);
 	}
 
 	nlohmann::json json;

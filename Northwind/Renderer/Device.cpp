@@ -1,4 +1,4 @@
-#include "RenderDevice.h"
+#include "Device.h"
 
 
 #include "../Core/MemoryWrapper.h"
@@ -11,7 +11,7 @@
 NW_NAMESPACE_BEGIN
 
 
-RenderDevice::RenderDeviceAllocator* RenderDevice::GetAllocator()
+Device::RenderDeviceAllocator* Device::GetAllocator()
 {
 	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize);
 	static RenderDeviceAllocator memoryAllocator(memoryArea, "RenderDeviceAllocator");
@@ -19,7 +19,7 @@ RenderDevice::RenderDeviceAllocator* RenderDevice::GetAllocator()
 	return &memoryAllocator;
 }
 
-RenderDevice::RenderDevice()
+Device::Device()
 	: m_enableValidationLayers(false)
 	, m_instance(VK_NULL_HANDLE)
 	, m_surface(VK_NULL_HANDLE)
@@ -37,12 +37,12 @@ RenderDevice::RenderDevice()
 #endif
 }
 
-RenderDevice::~RenderDevice()
+Device::~Device()
 {
 	Destroy();
 }
 
-bool RenderDevice::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
+bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
 {
 	m_instance = _instance;
 	m_surface = _surface;
@@ -51,7 +51,7 @@ bool RenderDevice::Create(const VkInstance& _instance, const VkSurfaceKHR& _surf
 	uint32 deviceCount = 0;
 	vkEnumeratePhysicalDevices(m_instance, &deviceCount, nullptr);
 
-	udAssertReturnValue(deviceCount > 0, false, "Failed to find GPU with supporting Vulkan API");
+	nwAssertReturnValue(deviceCount > 0, false, "Failed to find GPU with supporting Vulkan API");
 
 	eos::Vector<VkPhysicalDevice, RenderDeviceAllocator, GetAllocator> devices(deviceCount);
 	vkEnumeratePhysicalDevices(m_instance, &deviceCount, devices.data());
@@ -103,7 +103,7 @@ bool RenderDevice::Create(const VkInstance& _instance, const VkSurfaceKHR& _surf
 			}
 
 			VkResult result = vkCreateDevice(m_physicalDevice, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_device);
-			udAssertReturnValue(result == VK_SUCCESS, false, "Cannot create logical device");
+			nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create logical device");
 
 			vkGetDeviceQueue(m_device, m_queueFamily.GetGraphicsFamily(), 0, &m_graphicsQueue);
 			vkGetDeviceQueue(m_device, m_queueFamily.GetComputeFamily(), 0, &m_presentQueue);
@@ -115,15 +115,15 @@ bool RenderDevice::Create(const VkInstance& _instance, const VkSurfaceKHR& _surf
 		}
 	}
 
-	udAssertReturnValue(false, false, "No suitable device found");
+	nwAssertReturnValue(false, false, "No suitable device found");
 }
 
-void RenderDevice::Destroy()
+void Device::Destroy()
 {
 	m_queueFamily.Destroy();
 }
 
-bool RenderDevice::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, RenderDeviceAllocator, GetAllocator>& _deviceExtensions)
+bool Device::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, RenderDeviceAllocator, GetAllocator>& _deviceExtensions)
 {
 	uint32 extensionCount;
 	vkEnumerateDeviceExtensionProperties(_device, nullptr, &extensionCount, nullptr);
@@ -141,7 +141,7 @@ bool RenderDevice::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const e
 	return requiredExtensions.empty();
 }
 
-bool RenderDevice::IsDeviceSuitable(VkPhysicalDevice _physicalDevice)
+bool Device::IsDeviceSuitable(VkPhysicalDevice _physicalDevice)
 {
 	m_queueFamily.Create(_physicalDevice, m_surface);
 	m_queueFamily.Clear();

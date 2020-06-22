@@ -11,11 +11,11 @@
 
 NW_NAMESPACE_BEGIN
 
-class NW_DLL RenderInstance final
+class Instance final
 {
 public:
-	RenderInstance();
-	~RenderInstance();
+	Instance();
+	~Instance();
 
 	bool Create(const char* _appName, uint32 _appVersion = VK_MAKE_VERSION(0, 0, 1));
 	void Destroy();

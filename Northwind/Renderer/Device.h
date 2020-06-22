@@ -11,16 +11,16 @@
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
-#include "RenderQueueFamily.h"
+#include "QueueFamily.h"
 
 
 NW_NAMESPACE_BEGIN
 
-class NW_DLL RenderDevice final
+class Device final
 {
 public:
-	RenderDevice();
-	~RenderDevice();
+	Device();
+	~Device();
 
 	bool Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
 	void Destroy();
@@ -35,7 +35,7 @@ public:
 		return m_device;
 	}
 
-	const RenderQueueFamily& GetQueueFamily() const
+	const QueueFamily& GetQueueFamily() const
 	{
 		return m_queueFamily;
 	}
@@ -65,7 +65,7 @@ private:
 	VkPhysicalDevice m_physicalDevice;
 	VkDevice m_device;
 
-	RenderQueueFamily m_queueFamily;
+	QueueFamily m_queueFamily;
 
 	VkQueue m_graphicsQueue;
 	VkQueue m_presentQueue;

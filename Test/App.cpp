@@ -13,7 +13,7 @@ void App::InitWindow()
 	glfwInit();
 
 	int isVulkanSupported = glfwVulkanSupported();
-	udAssertReturnVoid(isVulkanSupported == GLFW_TRUE, "No Vulkan Support.");
+	nwAssertReturnVoid(isVulkanSupported == GLFW_TRUE, "No Vulkan Support.");
 
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -38,7 +38,7 @@ void App::InitWindow()
 	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameheight);
 
 	VkResult result = glfwCreateWindowSurface(GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
-	udAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
+	nwAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
 
 	m_enabledFeatures = {};
 	m_enabledFeatures.shaderStorageImageExtendedFormats = VK_TRUE;

@@ -14,11 +14,11 @@
 
 NW_NAMESPACE_BEGIN
 
-class NW_DLL RenderQueueFamily final
+class QueueFamily final
 {
 public:
-	RenderQueueFamily();
-	~RenderQueueFamily();
+	QueueFamily();
+	~QueueFamily();
 
 	bool Create(VkPhysicalDevice _physicalDevice, VkSurfaceKHR _surface);
 	void Destroy();

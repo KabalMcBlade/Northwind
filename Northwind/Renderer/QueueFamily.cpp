@@ -1,4 +1,4 @@
-#include "RenderQueueFamily.h"
+#include "QueueFamily.h"
 
 #include "../Core/MemoryWrapper.h"
 #include "../Core/SettingsDefines.h"
@@ -22,17 +22,17 @@ namespace
 	}
 }
 
-RenderQueueFamily::RenderQueueFamily()
+QueueFamily::QueueFamily()
 	: m_physicalDevice(VK_NULL_HANDLE)
 	, m_surface(VK_NULL_HANDLE)
 {}
 
-RenderQueueFamily::~RenderQueueFamily()
+QueueFamily::~QueueFamily()
 {
 	Destroy();
 }
 
-bool RenderQueueFamily::Create(VkPhysicalDevice _physicalDevice, VkSurfaceKHR _surface)
+bool QueueFamily::Create(VkPhysicalDevice _physicalDevice, VkSurfaceKHR _surface)
 {
 	m_physicalDevice = _physicalDevice;
 	m_surface = _surface;
@@ -40,12 +40,12 @@ bool RenderQueueFamily::Create(VkPhysicalDevice _physicalDevice, VkSurfaceKHR _s
 	return true;
 }
 
-void RenderQueueFamily::Destroy()
+void QueueFamily::Destroy()
 {
 	Clear();
 }
 
-void RenderQueueFamily::FindQueueFamilies(VkQueueFlags _desiredFamilies /*= VK_QUEUE_GRAPHICS_BIT*/)
+void QueueFamily::FindQueueFamilies(VkQueueFlags _desiredFamilies /*= VK_QUEUE_GRAPHICS_BIT*/)
 {
 	bool wantGraphics = _desiredFamilies & VK_QUEUE_GRAPHICS_BIT;
 	bool dedicatedCompute = _desiredFamilies & VK_QUEUE_COMPUTE_BIT;
@@ -135,12 +135,12 @@ void RenderQueueFamily::FindQueueFamilies(VkQueueFlags _desiredFamilies /*= VK_Q
 		m_transferFamily = m_graphicsFamily < 0 ? m_computeFamily : m_graphicsFamily;
 	}
 
-	udAssertReturnVoid(wantGraphics && (m_graphicsFamily >= 0 && m_presentFamily >= 0), "FindQueueFamilies: no suitable graphics or present queue were found.");
-	udAssertReturnVoid(wantGraphics && m_computeFamily >= 0, "FindQueueFamilies: annot find compute queue.");
-	udAssertReturnVoid(wantGraphics && m_transferFamily >= 0, "FindQueueFamilies: annot find transfer queue.");
+	nwAssertReturnVoid(wantGraphics && (m_graphicsFamily >= 0 && m_presentFamily >= 0), "FindQueueFamilies: no suitable graphics or present queue were found.");
+	nwAssertReturnVoid(wantGraphics && m_computeFamily >= 0, "FindQueueFamilies: annot find compute queue.");
+	nwAssertReturnVoid(wantGraphics && m_transferFamily >= 0, "FindQueueFamilies: annot find transfer queue.");
 }
 
-void RenderQueueFamily::Clear()
+void QueueFamily::Clear()
 {
 	m_graphicsFamily = -1;
 	m_presentFamily = -1;
@@ -148,7 +148,7 @@ void RenderQueueFamily::Clear()
 	m_transferFamily = -1;
 }
 
-void RenderQueueFamily::SetPhysicalDevice(VkPhysicalDevice _physicslDevice)
+void QueueFamily::SetPhysicalDevice(VkPhysicalDevice _physicslDevice)
 {
 	m_physicalDevice = _physicslDevice;
 }

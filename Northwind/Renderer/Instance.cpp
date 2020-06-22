@@ -1,4 +1,4 @@
-#include "RenderInstance.h"
+#include "Instance.h"
 
 #include "../Core/MemoryWrapper.h"
 #include "../Core/SettingsDefines.h"
@@ -56,7 +56,7 @@ namespace
 
 //////////////////////////////////////////////////////////////////////////
 
-RenderInstance::RenderInstance() : m_instance(VK_NULL_HANDLE), m_debugReportCreated(false)
+Instance::Instance() : m_instance(VK_NULL_HANDLE), m_debugReportCreated(false)
 {
 #if _DEBUG
 	m_validationLayerEnabled = true;
@@ -65,7 +65,7 @@ RenderInstance::RenderInstance() : m_instance(VK_NULL_HANDLE), m_debugReportCrea
 #endif
 }
 
-RenderInstance::~RenderInstance()
+Instance::~Instance()
 {
 	if (m_validationLayerEnabled)
 	{
@@ -75,7 +75,7 @@ RenderInstance::~RenderInstance()
 	Destroy();
 }
 
-bool RenderInstance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE_VERSION(0, 0, 1)*/)
+bool Instance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE_VERSION(0, 0, 1)*/)
 {
 	VkApplicationInfo appInfo = {};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -119,7 +119,7 @@ bool RenderInstance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE
 				break;
 			}
 		}
-		udAssertReturnValue(found, false, "Cannot find validation layer");
+		nwAssertReturnValue(found, false, "Cannot find validation layer");
 
 		PopulateDebugReport(validationCreateInfo);
 		createInfo.pNext = (VkDebugReportCallbackCreateInfoEXT*)&validationCreateInfo;
@@ -140,12 +140,12 @@ bool RenderInstance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE
 		m_debugReportCreated = true;
 	}
 
-	udAssertReturnValue(result == VK_SUCCESS, false, "Cannot create instance");
+	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create instance");
 
 	return true;
 }
 
-void RenderInstance::Destroy()
+void Instance::Destroy()
 {
 	if (m_instance != VK_NULL_HANDLE)
 	{
@@ -154,7 +154,7 @@ void RenderInstance::Destroy()
 	}
 }
 
-void RenderInstance::PopulateDebugReport(VkDebugReportCallbackCreateInfoEXT& createInfo)
+void Instance::PopulateDebugReport(VkDebugReportCallbackCreateInfoEXT& createInfo)
 {
 	createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
@@ -162,17 +162,17 @@ void RenderInstance::PopulateDebugReport(VkDebugReportCallbackCreateInfoEXT& cre
 	createInfo.pfnCallback = DebugCallback;
 }
 
-void RenderInstance::CreateDebugReport(const VkDebugReportCallbackCreateInfoEXT& createInfo)
+void Instance::CreateDebugReport(const VkDebugReportCallbackCreateInfoEXT& createInfo)
 {
 	auto func = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(m_instance, "vkCreateDebugReportCallbackEXT");
 	if (func != nullptr)
 	{
 		VkResult result = func(m_instance, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_debugCallback);
-		udAssertReturnVoid(result == VK_SUCCESS, "Impossible create Debug Report!");
+		nwAssertReturnVoid(result == VK_SUCCESS, "Impossible create Debug Report!");
 	}
 }
 
-void RenderInstance::DestroyDebugReport()
+void Instance::DestroyDebugReport()
 {
 	auto func = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(m_instance, "vkDestroyDebugReportCallbackEXT");
 	if (func != nullptr)

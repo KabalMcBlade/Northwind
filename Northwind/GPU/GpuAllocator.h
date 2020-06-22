@@ -17,7 +17,7 @@ NW_INLINE VkDeviceMemory vkGpuAllocateMemory(const VkDevice& _device, const VkMe
 	VkDeviceMemory deviceMemoryAllocated = VK_NULL_HANDLE;
 
 	VkResult result = vkAllocateMemory(_device, &_allocateInfo, GpuMemoryManager::Instance().GetVK(), &deviceMemoryAllocated);
-	udAssertReturnValue(result == VK_SUCCESS, VK_NULL_HANDLE, "Cannot allocate memory!");
+	nwAssertReturnValue(result == VK_SUCCESS, VK_NULL_HANDLE, "Cannot allocate memory!");
 
 	return deviceMemoryAllocated;
 }
@@ -27,7 +27,7 @@ NW_INLINE void* vkGpuMapMemory(const VkDevice& _device, const VkDeviceMemory& _d
 	void* data = nullptr;
 
 	VkResult result = vkMapMemory(_device, _deviceMemoryAllocated, _offset, _size, _flags, &data);
-	udAssertReturnValue(result == VK_SUCCESS, nullptr, "Cannot map memory!");
+	nwAssertReturnValue(result == VK_SUCCESS, nullptr, "Cannot map memory!");
 
 	return data;
 }

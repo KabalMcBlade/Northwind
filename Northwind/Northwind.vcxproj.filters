@@ -192,9 +192,6 @@
     <ClInclude Include="Core\MemoryWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\RenderInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GPU\GpuMemoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -213,12 +210,6 @@
     <ClInclude Include="GPU\GpuMemoryAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\RenderQueueFamily.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RenderDevice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Client\EngineApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -234,6 +225,18 @@
     <ClInclude Include="Northwind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\CommandPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\QueueFamily.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Device.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Instance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -243,9 +246,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\MemoryWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RenderInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GPU\GpuMemoryManager.cpp">
@@ -260,12 +260,6 @@
     <ClCompile Include="GPU\GpuMemoryAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\RenderQueueFamily.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RenderDevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Client\EngineApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -276,6 +270,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Northwind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\CommandPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\QueueFamily.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

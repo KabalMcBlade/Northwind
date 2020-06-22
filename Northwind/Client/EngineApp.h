@@ -8,9 +8,9 @@
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
-#include "../Renderer/RenderQueueFamily.h"
-#include "../Renderer/RenderDevice.h"
-#include "../Renderer/RenderInstance.h"
+#include "../Renderer/QueueFamily.h"
+#include "../Renderer/Device.h"
+#include "../Renderer/Instance.h"
 
 
 NW_NAMESPACE_BEGIN
@@ -46,8 +46,8 @@ private:
 
 
 private:
-	RenderInstance m_instance;
-	RenderDevice m_device;
+	Instance m_instance;
+	Device m_device;
 
 protected:
 	const CommandLineParser& m_commandLine;

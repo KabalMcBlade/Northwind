@@ -23,17 +23,17 @@ GpuMemoryList::GpuMemoryList(const VkDevice _device, uint32 _memorytypeIndex, Vk
 	memoryAllocateInfo.memoryTypeIndex = m_memoryTypeIndex;
 
 	VkResult result = vkAllocateMemory(m_device, &memoryAllocateInfo, GpuMemoryManager::Instance().GetVK(), &m_deviceMemory);
-	udAssertReturnVoid(result == VK_SUCCESS, "Vulkan Cannot allocate memory!");
-	udAssertReturnVoid(m_deviceMemory != VK_NULL_HANDLE, "Vulkan Device Memory not created!");
+	nwAssertReturnVoid(result == VK_SUCCESS, "Vulkan Cannot allocate memory!");
+	nwAssertReturnVoid(m_deviceMemory != VK_NULL_HANDLE, "Vulkan Device Memory not created!");
 
 	if (IsHostVisible())
 	{
 		void* pData = nullptr;
 		VkResult result = vkMapMemory(m_device, m_deviceMemory, 0, m_totalSize, 0, &pData);
-		udAssertReturnVoid(result == VK_SUCCESS, "Vulkan Cannot map memory!");
+		nwAssertReturnVoid(result == VK_SUCCESS, "Vulkan Cannot map memory!");
 
 		m_memoryBuffer = static_cast<uint8*>(pData);
-		udAssertReturnVoid(m_memoryBuffer != nullptr, "Host Visible: Memory buffer not created!");
+		nwAssertReturnVoid(m_memoryBuffer != nullptr, "Host Visible: Memory buffer not created!");
 	}
 
 	
@@ -219,7 +219,7 @@ void GpuMemoryList::Free(GpuMemoryAllocation& _gpuMemory)
 
 	if (current == nullptr)
 	{
-		udAssertReturnVoid(false, "Tried to free an unknown allocation");
+		nwAssertReturnVoid(false, "Tried to free an unknown allocation");
 		return;
 	}
 
@@ -263,7 +263,7 @@ void GpuMemoryList::Free(GpuMemoryAllocation& _gpuMemory)
 
 bool GpuMemoryList::HasGranularityConflict(EGpuMemoryType _memoryType0, VkDeviceSize _offset0, VkDeviceSize _size0, EGpuMemoryType _memoryType1, VkDeviceSize _offset1, VkDeviceSize _pageSize)
 {
-	udAssertReturnValue(_offset0 + _size0 <= _offset1 && _size0 > 0 && _pageSize > 0, false, "Out of bound!");
+	nwAssertReturnValue(_offset0 + _size0 <= _offset1 && _size0 > 0 && _pageSize > 0, false, "Out of bound!");
 
 	VkDeviceSize end0 = _offset0 + _size0 - 1;
 	VkDeviceSize endPage0 = end0 & ~(_pageSize - 1);
