@@ -4,216 +4,274 @@
 
 #include "../Core/BasicTypes.h"
 
-#define NW_NORMALIZED_VERTEX_DIV_WEIGHT_BYTE	0.0039215686274509803921568627450980392156862745098039215686f	// 1.0f / 255.0f
-#define NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT	0.0000152590218966964217593652246890974288548104066529335469f	// 1.0f / 65535.0f
-
-#define NW_VERTEX_DIV_RANGE_BYTE                0.0078431372549019607843137254901960784313725490196078431372f	// 2.0f / 255.0f
-#define NW_VERTEX_DIV_RANGE_SHORT               0.0000305180437933928435187304493781948577096208133058670939f	// 2.0f / 65535.0f
-
-#define NW_VERTEX_BYTE_TO_FLOAT(x)				( (x) * ( NW_VERTEX_DIV_RANGE_BYTE ) - 1.0f )
-#define NW_VERTEX_SHORT_TO_FLOAT(x)				( (x) * ( NW_VERTEX_DIV_RANGE_SHORT ) - 1.0f )
-
-
-
 
 NW_NAMESPACE_BEGIN
 
-enum EVertexLayout
+// These vertex layout are used when load from file (GLTF or native Northwind format .nwmdl, which is not yet implemented)
+// Does not require any optimized function (apart read from file, but is not matter of this class)
+// This Vertex are afterwards pushed into a list, and the list, as buffer ( .data() ) will returned to the Vertex buffer to bind against Vulkan API
+// So it is matter of memory: Note that even if I can send values smaller than float such uint16 or even uint8, I'm rying to send the hugest value,
+// to avoid any "visual" clamping.
+// Also I describes more layout, because depending by the model loaded, you can need only a couple of set or the full set, so to optimize the CPU -> GPU
+// the Vertex reflect these differences as well as the shader used. (So for every custom Vertex shader, be sure to reflect the proper Vertex layout)
+
+
+// The sequence CANNOT BE CHANGE!
+// The index of the vertex layout is written inside the native Northwind model format .nwmdl
+
+
+// Naming convention for Vertex Layout structures:
+// P = Position Only
+// C = Position and Color
+// N = Position + Normal + Tex Coordinates 0
+// T = Position + Normal + Tex Coordinates 0 + Tex Coordinates 1
+// F = Full: Position + Normal + Tex Coordinates 0 + Tangent
+// E = Extended: Position + Normal + Tex Coordinates 0 + Tex Coordinates 1 + Tangent
+// S = Each of the above can have the suffix S which means skinned (weight and joints)
+enum EVertexLayout : uint8
 {
-	EVertexLayout_Full,
-	EVertexLayout_ColorOnly,
-	EVertexLayout_TextureOnly
+	EVertexLayout_P = 0,
+	EVertexLayout_C,
+	EVertexLayout_N,
+	EVertexLayout_T,
+	EVertexLayout_F,
+	EVertexLayout_E,
+
+	EVertexLayout_P_S = 127,
+	EVertexLayout_C_S,
+	EVertexLayout_N_S,
+	EVertexLayout_T_S,
+	EVertexLayout_F_S,
+	EVertexLayout_E_S
 };
 
-/*
+
+
+// Full size
 // 12 + 12 + 16 + 8 + 8 + 16 + 16 + 8 = 96
-float			m_position[3];
-float			m_normal[3];
-float			m_tangent[4];
-float			m_texCoord0[2];
-float			m_texCoord1[2];
-float			m_color[4];
-float			m_weights[4];
-uint16			m_joints[4];
-*/
+// float			m_position[3];
+// float			m_normal[3];
+// float			m_tangent[4];
+// float			m_texCoord0[2];
+// float			m_texCoord1[2];
+// float			m_color[4];
+// float			m_weights[4];
+// uint16			m_joints[4];
 
-// 96
-NW_MEMORY_ALIGNED struct Vertex
+
+// GLTF CONVERSION
+// TYPE						// INT TO FLOAT					// FLOAT TO INT
+// 5120 (BYTE)				f = max(c / 127.0, -1.0)		c = round(f * 127.0)
+// 5121 (UNSIGNED_BYTE)		f = c / 255.0					c = round(f * 255.0)
+// 5122 (SHORT)				f = max(c / 32767.0, -1.0)		c = round(f * 32767.0)
+// 5123 (UNSIGNED_SHORT)	f = c / 65535.0					c = round(f * 65535.0)
+
+
+
+// Position Only
+NW_MEMORY_ALIGNED struct Vertex_P
 {
-	nix::Vector4    m_position;		// 16 byte
-	nix::Vector4    m_texUV;		// 16 byte	// UV is UV0 and UV1
-	nix::Vector4    m_normal;		// 16 byte
-	nix::Vector4	m_tangent;		// 16 byte
-	nix::Vector4	m_color;		// 16 byte
-	uint16			m_weights[4];	// 8 byte
-	uint16			m_joints[4];	// 8 byte
+	float m_position[3];
 
-	Vertex() {}
-
-	NW_INLINE void Clear()
+	// Accessors helpers for reading from GLTF format
+	void SetPosition(float _x, float _y, float _z)
 	{
-		m_position = nix::Vector4(nix::kZero);
-		m_texUV = nix::Vector4(nix::kZero);
-		m_normal = nix::Vector4(nix::kZero);
-		m_tangent = nix::Vector4(nix::kZero);
-		m_color = nix::Vector4(nix::kZero);
-		memset(m_weights, 0, sizeof(m_weights));
-		memset(m_joints, 0, sizeof(m_joints));
-	}
-
-	NW_INLINE nix::Vector4 GetPosition() const { return m_position; }
-	NW_INLINE nix::Vector4 GetNormal() const { return m_normal; }
-	NW_INLINE nix::Vector4 GetTangent() const { return m_tangent; }
-	NW_INLINE float GetBiTangentSign() const { return nix::MathFunctions::ExtractW(m_tangent) < 0.0f ? -1.0f : 1.0f; }
-	NW_INLINE nix::Vector4 GetBiTangent() const
-	{
-		const nix::Vector4& v = GetNormal();
-		nix::Vector4 b = v.Cross(GetTangent());
-		b *= GetBiTangentSign();
-		return b;
-	}
-	NW_INLINE nix::Vector4 GetColor() const { return m_color; }
-	NW_INLINE nix::Vector4 GetTexUVUV() const { return m_texUV; }
-	NW_INLINE nix::Vector4 GetWeights() const 
-	{ 
-		return nix::Vector4(NW_VERTEX_SHORT_TO_FLOAT(m_weights[0]), NW_VERTEX_SHORT_TO_FLOAT(m_weights[1]), NW_VERTEX_SHORT_TO_FLOAT(m_weights[2]), NW_VERTEX_SHORT_TO_FLOAT(m_weights[3]));
-	}
-
-	NW_INLINE int16 GetJoint0() { return m_joints[0]; }
-	NW_INLINE int16 GetJoint1() { return m_joints[1]; }
-	NW_INLINE int16 GetJoint2() { return m_joints[2]; }
-	NW_INLINE int16 GetJoint3() { return m_joints[3]; }
-
-	NW_INLINE void SetPosition(const nix::Vector4& _position) { m_position = _position; }
-	NW_INLINE void SetPosition(float _x, float _y, float _z) { m_position = nix::Vector4(_x, _y, _z, 1.0f); }
-	NW_INLINE void SetNormal(const nix::Vector4& _normal) { m_normal = _normal; }
-	NW_INLINE void SetNormal(float _x, float _y, float _z) { m_normal = nix::Vector4(_x, _y, _z, 1.0f); }
-	NW_INLINE void SetTangent(const nix::Vector4& _tangent) { m_tangent = _tangent; }
-	NW_INLINE void SetTangent(float _x, float _y, float _z) { m_tangent = nix::Vector4(_x, _y, _z, 1.0f); }
-	NW_INLINE void SetColor(const nix::Vector4& _color) { m_color = _color; }
-	NW_INLINE void SetColor(float _r, float _g, float _b, float _a) { m_color = nix::Vector4(_r, _g, _b, _a); }
-	NW_INLINE void SetWeights(float _x, float _y, float _z, float _w) 
-	{ 
-		m_weights[0] = static_cast<uint16>(_x / NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
-		m_weights[1] = static_cast<uint16>(_y / NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
-		m_weights[2] = static_cast<uint16>(_z / NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
-		m_weights[3] = static_cast<uint16>(_w / NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT);
-	}
-	NW_INLINE void SetBiTangentSign(float _sign) { nix::MathFunctions::InsertOnW(m_tangent, _sign < 0.0f ? 0.0f : 1.0f); }
-	NW_INLINE void SetBiTangent(const nix::Vector4& _tangent)
-	{
-		const nix::Vector4& v = GetNormal();
-		nix::Vector4 b = v.Cross(GetTangent());
-		SetBiTangentSign(nix::MathFunctions::ExtractX(b.Dot3(_tangent)));
-	}
-	NW_INLINE void SetBiTangent(float _x, float _y, float _z)
-	{
-		nix::Vector4 v(_x, _y, _z, 0.0f);
-		SetBiTangent(v);
-	}
-	NW_INLINE void SetTexUVUV(const nix::Vector4& _uvuv) { m_texUV = _uvuv; }
-	NW_INLINE void SetTexUV0(float _u, float _v)
-	{
-		static const nix::Vector4 maskIn(1.0f, 1.0f, 0.0f, 0.0f);
-		static const nix::Vector4 maskOut(0.0f, 0.0f, 1.0f, 1.0f);
-
-		nix::Vector4 v(_u, _v, 0.0f, 0.0f);
-		m_texUV = v * maskIn + m_texUV * maskOut;
-	}
-	NW_INLINE void SetTexUV0(const nix::Vector4& _uv0)
-	{
-		static const nix::Vector4 maskIn(1.0f, 1.0f, 0.0f, 0.0f);
-		static const nix::Vector4 maskOut(0.0f, 0.0f, 1.0f, 1.0f);
-
-		m_texUV = _uv0 * maskIn + m_texUV * maskOut;
-	}
-	NW_INLINE void SetTexUV1(float _u, float _v)
-	{
-		static const nix::Vector4 maskIn(0.0f, 0.0f, 1.0f, 1.0f);
-		static const nix::Vector4 maskOut(1.0f, 1.0f, 0.0f, 0.0f);
-
-		nix::Vector4 v(0.0f, 0.0f, _u, _v);
-		m_texUV = v * maskIn + m_texUV * maskOut;
-	}
-	NW_INLINE void SetTexUV1(const nix::Vector4& _uv1)
-	{
-		static const nix::Vector4 maskIn(0.0f, 0.0f, 1.0f, 1.0f);
-		static const nix::Vector4 maskOut(1.0f, 1.0f, 0.0f, 0.0f);
-
-		m_texUV = _uv1 * maskIn + m_texUV * maskOut;
-	}
-	NW_INLINE void SetJoint0(uint16 _joint) { m_joints[0] = _joint; }
-	NW_INLINE void SetJoint1(uint16 _joint) { m_joints[1] = _joint; }
-	NW_INLINE void SetJoint2(uint16 _joint) { m_joints[2] = _joint; }
-	NW_INLINE void SetJoint3(uint16 _joint) { m_joints[3] = _joint; }
-	NW_INLINE void SetJoint(uint16 _joint0, uint16 _joint1, uint16 _joint2, uint16 _joint3)
-	{
-		SetJoint0(_joint0);
-		SetJoint1(_joint1);
-		SetJoint2(_joint2);
-		SetJoint3(_joint3);
-	}
-
-	NW_INLINE void Lerp(const Vertex& _a, const Vertex& _b, const float _t)
-	{
-		m_position = _a.GetPosition().LerpTo(_b.GetPosition(), _t);
-		m_texUV = _a.GetTexUVUV().LerpTo(_b.GetTexUVUV(), _t);
-		m_color = _a.GetColor().LerpTo(_b.GetColor(), _t);
-
-		m_normal = (_a.GetNormal().LerpTo(_b.GetNormal(), _t).Normalize());
-		m_tangent = (_a.GetTangent().LerpTo(_b.GetTangent(), _t).Normalize());
-		
-		m_weights[0] = (uint16)(_a.m_weights[0] + _t * (_b.m_weights[0] - _a.m_weights[0]));
-		m_weights[1] = (uint16)(_a.m_weights[1] + _t * (_b.m_weights[1] - _a.m_weights[1]));
-		m_weights[2] = (uint16)(_a.m_weights[2] + _t * (_b.m_weights[2] - _a.m_weights[2]));
-		m_weights[3] = (uint16)(_a.m_weights[3] + _t * (_b.m_weights[3] - _a.m_weights[3]));
-
-		m_joints[0] = (uint16)(_a.m_joints[0] + _t * (_b.m_joints[0] - _a.m_joints[0]));
-		m_joints[1] = (uint16)(_a.m_joints[1] + _t * (_b.m_joints[1] - _a.m_joints[1]));
-		m_joints[2] = (uint16)(_a.m_joints[2] + _t * (_b.m_joints[2] - _a.m_joints[2]));
-		m_joints[3] = (uint16)(_a.m_joints[3] + _t * (_b.m_joints[3] - _a.m_joints[3]));
-
-		SetBiTangent(m_tangent);
-	}
-
-	// 4 joints only
-	NW_INLINE Vertex GetSkinnedVertex(const nix::Matrix4x4* _joints)
-	{
-		if (_joints == nullptr)
-		{
-			return *this;
-		}
-
-		const nix::Matrix4x4& j0 = _joints[static_cast<uint32>(m_joints[0])];
-		const nix::Matrix4x4& j1 = _joints[static_cast<uint32>(m_joints[1])];
-		const nix::Matrix4x4& j2 = _joints[static_cast<uint32>(m_joints[2])];
-		const nix::Matrix4x4& j3 = _joints[static_cast<uint32>(m_joints[3])];
-
-		const float w0 = m_weights[0] * NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		const float w1 = m_weights[1] * NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		const float w2 = m_weights[2] * NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-		const float w3 = m_weights[3] * NW_NORMALIZED_VERTEX_DIV_WEIGHT_SHORT;
-
-		nix::Matrix4x4 accum = j0 * w0;
-		accum += j1 * w1;
-		accum += j2 * w2;
-		accum += j3 * w3;
-
-		Vertex result;
-		result.m_position = accum * m_position;
-
-		result.SetTexUVUV(GetTexUVUV());
-		result.SetNormal(accum * GetNormal());
-		result.SetTangent(accum * GetTangent());
-		result.SetBiTangent(result.GetTangent());
-
-		for (uint32 i = 0; i < 4; ++i)
-		{
-			result.m_joints[i] = m_joints[i];
-			result.m_weights[i] = m_weights[i];
-		}
-		return result;
+		m_position[0] = _x;
+		m_position[1] = _y;
+		m_position[2] = _z;
 	}
 };
+
+// Position and Color
+NW_MEMORY_ALIGNED struct Vertex_C : public Vertex_P
+{
+	float m_color[4];
+
+	// Accessors helpers for reading from GLTF format
+	void SetColor(float _r, float _g, float _b, float _a)
+	{
+		m_color[0] = _r;
+		m_color[1] = _g;
+		m_color[2] = _b;
+		m_color[3] = _a;
+	}
+
+	void SetColor(uint16 _r, uint16 _g, uint16 _b, uint16 _a)
+	{
+		m_color[0] = static_cast<float>(_r) / 65535.0f;
+		m_color[1] = static_cast<float>(_g) / 65535.0f;
+		m_color[2] = static_cast<float>(_b) / 65535.0f;
+		m_color[3] = static_cast<float>(_a) / 65535.0f;
+	}
+
+	void SetColor(uint8 _r, uint8 _g, uint8 _b, uint8 _a)
+	{
+		m_color[0] = static_cast<float>(_r) / 255.0f;
+		m_color[1] = static_cast<float>(_g) / 255.0f;
+		m_color[2] = static_cast<float>(_b) / 255.0f;
+		m_color[3] = static_cast<float>(_a) / 255.0f;
+	}
+};
+
+// Position + Normal + Tex Coordinates 0
+NW_MEMORY_ALIGNED struct Vertex_N : public Vertex_P
+{
+	float m_normal[3];
+	float m_texCoord0[2];
+
+	// Accessors helpers for reading from GLTF format
+	void SetNormal(float _x, float _y, float _z)
+	{
+		m_normal[0] = _x;
+		m_normal[1] = _y;
+		m_normal[2] = _z;
+	}
+
+	void SetTexCoord0(float _u, float _v)
+	{
+		m_texCoord0[0] = _u;
+		m_texCoord0[1] = _v;
+	}
+
+	void SetTexCoord0(uint16 _u, uint16 _v)
+	{
+		m_texCoord0[0] = static_cast<float>(_u) / 65535.0f;
+		m_texCoord0[1] = static_cast<float>(_v) / 65535.0f;
+	}
+
+	void SetTexCoord0(uint8 _u, uint8 _v)
+	{
+		m_texCoord0[0] = static_cast<float>(_u) / 255.0f;
+		m_texCoord0[1] = static_cast<float>(_v) / 255.0f;
+	}
+};
+
+// Position + Normal + Tex Coordinates 0 + Tex Coordinates 1
+NW_MEMORY_ALIGNED struct Vertex_T : public Vertex_N
+{
+	float m_texCoord1[2];
+
+	// Accessors helpers for reading from GLTF format
+	void SetTexCoord1(float _u, float _v)
+	{
+		m_texCoord1[0] = _u;
+		m_texCoord1[1] = _v;
+	}
+
+	void SetTexCoord1(uint16 _u, uint16 _v)
+	{
+		m_texCoord1[0] = static_cast<float>(_u) / 65535.0f;
+		m_texCoord1[1] = static_cast<float>(_v) / 65535.0f;
+	}
+
+	void SetTexCoord1(uint8 _u, uint8 _v)
+	{
+		m_texCoord1[0] = static_cast<float>(_u) / 255.0f;
+		m_texCoord1[1] = static_cast<float>(_v) / 255.0f;
+	}
+};
+
+
+// Full: Position + Normal + Tex Coordinates 0 + Tangent
+NW_MEMORY_ALIGNED struct Vertex_F : public Vertex_N
+{
+	float m_tangent[4];
+
+	// Accessors helpers for reading from GLTF format
+	void SetTangent(float _x, float _y, float _z, float _w)
+	{
+		m_tangent[0] = _x;
+		m_tangent[1] = _y;
+		m_tangent[2] = _z;
+		m_tangent[3] = _w;
+	}
+};
+
+
+// Extended: Position + Normal + Tex Coordinates 0 + Tex Coordinates 1 + Tangent
+NW_MEMORY_ALIGNED struct Vertex_E : public Vertex_T
+{
+	float m_tangent[4];
+
+	// Accessors helpers for reading from GLTF format
+	void SetTangent(float _x, float _y, float _z, float _w)
+	{
+		m_tangent[0] = _x;
+		m_tangent[1] = _y;
+		m_tangent[2] = _z;
+		m_tangent[3] = _w;
+	}
+};
+
+
+// Skinned
+NW_MEMORY_ALIGNED struct SkinnedVertex
+{
+	float m_weights[4];
+	uint16 m_joints[4];
+
+	// Accessors helpers for reading from GLTF format
+	void SetWeights(float _x, float _y, float _z, float _w)
+	{
+		m_weights[0] = _x;
+		m_weights[1] = _y;
+		m_weights[2] = _z;
+		m_weights[3] = _w;
+	}
+
+	void SetWeights(uint16 _x, uint16 _y, uint16 _z, uint16 _w)
+	{
+		m_weights[0] = static_cast<float>(_x) / 65535.0f;
+		m_weights[1] = static_cast<float>(_y) / 65535.0f;
+		m_weights[2] = static_cast<float>(_z) / 65535.0f;
+		m_weights[3] = static_cast<float>(_w) / 65535.0f;
+	}
+
+	void SetWeights(uint8 _x, uint8 _y, uint8 _z, uint8 _w)
+	{
+		m_weights[0] = static_cast<float>(_x) / 255.0f;
+		m_weights[1] = static_cast<float>(_y) / 255.0f;
+		m_weights[2] = static_cast<float>(_z) / 255.0f;
+		m_weights[3] = static_cast<float>(_w) / 255.0f;
+	}
+
+	void SetJoint(uint16 _x, uint16 _y, uint16 _z, uint16 _w)
+	{
+		m_joints[0] = _x;
+		m_joints[1] = _y;
+		m_joints[2] = _z;
+		m_joints[3] = _w;
+	}
+
+	void SetJoint(uint8 _x, uint8 _y, uint8 _z, uint8 _w)
+	{
+		m_joints[0] = static_cast<uint16>(_x);
+		m_joints[1] = static_cast<uint16>(_y);
+		m_joints[2] = static_cast<uint16>(_z);
+		m_joints[3] = static_cast<uint16>(_w);
+	}
+};
+
+
+
+// Vertex_P + Skinned
+NW_MEMORY_ALIGNED struct Vertex_P_S : public Vertex_P, public SkinnedVertex { };
+
+// Vertex_C + Skinned
+NW_MEMORY_ALIGNED struct Vertex_C_S : public Vertex_C, public SkinnedVertex { };
+
+// Vertex_N + Skinned
+NW_MEMORY_ALIGNED struct Vertex_N_S : public Vertex_N, public SkinnedVertex { };
+
+// Vertex_P + Skinned
+NW_MEMORY_ALIGNED struct Vertex_T_S : public Vertex_T, public SkinnedVertex { };
+
+// Vertex_C + Skinned
+NW_MEMORY_ALIGNED struct Vertex_F_S : public Vertex_F, public SkinnedVertex { };
+
+// Vertex_N + Skinned
+NW_MEMORY_ALIGNED struct Vertex_E_S : public Vertex_E, public SkinnedVertex { };
+
+
 
 NW_NAMESPACE_END
