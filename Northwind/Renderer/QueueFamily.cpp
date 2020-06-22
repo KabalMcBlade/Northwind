@@ -15,7 +15,7 @@ namespace
 {
 	RenderQueueFamilyAllocator* GetAllocator()
 	{
-		static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize);
+		static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kQueueFamilyAllocatorSize);
 		static RenderQueueFamilyAllocator memoryAllocator(memoryArea, "RenderQueueFamilyAllocator");
 
 		return &memoryAllocator;

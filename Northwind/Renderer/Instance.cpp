@@ -47,7 +47,7 @@ namespace
 {
 	RenderInstanceMemoryAllocator* GetAllocator()
 	{
-		static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kRenderInstanceAllocatorSize);
+		static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kInstanceAllocatorSize);
 		static RenderInstanceMemoryAllocator memoryAllocator(memoryArea, "RenderInstanceMemoryAllocator");
 
 		return &memoryAllocator;

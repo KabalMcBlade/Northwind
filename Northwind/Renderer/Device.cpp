@@ -13,7 +13,7 @@ NW_NAMESPACE_BEGIN
 
 Device::RenderDeviceAllocator* Device::GetAllocator()
 {
-	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize);
+	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kQueueFamilyAllocatorSize);
 	static RenderDeviceAllocator memoryAllocator(memoryArea, "RenderDeviceAllocator");
 
 	return &memoryAllocator;

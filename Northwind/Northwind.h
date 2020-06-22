@@ -21,6 +21,7 @@
 #include "Renderer/Device.h"
 #include "Renderer/QueueFamily.h"
 #include "Renderer/CommandPool.h"
+#include "Renderer/DescriptorPool.h"
 #include "Renderer/Device.h"
 #include "Renderer/Instance.h"
 #include "Renderer/VertexLayout.h"

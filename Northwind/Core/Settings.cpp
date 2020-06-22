@@ -39,9 +39,10 @@ void Settings::LoadMemorySettings()
 				{"StagingBuffer", SettingsDefines::Engine::kStagingBufferSize},
 				{"DeviceLocal", SettingsDefines::Engine::kGpuDeviceLocalSize},
 				{"HostVisible", SettingsDefines::Engine::kGpuHostVisibleSize},
-				{"RenderInstance", SettingsDefines::Engine::kRenderInstanceAllocatorSize},
-				{"RenderQueueFamily", SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize},
-				{"RenderDevice", SettingsDefines::Engine::kRenderDeviceAllocatorSize},
+				{"Instance", SettingsDefines::Engine::kInstanceAllocatorSize},
+				{"QueueFamily", SettingsDefines::Engine::kQueueFamilyAllocatorSize},
+				{"Device", SettingsDefines::Engine::kDeviceAllocatorSize},
+				{"DescriptorPool", SettingsDefines::Engine::kDescriptorPoolAllocatorSize},
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
@@ -68,9 +69,10 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kVulkanAllocatorSize = json["Engine"]["StagingBuffer"];
 	SettingsDefines::Engine::kGPUAllocatorSize = json["Engine"]["DeviceLocal"];
 	SettingsDefines::Engine::kGPUAllocatorSize = json["Engine"]["HostVisible"];
-	SettingsDefines::Engine::kRenderInstanceAllocatorSize = json["Engine"]["RenderInstance"];
-	SettingsDefines::Engine::kRenderQueueFamilyAllocatorSize = json["Engine"]["RenderQueueFamily"];
-	SettingsDefines::Engine::kRenderDeviceAllocatorSize = json["Engine"]["RenderDevice"];
+	SettingsDefines::Engine::kInstanceAllocatorSize = json["Engine"]["Instance"];
+	SettingsDefines::Engine::kQueueFamilyAllocatorSize = json["Engine"]["QueueFamily"];
+	SettingsDefines::Engine::kDeviceAllocatorSize = json["Engine"]["Device"];
+	SettingsDefines::Engine::kDescriptorPoolAllocatorSize = json["Engine"]["DescriptorPool"];
 
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];

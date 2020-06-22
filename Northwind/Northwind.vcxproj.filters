@@ -237,6 +237,9 @@
     <ClInclude Include="Renderer\Instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\DescriptorPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -282,6 +285,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\DescriptorPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

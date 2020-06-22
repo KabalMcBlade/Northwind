@@ -35,9 +35,10 @@ namespace SettingsDefines
 	{
 		static uint32 kVulkanAllocatorSize = NW_MEMORY_16_MB;
 		static uint32 kGPUAllocatorSize = NW_MEMORY_8_MB;
-		static uint32 kRenderInstanceAllocatorSize = NW_MEMORY_4_MB;
-		static uint32 kRenderQueueFamilyAllocatorSize = NW_MEMORY_256_KB;
-		static uint32 kRenderDeviceAllocatorSize = NW_MEMORY_256_KB;
+		static uint32 kInstanceAllocatorSize = NW_MEMORY_4_MB;
+		static uint32 kQueueFamilyAllocatorSize = NW_MEMORY_256_KB;
+		static uint32 kDeviceAllocatorSize = NW_MEMORY_256_KB;
+		static uint32 kDescriptorPoolAllocatorSize = NW_MEMORY_16_KB;
 		static uint32 kStagingBufferSize = NW_MEMORY_512_MB;
 		static uint32 kGpuDeviceLocalSize = NW_MEMORY_1024_MB;
 		static uint32 kGpuHostVisibleSize = NW_MEMORY_1024_MB;
