@@ -43,6 +43,7 @@ void Settings::LoadMemorySettings()
 				{"QueueFamily", SettingsDefines::Engine::kQueueFamilyAllocatorSize},
 				{"Device", SettingsDefines::Engine::kDeviceAllocatorSize},
 				{"DescriptorPool", SettingsDefines::Engine::kDescriptorPoolAllocatorSize},
+				{"DescriptorSetLayout", SettingsDefines::Engine::kDescriptorSetLayoutAllocatorSize},
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
@@ -73,6 +74,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kQueueFamilyAllocatorSize = json["Engine"]["QueueFamily"];
 	SettingsDefines::Engine::kDeviceAllocatorSize = json["Engine"]["Device"];
 	SettingsDefines::Engine::kDescriptorPoolAllocatorSize = json["Engine"]["DescriptorPool"];
+	SettingsDefines::Engine::kDescriptorSetLayoutAllocatorSize = json["Engine"]["DescriptorSetLayout"];
 
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];
