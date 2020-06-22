@@ -8,8 +8,6 @@
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
-#include "QueueFamily.h"
-
 
 NW_NAMESPACE_BEGIN
 

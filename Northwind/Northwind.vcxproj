@@ -182,6 +182,7 @@
     <ClInclude Include="Client\CommandLineParser.h" />
     <ClInclude Include="Client\EngineApp.h" />
     <ClInclude Include="Client\FileSystem.h" />
+    <ClInclude Include="Renderer\DescriptorSet.h" />
     <ClInclude Include="Renderer\DescriptorSetLayout.h" />
     <ClInclude Include="Renderer\DescriptorPool.h" />
     <ClInclude Include="Renderer\CommandPool.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="Client\CommandLineParser.cpp" />
     <ClCompile Include="Client\EngineApp.cpp" />
     <ClCompile Include="Client\FileSystem.cpp" />
+    <ClCompile Include="Renderer\DescriptorSet.cpp" />
     <ClCompile Include="Renderer\DescriptorSetLayout.cpp" />
     <ClCompile Include="Renderer\DescriptorPool.cpp" />
     <ClCompile Include="Renderer\CommandPool.cpp" />

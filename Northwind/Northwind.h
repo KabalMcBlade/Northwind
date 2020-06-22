@@ -17,12 +17,12 @@
 #include "GPU/GpuMemoryManager.h"
 #include "GPU/GpuMemoryList.h"
 
-#include "Renderer/QueueFamily.h"
 #include "Renderer/Device.h"
 #include "Renderer/QueueFamily.h"
 #include "Renderer/CommandPool.h"
 #include "Renderer/DescriptorPool.h"
 #include "Renderer/DescriptorSetLayout.h"
+#include "Renderer/DescriptorSet.h"
 #include "Renderer/Device.h"
 #include "Renderer/Instance.h"
 #include "Renderer/VertexLayout.h"
