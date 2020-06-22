@@ -25,6 +25,17 @@ enum EVertexLayout
 	EVertexLayout_TextureOnly
 };
 
+/*
+// 12 + 12 + 16 + 8 + 8 + 16 + 16 + 8 = 96
+float			m_position[3];
+float			m_normal[3];
+float			m_tangent[4];
+float			m_texCoord0[2];
+float			m_texCoord1[2];
+float			m_color[4];
+float			m_weights[4];
+uint16			m_joints[4];
+*/
 
 // 96
 UD_MEMORY_ALIGNED struct Vertex
