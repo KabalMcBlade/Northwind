@@ -46,6 +46,7 @@ namespace SettingsDefines
 		static uint32 kSwapChainAllocatorSize = NW_MEMORY_512_KB;
 		static uint32 kRenderPassAllocatorSize = NW_MEMORY_512_KB;
 		static uint32 kPipelineLayoutAllocatorSize = NW_MEMORY_128_KB;
+		static uint32 kPipelineAllocatorSize = NW_MEMORY_128_KB;
 		static uint32 kStagingBufferSize = NW_MEMORY_512_MB;
 		static uint32 kGpuDeviceLocalSize = NW_MEMORY_1024_MB;
 		static uint32 kGpuHostVisibleSize = NW_MEMORY_1024_MB;

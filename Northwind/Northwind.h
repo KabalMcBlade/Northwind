@@ -32,6 +32,7 @@
 #include "Renderer/PipelineLayout.h"
 #include "Renderer/IndexLayout.h"
 #include "Renderer/VertexLayout.h"
+#include "Renderer/Pipeline.h"
 
 #include "Shaders/Shader.h"
 

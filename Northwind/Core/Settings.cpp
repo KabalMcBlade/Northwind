@@ -50,6 +50,7 @@ void Settings::LoadMemorySettings()
 				{"SwapChain", SettingsDefines::Engine::kSwapChainAllocatorSize},
 				{"RenderPass", SettingsDefines::Engine::kRenderPassAllocatorSize},
 				{"PipelineLayout", SettingsDefines::Engine::kPipelineLayoutAllocatorSize},
+				{"Pipeline", SettingsDefines::Engine::kPipelineAllocatorSize},
 				
 			}},
 			{"Generic", {
@@ -88,6 +89,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kSwapChainAllocatorSize = json["Engine"]["SwapChain"];
 	SettingsDefines::Engine::kRenderPassAllocatorSize = json["Engine"]["RenderPass"];
 	SettingsDefines::Engine::kPipelineLayoutAllocatorSize = json["Engine"]["PipelineLayout"];
+	SettingsDefines::Engine::kPipelineAllocatorSize = json["Engine"]["Pipeline"];
 
 
 	// actual settings - Generic
