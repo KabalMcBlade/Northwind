@@ -16,7 +16,7 @@ CommandLineParser::CommandLineParser() {}
 
 CommandLineParser::~CommandLineParser()
 {
-	eos::Map<udString, Option*, Option::OptionAllocator, Option::GetAllocator>::iterator it;
+	eos::Map<nwString, Option*, Option::OptionAllocator, Option::GetAllocator>::iterator it;
 	for (it = m_options.begin(); it != m_options.end(); ++it)
 	{
 		eosDelete(it->second, Option::GetAllocator());
@@ -24,7 +24,7 @@ CommandLineParser::~CommandLineParser()
 	m_options.clear();
 }
 
-void CommandLineParser::Add(const udString& _option, bool _mandatory)
+void CommandLineParser::Add(const nwString& _option, bool _mandatory)
 {
 	Option* opt = eosNew(Option, Option::GetAllocator());
 	opt->SetOption(_option);
@@ -41,7 +41,7 @@ bool CommandLineParser::Parse(int32 argc, const char * const argv[])
 	{
 		if (strncmp(argv[i], "-", 1) == 0)
 		{
-			udString name(argv[i]);
+			nwString name(argv[i]);
 			if (m_options.count(name) == 0)
 			{
 				if (m_options[name]->IsMandatory())
@@ -94,12 +94,12 @@ bool CommandLineParser::Parse(int32 argc, const char * const argv[])
 	return true;
 }
 
-bool CommandLineParser::HasOption(const udString& _option)
+bool CommandLineParser::HasOption(const nwString& _option)
 {
 	return m_options.count(_option) > 0;
 }
 
-bool CommandLineParser::HasValue(const udString& _option)
+bool CommandLineParser::HasValue(const nwString& _option)
 {
 	auto search = m_options.find(_option);
 	if (search != m_options.end())
@@ -112,7 +112,7 @@ bool CommandLineParser::HasValue(const udString& _option)
 	}
 }
 
-bool CommandLineParser::IsSet(const udString& _option)
+bool CommandLineParser::IsSet(const nwString& _option)
 {
 	auto search = m_options.find(_option);
 	if (search != m_options.end())

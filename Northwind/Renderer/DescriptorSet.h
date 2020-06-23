@@ -52,5 +52,4 @@ private:
 	eos::Vector<VkWriteDescriptorSet, DescriptorSetAllocator, GetAllocator> m_descriptors;
 };
 
-
 NW_NAMESPACE_END

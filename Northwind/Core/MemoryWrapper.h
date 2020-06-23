@@ -14,16 +14,16 @@ using GenericAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationP
 extern NW_DLL GenericAllocator* GetGenericCommonAllocator();
 extern NW_DLL GenericAllocator* GetGenericStringAllocator();
 
-using udString = eos::String<GenericAllocator, GetGenericStringAllocator>;
-using udWString = eos::WString<GenericAllocator, GetGenericStringAllocator>;
+using nwString = eos::String<GenericAllocator, GetGenericStringAllocator>;
+using nwWString = eos::WString<GenericAllocator, GetGenericStringAllocator>;
 
-using udOStream = eos::OStream<GenericAllocator, GetGenericCommonAllocator>;
-using udStringStream = eos::StringStream<GenericAllocator, GetGenericCommonAllocator>;
-using udIStringStream = eos::IStringStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwOStream = eos::OStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwStringStream = eos::StringStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwIStringStream = eos::IStringStream<GenericAllocator, GetGenericCommonAllocator>;
 
-using udWOStream = eos::WOStream<GenericAllocator, GetGenericCommonAllocator>;
-using udWStringStream = eos::WStringStream<GenericAllocator, GetGenericCommonAllocator>;
-using udWIStringStream = eos::WIStringStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwWOStream = eos::WOStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwWStringStream = eos::WStringStream<GenericAllocator, GetGenericCommonAllocator>;
+using nwWIStringStream = eos::WIStringStream<GenericAllocator, GetGenericCommonAllocator>;
 
 NW_NAMESPACE_END
 

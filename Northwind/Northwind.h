@@ -17,6 +17,8 @@
 #include "GPU/GpuMemoryManager.h"
 #include "GPU/GpuMemoryList.h"
 
+#include "Utilities/HashTools.h"
+
 #include "Renderer/Device.h"
 #include "Renderer/QueueFamily.h"
 #include "Renderer/CommandPool.h"
@@ -25,7 +27,10 @@
 #include "Renderer/DescriptorSet.h"
 #include "Renderer/Device.h"
 #include "Renderer/Instance.h"
+#include "Renderer/IndexLayout.h"
 #include "Renderer/VertexLayout.h"
+
+#include "Shaders/Shader.h"
 
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"

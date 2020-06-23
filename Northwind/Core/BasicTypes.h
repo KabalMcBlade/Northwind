@@ -23,6 +23,4 @@ typedef std::size_t     size;
 typedef std::intptr_t   intPtr;
 typedef std::uintptr_t  uintPtr;
 
-typedef int8			chr8;	// just fpr human readability
-
 NW_NAMESPACE_END

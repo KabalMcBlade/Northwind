@@ -13,7 +13,7 @@ NW_NAMESPACE_BEGIN
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData)
 {
-	udString prefix;
+	nwString prefix;
 	if (flags & VK_DEBUG_REPORT_INFORMATION_BIT_EXT)
 	{
 		prefix = "[INFO]";

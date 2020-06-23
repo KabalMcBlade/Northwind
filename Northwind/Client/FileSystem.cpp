@@ -3,10 +3,10 @@
 
 NW_NAMESPACE_BEGIN
 
-void FileSystem::ConvertSlash(udString& _path)
+void FileSystem::ConvertSlash(nwString& _path)
 {
-	static const udString from = "\\";
-	static const udString to = "/";
+	static const nwString from = "\\";
+	static const nwString to = "/";
 
 	size start_pos = 0;
 	while ((start_pos = _path.find(from, start_pos)) != std::string::npos)
@@ -16,12 +16,12 @@ void FileSystem::ConvertSlash(udString& _path)
 	}
 }
 
-udString FileSystem::ConvertSlash(const udString& _path)
+nwString FileSystem::ConvertSlash(const nwString& _path)
 {
-	static const udString from = "\\";
-	static const udString to = "/";
+	static const nwString from = "\\";
+	static const nwString to = "/";
 
-	udString result = _path;
+	nwString result = _path;
 
 	size start_pos = 0;
 	while ((start_pos = result.find(from, start_pos)) != std::string::npos)
@@ -33,12 +33,12 @@ udString FileSystem::ConvertSlash(const udString& _path)
 	return result;
 }
 
-udString FileSystem::GetFileName(const udString& _path)
+nwString FileSystem::GetFileName(const nwString& _path)
 {
-	udString path = ConvertSlash(_path);
+	nwString path = ConvertSlash(_path);
 
 	size i = path.find_last_of("/");
-	if (i != udString::npos)
+	if (i != nwString::npos)
 	{
 		return path.substr(i + 1);
 	}
@@ -46,10 +46,10 @@ udString FileSystem::GetFileName(const udString& _path)
 	return("");
 }
 
-udString FileSystem::GetFileExt(const udString& _file)
+nwString FileSystem::GetFileExt(const nwString& _file)
 {
 	size i = _file.rfind('.', _file.length());
-	if (i != udString::npos)
+	if (i != nwString::npos)
 	{
 		return(_file.substr(i + 1, _file.length() - i));
 	}
@@ -57,15 +57,15 @@ udString FileSystem::GetFileExt(const udString& _file)
 	return("");
 }
 
-udString FileSystem::GetFileLeftMostExt(const udString& _file)
+nwString FileSystem::GetFileLeftMostExt(const nwString& _file)
 {
-	udString file = ConvertSlash(_file);
+	nwString file = ConvertSlash(_file);
 
 	size index = file.find_last_of("/");
 	file = file.substr(index + 1);
 
 	size i = file.find('.', 0);
-	if (i != udString::npos)
+	if (i != nwString::npos)
 	{
 		return(file.substr(i + 1, file.length() - i));
 	}
@@ -73,10 +73,10 @@ udString FileSystem::GetFileLeftMostExt(const udString& _file)
 	return("");
 }
 
-udString FileSystem::RemoveExt(const udString& _file)
+nwString FileSystem::RemoveExt(const nwString& _file)
 {
 	size i = _file.find_last_of(".");
-	if (i != udString::npos)
+	if (i != nwString::npos)
 	{
 		return(_file.substr(0, i));
 	}
@@ -84,10 +84,10 @@ udString FileSystem::RemoveExt(const udString& _file)
 	return("");
 }
 
-FileSystem::FileSystem(const udString& _mainPath,
-	const udString& _shadersPath,
-	const udString& _texturesPath,
-	const udString& _modelsPath)
+FileSystem::FileSystem(const nwString& _mainPath,
+	const nwString& _shadersPath,
+	const nwString& _texturesPath,
+	const nwString& _modelsPath)
 {
 	GetFullPath("./", m_mainPath);
 
@@ -114,13 +114,13 @@ FileSystem::~FileSystem()
 {
 }
 
-udString FileSystem::GetShaderTypeExt(const udString& _name) const
+nwString FileSystem::GetShaderTypeExt(const nwString& _name) const
 {
-	udString leftmostExt = Northwind::FileSystem::GetFileLeftMostExt(_name);
+	nwString leftmostExt = Northwind::FileSystem::GetFileLeftMostExt(_name);
 	return Northwind::FileSystem::RemoveExt(leftmostExt);
 }
 
-bool FileSystem::GetFullPath(const udString& partialPath, udString& _fullPath)
+bool FileSystem::GetFullPath(const nwString& partialPath, nwString& _fullPath)
 {
 	char tmp[_MAX_PATH];
 	if (_fullpath(tmp, partialPath.c_str(), _MAX_PATH) != NULL)
