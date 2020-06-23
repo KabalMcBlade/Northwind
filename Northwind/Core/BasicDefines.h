@@ -48,3 +48,10 @@
 #define NW_IS_ALIGNED(ptr, alignment)   ((std::uintptr_t)ptr & (alignment - 1)) == 0
 #define NW_MEMORY_ALIGNED				NW_MEMORY_ALIGNMENT(NW_MEMORY_ALIGNMENT_SIZE)
 
+
+#ifdef max
+#undef max
+#endif
+#ifdef min
+#undef min
+#endif

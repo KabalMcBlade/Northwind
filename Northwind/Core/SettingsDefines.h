@@ -43,6 +43,7 @@ namespace SettingsDefines
 		static uint32 kDescriptorSetAllocatorSize = NW_MEMORY_128_KB;
 		static uint32 kVertexDescriptorAllocatorSize = NW_MEMORY_32_KB;
 		static uint32 kShaderAllocatorSize = NW_MEMORY_128_KB;
+		static uint32 kSwapChainAllocatorSize = NW_MEMORY_512_KB;
 		static uint32 kStagingBufferSize = NW_MEMORY_512_MB;
 		static uint32 kGpuDeviceLocalSize = NW_MEMORY_1024_MB;
 		static uint32 kGpuHostVisibleSize = NW_MEMORY_1024_MB;

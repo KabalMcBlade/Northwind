@@ -47,7 +47,7 @@ void Settings::LoadMemorySettings()
 				{"DescriptorSet", SettingsDefines::Engine::kDescriptorSetAllocatorSize},
 				{"VertexDescriptor", SettingsDefines::Engine::kVertexDescriptorAllocatorSize},
 				{"Shader", SettingsDefines::Engine::kShaderAllocatorSize},
-				
+				{"SwapChain", SettingsDefines::Engine::kSwapChainAllocatorSize},
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
@@ -82,6 +82,8 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kDescriptorSetAllocatorSize = json["Engine"]["DescriptorSet"];
 	SettingsDefines::Engine::kVertexDescriptorAllocatorSize = json["Engine"]["VertexDescriptor"];
 	SettingsDefines::Engine::kShaderAllocatorSize = json["Engine"]["Shader"];
+	SettingsDefines::Engine::kSwapChainAllocatorSize = json["Engine"]["SwapChain"];
+
 
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];

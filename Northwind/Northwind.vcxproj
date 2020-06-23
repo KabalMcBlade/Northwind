@@ -183,6 +183,7 @@
     <ClInclude Include="Client\EngineApp.h" />
     <ClInclude Include="Client\FileSystem.h" />
     <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Renderer\SwapChain.h" />
     <ClInclude Include="Utilities\HashTools.h" />
     <ClInclude Include="Renderer\DescriptorSet.h" />
     <ClInclude Include="Renderer\DescriptorSetLayout.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="Client\EngineApp.cpp" />
     <ClCompile Include="Client\FileSystem.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Renderer\SwapChain.cpp" />
     <ClCompile Include="Utilities\HashTools.cpp" />
     <ClCompile Include="Renderer\DescriptorSet.cpp" />
     <ClCompile Include="Renderer\DescriptorSetLayout.cpp" />
