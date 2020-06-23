@@ -28,6 +28,7 @@
 #include "Renderer/Device.h"
 #include "Renderer/SwapChain.h"
 #include "Renderer/Instance.h"
+#include "Renderer/RenderPass.h"
 #include "Renderer/IndexLayout.h"
 #include "Renderer/VertexLayout.h"
 
