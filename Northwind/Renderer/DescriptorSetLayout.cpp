@@ -86,6 +86,7 @@ void DescriptorSetLayout::Destroy()
 	if (m_descriptorSetLayout != VK_NULL_HANDLE)
 	{
 		vkDestroyDescriptorSetLayout(m_device, m_descriptorSetLayout, GpuMemoryManager::Instance().GetVK());
+		m_descriptorSetLayout = VK_NULL_HANDLE;
 	}
 }
 

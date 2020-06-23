@@ -41,6 +41,7 @@ void DescriptorPool::Destroy()
 	if (m_descriptorPool != VK_NULL_HANDLE)
 	{
 		vkDestroyDescriptorPool(m_device, m_descriptorPool, GpuMemoryManager::Instance().GetVK());
+		m_descriptorPool = VK_NULL_HANDLE;
 	}
 }
 

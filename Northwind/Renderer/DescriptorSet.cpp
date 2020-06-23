@@ -23,7 +23,10 @@ DescriptorSet::DescriptorSet() : m_device(VK_NULL_HANDLE), m_pool(nullptr), m_de
 
 DescriptorSet::~DescriptorSet()
 {
-
+	if (m_device != VK_NULL_HANDLE)
+	{
+		Destroy();
+	}
 }
 
 bool DescriptorSet::Create(const VkDevice& _device, const DescriptorPool& _descriptorPool)
@@ -35,6 +38,7 @@ bool DescriptorSet::Create(const VkDevice& _device, const DescriptorPool& _descr
 
 void DescriptorSet::Destroy()
 {
+	// Nothing here
 }
 
 bool DescriptorSet::Generate()

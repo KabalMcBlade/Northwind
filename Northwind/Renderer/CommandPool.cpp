@@ -30,6 +30,7 @@ void CommandPool::Destroy()
 	if (m_commandPool != VK_NULL_HANDLE)
 	{
 		vkDestroyCommandPool(m_device, m_commandPool, GpuMemoryManager::Instance().GetVK());
+		m_commandPool = VK_NULL_HANDLE;
 	}
 }
 

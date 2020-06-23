@@ -29,6 +29,7 @@
 #include "Renderer/SwapChain.h"
 #include "Renderer/Instance.h"
 #include "Renderer/RenderPass.h"
+#include "Renderer/PipelineLayout.h"
 #include "Renderer/IndexLayout.h"
 #include "Renderer/VertexLayout.h"
 

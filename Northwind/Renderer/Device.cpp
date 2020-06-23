@@ -39,7 +39,10 @@ Device::Device()
 
 Device::~Device()
 {
-	Destroy();
+	if (m_device != VK_NULL_HANDLE)
+	{
+		Destroy();
+	}
 }
 
 bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
@@ -121,6 +124,12 @@ bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, c
 void Device::Destroy()
 {
 	m_queueFamily.Destroy();
+
+	if (m_device != VK_NULL_HANDLE)
+	{
+		vkDestroyDevice(m_device, GpuMemoryManager::Instance().GetVK());
+		m_device = VK_NULL_HANDLE;
+	}
 }
 
 bool Device::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, RenderDeviceAllocator, GetAllocator>& _deviceExtensions)

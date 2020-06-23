@@ -21,7 +21,7 @@ VertexDescriptor::VertexDescriptor() : m_vertexInput({})
 
 VertexDescriptor::~VertexDescriptor()
 {
-	// does not do anything
+	Destroy();
 }
 
 bool VertexDescriptor::Create(EVertexLayout _layout)
@@ -465,6 +465,7 @@ bool VertexDescriptor::Create(EVertexLayout _layout)
 
 void VertexDescriptor::Destroy()
 {
+	// Nothing here
 }
 
 NW_NAMESPACE_END

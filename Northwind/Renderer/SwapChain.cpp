@@ -80,6 +80,8 @@ void SwapChain::Destroy()
 			vkDestroyImageView(m_device->GetDevice(), m_swapChainImageViews[i], GpuMemoryManager::Instance().GetVK());
 		}
 
+		m_swapChainImageViews.clear();
+
 		vkDestroySwapchainKHR(m_device->GetDevice(), m_swapChain, GpuMemoryManager::Instance().GetVK());
 	}
 	m_swapChain = VK_NULL_HANDLE;

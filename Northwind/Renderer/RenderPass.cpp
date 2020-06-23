@@ -32,7 +32,7 @@ RenderPass::RenderPass()
 
 RenderPass::~RenderPass()
 {
-	if (!m_device)
+	if (m_device != VK_NULL_HANDLE)
 	{
 		Destroy();
 	}
@@ -40,7 +40,8 @@ RenderPass::~RenderPass()
 
 bool RenderPass::Create(const Device& _device)
 {
-	nwAssertReturnValue(m_attachmentDescriptors.size() || m_subpassDescriptors.size() > 0 || m_subpassDependencies.size(), false, "Either one of attachment descriptor, subpass descriptor and subpass dependencies has to be filled");
+	// not quite sure, but I would like the possibilities to make an empty render pass
+	//nwAssertReturnValue(m_attachmentDescriptors.size() || m_subpassDescriptors.size() > 0 || m_subpassDependencies.size(), false, "Either one of attachment descriptor, subpass descriptor and subpass dependencies has to be filled");
 
 	m_device = _device.GetDevice();
 
@@ -64,6 +65,7 @@ void RenderPass::Destroy()
 	if (m_renderPass != VK_NULL_HANDLE)
 	{
 		vkDestroyRenderPass(m_device, m_renderPass, GpuMemoryManager::Instance().GetVK());
+		m_renderPass = VK_NULL_HANDLE;
 	}
 }
 

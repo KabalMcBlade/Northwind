@@ -37,15 +37,15 @@ public:
 
 	bool RecreateSwapChain();
 
-	operator VkSwapchainKHR() const { return m_swapChain; }
+	NW_INLINE operator VkSwapchainKHR() const { return m_swapChain; }
 
-	const eos::Vector<VkImageView, SwapChainAllocator, GetAllocator>& GetImageViews() const { return m_swapChainImageViews; }
-	const VkImageView& GetImageView(uint32 _index) const { return m_swapChainImageViews[_index]; }
-	size GetImageViewsCOunt() const { return m_swapChainImageViews.size(); }
+	NW_INLINE const eos::Vector<VkImageView, SwapChainAllocator, GetAllocator>& GetImageViews() const { return m_swapChainImageViews; }
+	NW_INLINE const VkImageView& GetImageView(uint32 _index) const { return m_swapChainImageViews[_index]; }
+	NW_INLINE const size GetImageViewsCOunt() const { return m_swapChainImageViews.size(); }
 
-	VkExtent2D GetExtent() const { return m_swapChainExtent; }
-	VkFormat GetFormat() const { return m_swapChainImageFormat; }
-	uint32 GetSwapImageSize() const { return static_cast<uint32>(m_swapChainImages.size()); }
+	NW_INLINE VkExtent2D GetExtent() const { return m_swapChainExtent; }
+	NW_INLINE VkFormat GetFormat() const { return m_swapChainImageFormat; }
+	NW_INLINE uint32 GetSwapImageSize() const { return static_cast<uint32>(m_swapChainImages.size()); }
 
 private:
 	bool CreateSwapChain();
