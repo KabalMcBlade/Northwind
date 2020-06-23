@@ -47,10 +47,10 @@ public:
 	VkQueue GetPresentQueue() const { return m_presentQueue; }
 
 private:
-	using RenderDeviceAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
-	static RenderDeviceAllocator* GetAllocator();
+	using DeviceAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
+	static DeviceAllocator* GetAllocator();
 
-	bool CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, RenderDeviceAllocator, GetAllocator>& _deviceExtensions);
+	bool CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, DeviceAllocator, GetAllocator>& _deviceExtensions);
 	bool IsDeviceSuitable(VkPhysicalDevice _physicalDevice);
 
 private:

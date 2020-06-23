@@ -11,10 +11,10 @@
 NW_NAMESPACE_BEGIN
 
 
-Device::RenderDeviceAllocator* Device::GetAllocator()
+Device::DeviceAllocator* Device::GetAllocator()
 {
-	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kQueueFamilyAllocatorSize);
-	static RenderDeviceAllocator memoryAllocator(memoryArea, "RenderDeviceAllocator");
+	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kDeviceAllocatorSize);
+	static DeviceAllocator memoryAllocator(memoryArea, "DeviceAllocator");
 
 	return &memoryAllocator;
 }
@@ -56,7 +56,7 @@ bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, c
 
 	nwAssertReturnValue(deviceCount > 0, false, "Failed to find GPU with supporting Vulkan API");
 
-	eos::Vector<VkPhysicalDevice, RenderDeviceAllocator, GetAllocator> devices(deviceCount);
+	eos::Vector<VkPhysicalDevice, DeviceAllocator, GetAllocator> devices(deviceCount);
 	vkEnumeratePhysicalDevices(m_instance, &deviceCount, devices.data());
 
 	for (VkPhysicalDevice device : devices)
@@ -65,8 +65,8 @@ bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, c
 		{
 			m_physicalDevice = device;
 
-			eos::Vector<VkDeviceQueueCreateInfo, RenderDeviceAllocator, GetAllocator> queueCreateInfos;
-			eos::Set<int32, RenderDeviceAllocator, GetAllocator> uniqueQueueFamilies =
+			eos::Vector<VkDeviceQueueCreateInfo, DeviceAllocator, GetAllocator> queueCreateInfos;
+			eos::Set<int32, DeviceAllocator, GetAllocator> uniqueQueueFamilies =
 			{
 				m_queueFamily.GetGraphicsFamily(),
 				m_queueFamily.GetComputeFamily(),
@@ -132,15 +132,15 @@ void Device::Destroy()
 	}
 }
 
-bool Device::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, RenderDeviceAllocator, GetAllocator>& _deviceExtensions)
+bool Device::CheckDeviceExtensionSupport(VkPhysicalDevice _device, const eos::Vector<const char *, DeviceAllocator, GetAllocator>& _deviceExtensions)
 {
 	uint32 extensionCount;
 	vkEnumerateDeviceExtensionProperties(_device, nullptr, &extensionCount, nullptr);
 
-	eos::Vector<VkExtensionProperties, RenderDeviceAllocator, GetAllocator> availableExtensions(extensionCount);
+	eos::Vector<VkExtensionProperties, DeviceAllocator, GetAllocator> availableExtensions(extensionCount);
 	vkEnumerateDeviceExtensionProperties(_device, nullptr, &extensionCount, availableExtensions.data());
 
-	eos::Set<std::string, RenderDeviceAllocator, GetAllocator> requiredExtensions(_deviceExtensions.begin(), _deviceExtensions.end());
+	eos::Set<std::string, DeviceAllocator, GetAllocator> requiredExtensions(_deviceExtensions.begin(), _deviceExtensions.end());
 
 	for (const VkExtensionProperties& extension : availableExtensions)
 	{
@@ -163,8 +163,8 @@ bool Device::IsDeviceSuitable(VkPhysicalDevice _physicalDevice)
 	if (extensionsSupported)
 	{
 		VkSurfaceCapabilitiesKHR capabilities;
-		eos::Vector<VkSurfaceFormatKHR, RenderDeviceAllocator, GetAllocator> formats;
-		eos::Vector<VkPresentModeKHR, RenderDeviceAllocator, GetAllocator> presentModes;
+		eos::Vector<VkSurfaceFormatKHR, DeviceAllocator, GetAllocator> formats;
+		eos::Vector<VkPresentModeKHR, DeviceAllocator, GetAllocator> presentModes;
 
 		vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_physicalDevice, m_surface, &capabilities);
 
