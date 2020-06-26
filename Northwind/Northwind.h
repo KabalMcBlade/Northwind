@@ -47,6 +47,10 @@
 
 #include "Shaders/Shader.h"
 
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
+#include "Geometry/Frustum.h"
+
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"
 #include "Client/EngineApp.h"
