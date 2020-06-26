@@ -18,6 +18,10 @@
 #include "GPU/GpuMemoryList.h"
 
 #include "Utilities/HashTools.h"
+#include "Utilities/FileLog.h"
+
+#include "Threading/Thread.h"
+#include "Threading/ThreadPool.h"
 
 #include "Renderer/Device.h"
 #include "Renderer/QueueFamily.h"
@@ -42,8 +46,6 @@
 #include "Renderer/CommandBuffer.h"
 
 #include "Shaders/Shader.h"
-
-
 
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"

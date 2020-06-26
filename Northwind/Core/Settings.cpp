@@ -52,6 +52,7 @@ void Settings::LoadMemorySettings()
 				{"PipelineLayout", SettingsDefines::Engine::kPipelineLayoutAllocatorSize},
 				{"Pipeline", SettingsDefines::Engine::kPipelineAllocatorSize},
 				{"CommandBuffer", SettingsDefines::Engine::kCommandBufferAllocatorSize},
+				{"ThreadPool", SettingsDefines::Engine::kThreadPoolAllocatorSize},
 				
 			}},
 			{"Generic", {
@@ -92,6 +93,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kPipelineLayoutAllocatorSize = json["Engine"]["PipelineLayout"];
 	SettingsDefines::Engine::kPipelineAllocatorSize = json["Engine"]["Pipeline"];
 	SettingsDefines::Engine::kCommandBufferAllocatorSize = json["Engine"]["CommandBuffer"];
+	SettingsDefines::Engine::kThreadPoolAllocatorSize = json["Engine"]["ThreadPool"];
 
 
 	// actual settings - Generic

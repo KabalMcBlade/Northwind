@@ -19,7 +19,7 @@ NW_NAMESPACE_BEGIN
 CommandBuffer::CommandBufferAllocator* CommandBuffer::GetAllocator()
 {
 	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kCommandBufferAllocatorSize);
-	static CommandBufferAllocator memoryAllocator(memoryArea, "CommandBufferFreeListAllocator");
+	static CommandBufferAllocator memoryAllocator(memoryArea, "CommandBufferAllocator");
 
 	return &memoryAllocator;
 }

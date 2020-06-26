@@ -194,6 +194,9 @@
     <ClInclude Include="Renderer\StagingBufferManager.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Renderer\SwapChain.h" />
+    <ClInclude Include="Threading\Thread.h" />
+    <ClInclude Include="Threading\ThreadPool.h" />
+    <ClInclude Include="Utilities\FileLog.h" />
     <ClInclude Include="Utilities\HashTools.h" />
     <ClInclude Include="Renderer\DescriptorSet.h" />
     <ClInclude Include="Renderer\DescriptorSetLayout.h" />
@@ -287,6 +290,8 @@
     <ClCompile Include="Renderer\StagingBufferManager.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Renderer\SwapChain.cpp" />
+    <ClCompile Include="Threading\ThreadPool.cpp" />
+    <ClCompile Include="Utilities\FileLog.cpp" />
     <ClCompile Include="Utilities\HashTools.cpp" />
     <ClCompile Include="Renderer\DescriptorSet.cpp" />
     <ClCompile Include="Renderer\DescriptorSetLayout.cpp" />
