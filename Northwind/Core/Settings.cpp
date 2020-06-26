@@ -51,6 +51,7 @@ void Settings::LoadMemorySettings()
 				{"RenderPass", SettingsDefines::Engine::kRenderPassAllocatorSize},
 				{"PipelineLayout", SettingsDefines::Engine::kPipelineLayoutAllocatorSize},
 				{"Pipeline", SettingsDefines::Engine::kPipelineAllocatorSize},
+				{"CommandBuffer", SettingsDefines::Engine::kCommandBufferAllocatorSize},
 				
 			}},
 			{"Generic", {
@@ -90,6 +91,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kRenderPassAllocatorSize = json["Engine"]["RenderPass"];
 	SettingsDefines::Engine::kPipelineLayoutAllocatorSize = json["Engine"]["PipelineLayout"];
 	SettingsDefines::Engine::kPipelineAllocatorSize = json["Engine"]["Pipeline"];
+	SettingsDefines::Engine::kCommandBufferAllocatorSize = json["Engine"]["CommandBuffer"];
 
 
 	// actual settings - Generic

@@ -27,7 +27,7 @@
 
 // defines for easy namespace
 #define NW_NAMESPACE_BEGIN namespace Northwind {
-#define NW_NAMESPACE_END };  
+#define NW_NAMESPACE_END };
 
 #define NW_USING_NAMESPACE using namespace Northwind; 
 

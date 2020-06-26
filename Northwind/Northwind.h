@@ -33,8 +33,17 @@
 #include "Renderer/IndexLayout.h"
 #include "Renderer/VertexLayout.h"
 #include "Renderer/Pipeline.h"
+#include "Renderer/StagingBufferManager.h"
+#include "Renderer/Buffers/BaseBufferObject.h"
+#include "Renderer/Buffers/IndexBufferObject.h"
+#include "Renderer/Buffers/StorageBufferObject.h"
+#include "Renderer/Buffers/UniformBufferObject.h"
+#include "Renderer/Buffers/VertexBufferObject.h"
+#include "Renderer/CommandBuffer.h"
 
 #include "Shaders/Shader.h"
+
+
 
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"

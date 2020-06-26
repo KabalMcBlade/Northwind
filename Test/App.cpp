@@ -4,7 +4,6 @@
 
 NW_USING_NAMESPACE
 
-
 void App::InitWindow()
 {
 	m_width = m_commandLine.GetValue<uint32>("-width", 1024);
@@ -37,7 +36,7 @@ void App::InitWindow()
 
 	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameheight);
 
-	VkResult result = glfwCreateWindowSurface(GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
+	VkResult result = glfwCreateWindowSurface(m_instance.GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
 	nwAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
 
 	m_enabledFeatures = {};
@@ -47,7 +46,8 @@ void App::InitWindow()
 
 void App::InitEngine()
 {
-	GpuMemoryManager::Instance().Init(GetPhysicalDevice(), GetDevice(), GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+	GpuMemoryManager::Instance().Init(m_device.GetPhysicalDevice(), m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+	StagingBufferManager::Instance().Create(m_device.GetDevice(), m_device.GetGraphicsQueue(), m_device.GetQueueFamily().GetGraphicsFamily());
 }
 
 void App::MainLoop()
@@ -65,11 +65,12 @@ void App::MainLoop()
 
 void App::Cleanup()
 {
-	vkDestroySurfaceKHR(GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
+	vkDestroySurfaceKHR(m_instance.GetInstance(), m_surface, GpuMemoryManager::Instance().GetVK());
 
 	glfwDestroyWindow(m_window);
 
 	glfwTerminate();
 
+	StagingBufferManager::Instance().Destroy();
 	GpuMemoryManager::Instance().Shutdown();
 }

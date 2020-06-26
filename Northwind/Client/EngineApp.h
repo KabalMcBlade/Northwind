@@ -11,7 +11,7 @@
 #include "../Renderer/QueueFamily.h"
 #include "../Renderer/Device.h"
 #include "../Renderer/Instance.h"
-
+#include "../Renderer/StagingBufferManager.h"
 
 NW_NAMESPACE_BEGIN
 
@@ -22,15 +22,10 @@ public:
 	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
 	~EngineApp();
 
-	NW_INLINE const VkInstance& GetInstance() const { return m_instance.GetInstance(); }
-	NW_INLINE const VkDevice& GetDevice() const { return m_device.GetDevice(); }
-	NW_INLINE const VkPhysicalDevice& GetPhysicalDevice() const { return m_device.GetPhysicalDevice(); }
-	NW_INLINE const VkPhysicalDeviceFeatures& GetEnabledFeatures() const { return m_enabledFeatures; }
-	NW_INLINE const VkPhysicalDeviceProperties& GetPhysicalDeviceProperties() const { return m_device.GetPhysicalDeviceProperties(); }
-
-	virtual const VkSurfaceKHR& GetSurafe() const = 0;
-
 	void Execute();
+
+protected:
+	virtual const VkSurfaceKHR& GetSurafe() const = 0;
 
 protected:
 	virtual void InitWindow() {}
@@ -45,12 +40,10 @@ private:
 	void InternalCleanup();
 
 
-private:
-	Instance m_instance;
-	Device m_device;
-
 protected:
 	const CommandLineParser& m_commandLine;
+	Instance m_instance;
+	Device m_device;
 	VkPhysicalDeviceFeatures m_enabledFeatures;
 	uint32 m_version;
 	const char* m_name;
