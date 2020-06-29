@@ -17,7 +17,7 @@ public:
 	DescriptorPool();
 	~DescriptorPool();
 
-	bool Create(const VkDevice& _device);
+	bool Create(const VkDevice& _device, VkDescriptorPoolCreateFlags _flag = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT, uint32 _maxDescriptorSet = 16384);
 	void Destroy();
 
 	NW_INLINE operator const VkDescriptorPool& () const
@@ -26,7 +26,6 @@ public:
 	}
 
 	void Push(VkDescriptorType _type, uint32 _descriptorCount);
-	bool Generate(VkDescriptorPoolCreateFlags _flag = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT, uint32 _maxDescriptorSet = 16384);
 
 private:
 	using DescriptorPoolAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;

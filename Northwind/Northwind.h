@@ -54,3 +54,7 @@
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"
 #include "Client/EngineApp.h"
+
+#include "Scene/Transform.h"
+#include "Scene/Node.h"
+#include "Scene/Entity.h"

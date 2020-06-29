@@ -59,7 +59,11 @@ void Settings::LoadMemorySettings()
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
 				{"String", SettingsDefines::Generic::kStringAllocatorSize},
 				{"ClientOptions", SettingsDefines::Generic::kClientOptionAllocatorSize},
+			}},
+			{"Objects", {
+				{"Node", SettingsDefines::Objects::kNodeAllocatorSize}
 			}}
+			
 		};
 
  		std::ofstream os(kMemorySettingsFileName);
@@ -100,6 +104,10 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];
 	SettingsDefines::Generic::kStringAllocatorSize = json["Generic"]["String"];
 	SettingsDefines::Generic::kClientOptionAllocatorSize = json["Generic"]["ClientOptions"];
+
+
+	// actual settings - Objects
+	SettingsDefines::Objects::kNodeAllocatorSize = json["Objects"]["Node"];
 }
 
 NW_NAMESPACE_END

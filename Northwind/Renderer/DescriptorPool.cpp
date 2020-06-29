@@ -30,9 +30,22 @@ DescriptorPool::~DescriptorPool()
 	}
 }
 
-bool DescriptorPool::Create(const VkDevice& _device)
+bool DescriptorPool::Create(const VkDevice& _device, VkDescriptorPoolCreateFlags _flag /*= VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT*/, uint32 _maxDescriptorSet /*= 16384*/)
 {
 	m_device = _device;
+
+	VkDescriptorPoolCreateInfo createInfo{};
+	createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	createInfo.poolSizeCount = static_cast<uint32>(m_poolSizes.size());
+	createInfo.pPoolSizes = m_poolSizes.data();
+	createInfo.maxSets = _maxDescriptorSet;
+	createInfo.flags = _flag;
+
+	VkResult result = vkCreateDescriptorPool(m_device, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_descriptorPool);
+	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create DescriptorPool");
+
+	return m_descriptorPool != VK_NULL_HANDLE;
+
 	return true;
 }
 
@@ -51,21 +64,6 @@ void DescriptorPool::Push(VkDescriptorType _type, uint32 _descriptorCount)
 	descriptorPoolSize.type = _type;
 	descriptorPoolSize.descriptorCount = _descriptorCount;
 	m_poolSizes.push_back(descriptorPoolSize);
-}
-
-bool DescriptorPool::Generate(VkDescriptorPoolCreateFlags _flag /*= VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT*/, uint32 _maxDescriptorSet /*= 16384*/)
-{
-	VkDescriptorPoolCreateInfo createInfo{};
-	createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	createInfo.poolSizeCount = static_cast<uint32>(m_poolSizes.size());
-	createInfo.pPoolSizes = m_poolSizes.data();
-	createInfo.maxSets = _maxDescriptorSet;
-	createInfo.flags = _flag;
-
-	VkResult result = vkCreateDescriptorPool(m_device, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_descriptorPool);
-	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create DescriptorPool");
-
-	return m_descriptorPool != VK_NULL_HANDLE;
 }
 
 NW_NAMESPACE_END

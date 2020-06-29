@@ -60,6 +60,11 @@ namespace SettingsDefines
 		static uint32 kStringAllocatorSize = NW_MEMORY_8_MB;
 		static uint32 kClientOptionAllocatorSize = NW_MEMORY_4_KB;
 	}
+
+	namespace Objects
+	{
+		static uint32 kNodeAllocatorSize = NW_MEMORY_4_MB;
+	}
 }
 
 NW_NAMESPACE_END
