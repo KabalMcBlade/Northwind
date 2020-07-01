@@ -44,6 +44,7 @@
 #include "Renderer/Buffers/UniformBufferObject.h"
 #include "Renderer/Buffers/VertexBufferObject.h"
 #include "Renderer/CommandBuffer.h"
+#include "Renderer/Sampler.h"
 
 #include "Shaders/Shader.h"
 
