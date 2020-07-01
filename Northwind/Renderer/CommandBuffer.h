@@ -30,7 +30,7 @@ public:
 	CommandBuffer();
 	~CommandBuffer();
 
-	bool Create(const VkDevice& _device, const CommandPool& _pool);
+	bool Create(const VkDevice& _device, const CommandPool& _pool, VkCommandBufferLevel _level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 	void Destroy();
 
 	NW_INLINE operator const VkCommandBuffer& () const
@@ -42,8 +42,6 @@ public:
 	{
 		return &m_commandBuffer;
 	}
-
-	bool Generate(VkCommandBufferLevel _level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
 	bool Begin();
 	bool End();

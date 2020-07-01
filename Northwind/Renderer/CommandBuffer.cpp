@@ -40,24 +40,11 @@ CommandBuffer::~CommandBuffer()
 	}
 }
 
-bool CommandBuffer::Create(const VkDevice& _device, const CommandPool& _pool)
+bool CommandBuffer::Create(const VkDevice& _device, const CommandPool& _pool, VkCommandBufferLevel _level /*= VK_COMMAND_BUFFER_LEVEL_PRIMARY*/)
 {
 	m_device = _device;
 	m_pool = &_pool;
 
-	return true;
-}
-
-void CommandBuffer::Destroy()
-{
-	if (m_commandBuffer != VK_NULL_HANDLE)
-	{
-		vkFreeCommandBuffers(m_device, *m_pool, 1, &m_commandBuffer);
-	}
-}
-
-bool CommandBuffer::Generate(VkCommandBufferLevel _level /*= VK_COMMAND_BUFFER_LEVEL_PRIMARY*/)
-{
 	VkCommandBufferAllocateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	createInfo.commandPool = *m_pool;
@@ -68,6 +55,14 @@ bool CommandBuffer::Generate(VkCommandBufferLevel _level /*= VK_COMMAND_BUFFER_L
 	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create CommandBuffer");
 
 	return m_commandBuffer != VK_NULL_HANDLE;
+}
+
+void CommandBuffer::Destroy()
+{
+	if (m_commandBuffer != VK_NULL_HANDLE)
+	{
+		vkFreeCommandBuffers(m_device, *m_pool, 1, &m_commandBuffer);
+	}
 }
 
 bool CommandBuffer::Begin()

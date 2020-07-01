@@ -32,8 +32,6 @@ public:
 		return &m_descriptorSet;
 	}
 
-	bool Generate();
-
 	void PushLayout(const DescriptorSetLayout& _layout);
 	void PushDescriptor(VkWriteDescriptorSet _descriptor);
 	void PushDescriptor(uint32 _binding, VkDescriptorType _type, const VkDescriptorBufferInfo* _bufferInfo, uint32 _descriptorCount = 1);
@@ -44,7 +42,6 @@ private:
 	static DescriptorSetAllocator* GetAllocator();
 
 	VkDevice m_device;
-	const DescriptorPool* m_pool;
 
 	VkDescriptorSet m_descriptorSet;
 

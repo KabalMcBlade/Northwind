@@ -32,6 +32,8 @@ DescriptorPool::~DescriptorPool()
 
 bool DescriptorPool::Create(const VkDevice& _device, VkDescriptorPoolCreateFlags _flag /*= VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT*/, uint32 _maxDescriptorSet /*= 16384*/)
 {
+	nwAssertReturnValue(m_poolSizes.size() > 0, false, "DescriptorPool is Empty, please Push at least 1 before create it");
+
 	m_device = _device;
 
 	VkDescriptorPoolCreateInfo createInfo{};
@@ -45,8 +47,6 @@ bool DescriptorPool::Create(const VkDevice& _device, VkDescriptorPoolCreateFlags
 	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create DescriptorPool");
 
 	return m_descriptorPool != VK_NULL_HANDLE;
-
-	return true;
 }
 
 void DescriptorPool::Destroy()

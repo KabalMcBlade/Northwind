@@ -77,8 +77,19 @@ DescriptorSetLayout::~DescriptorSetLayout()
 
 bool DescriptorSetLayout::Create(const VkDevice& _device)
 {
+	nwAssertReturnValue(m_bindings.size() > 0, false, "DescriptorSetLayout has no bindings, please Push at least 1 before create it");
+
 	m_device = _device;
-	return true;
+
+	VkDescriptorSetLayoutCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	createInfo.bindingCount = (uint32)m_bindings.size();
+	createInfo.pBindings = m_bindings.data();
+
+	VkResult result = vkCreateDescriptorSetLayout(m_device, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_descriptorSetLayout);
+
+	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create DescriptorSetLayout");
+	return m_descriptorSetLayout != VK_NULL_HANDLE;
 }
 
 void DescriptorSetLayout::Destroy()
@@ -100,19 +111,6 @@ void DescriptorSetLayout::Push(EDescriptorStage _stage, EBindingType _type, uint
 	binding.binding = _index;
 
 	m_bindings.push_back(binding);
-}
-
-bool DescriptorSetLayout::Generate()
-{
-	VkDescriptorSetLayoutCreateInfo createInfo = {};
-	createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	createInfo.bindingCount = (uint32)m_bindings.size();
-	createInfo.pBindings = m_bindings.data();
-
-	VkResult result = vkCreateDescriptorSetLayout(m_device, &createInfo, GpuMemoryManager::Instance().GetVK(), &m_descriptorSetLayout);
-
-	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create DescriptorSetLayout");
-	return m_descriptorSetLayout != VK_NULL_HANDLE;
 }
 
 NW_NAMESPACE_END

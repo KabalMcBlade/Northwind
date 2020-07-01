@@ -42,11 +42,11 @@ Pipeline::~Pipeline()
 
 bool Pipeline::Create(const VkDevice& _device, VkPipelineBindPoint _bindPoint /*= VK_PIPELINE_BIND_POINT_GRAPHICS*/)
 {
-	m_device = _device;
-	m_bindPoint = _bindPoint;
-
 	nwAssertReturnValue(m_layout, false, "PipelineLayout is null!");
 	nwAssertReturnValue(m_renderPass, false, "RenderPass is null!");
+
+	m_device = _device;
+	m_bindPoint = _bindPoint;
 
 	VkGraphicsPipelineCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;

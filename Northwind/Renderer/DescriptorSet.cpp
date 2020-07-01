@@ -17,7 +17,7 @@ DescriptorSet::DescriptorSetAllocator* DescriptorSet::GetAllocator()
 	return &memoryAllocator;
 }
 
-DescriptorSet::DescriptorSet() : m_device(VK_NULL_HANDLE), m_pool(nullptr), m_descriptorSet(VK_NULL_HANDLE)
+DescriptorSet::DescriptorSet() : m_device(VK_NULL_HANDLE), m_descriptorSet(VK_NULL_HANDLE)
 {
 }
 
@@ -31,21 +31,14 @@ DescriptorSet::~DescriptorSet()
 
 bool DescriptorSet::Create(const VkDevice& _device, const DescriptorPool& _descriptorPool)
 {
+	nwAssertReturnValue(m_layouts.size() > 0, false, "DescriptorSet has no layout, please Push at least 1 before create it");
+	nwAssertReturnValue(m_descriptors.size() > 0, false, "DescriptorSet has no descriptor, please Push at least 1 before create it");
+
 	m_device = _device;
-	m_pool = &_descriptorPool;
-	return true;
-}
 
-void DescriptorSet::Destroy()
-{
-	// Nothing here
-}
-
-bool DescriptorSet::Generate()
-{
 	VkDescriptorSetAllocateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	createInfo.descriptorPool = *m_pool;
+	createInfo.descriptorPool = _descriptorPool;
 	createInfo.pSetLayouts = m_layouts.data();
 	createInfo.descriptorSetCount = static_cast<uint32>(m_layouts.size());
 
@@ -60,6 +53,11 @@ bool DescriptorSet::Generate()
 	vkUpdateDescriptorSets(m_device, static_cast<uint32>(m_descriptors.size()), m_descriptors.data(), 0, nullptr);
 
 	return true;
+}
+
+void DescriptorSet::Destroy()
+{
+	// Nothing here
 }
 
 void DescriptorSet::PushLayout(const DescriptorSetLayout& _layout)

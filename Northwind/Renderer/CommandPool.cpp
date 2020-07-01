@@ -19,23 +19,9 @@ CommandPool::~CommandPool()
 	}
 }
 
-bool CommandPool::Create(const VkDevice& _device)
+bool CommandPool::Create(const VkDevice& _device, uint32 _queueFamilyIndex, VkCommandPoolCreateFlags _flags)
 {
 	m_device = _device;
-	return true;
-}
-
-void CommandPool::Destroy()
-{
-	if (m_commandPool != VK_NULL_HANDLE)
-	{
-		vkDestroyCommandPool(m_device, m_commandPool, GpuMemoryManager::Instance().GetVK());
-		m_commandPool = VK_NULL_HANDLE;
-	}
-}
-
-bool CommandPool::Generate(uint32 _queueFamilyIndex, VkCommandPoolCreateFlags _flags)
-{
 	VkCommandPoolCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	createInfo.queueFamilyIndex = _queueFamilyIndex;
@@ -45,6 +31,15 @@ bool CommandPool::Generate(uint32 _queueFamilyIndex, VkCommandPoolCreateFlags _f
 
 	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create CommandPool");
 	return m_commandPool != VK_NULL_HANDLE;
+}
+
+void CommandPool::Destroy()
+{
+	if (m_commandPool != VK_NULL_HANDLE)
+	{
+		vkDestroyCommandPool(m_device, m_commandPool, GpuMemoryManager::Instance().GetVK());
+		m_commandPool = VK_NULL_HANDLE;
+	}
 }
 
 NW_NAMESPACE_END

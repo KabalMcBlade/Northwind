@@ -17,15 +17,13 @@ public:
 	CommandPool();
 	~CommandPool();
 
-	bool Create(const VkDevice& _device);
+	bool Create(const VkDevice& _device, uint32 _queueFamilyIndex, VkCommandPoolCreateFlags _flags);
 	void Destroy();
 
 	NW_INLINE operator const VkCommandPool& () const
 	{
 		return m_commandPool;
 	}
-
-	bool Generate(uint32 _queueFamilyIndex, VkCommandPoolCreateFlags _flags);
 
 private:
 	VkDevice m_device;
