@@ -356,3 +356,4 @@ MigrationBackup/
 /Test/GPUAllocator.csv
 /Test/GenericCommonAllocator.csv
 /Test/ClientOptionAllocator.csv
+/Test/DeviceAllocator.csv
