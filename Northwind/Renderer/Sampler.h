@@ -28,7 +28,10 @@ public:
 	void SetAddressModeW(VkSamplerAddressMode _adressMode);
 	void SetBorderColor(VkBorderColor _borderColor);
 	void SetMaxAnisotropy(float _maxAnisotropy);
-	
+	void SetDepthSampler(bool _isDepthSampler);
+	void SetLod(float _min, float _max);
+	void SetMipMap(VkSamplerMipmapMode _mode, float _lodBias);
+
 	NW_INLINE operator const VkSampler& () const
 	{
 		return m_sampler;
@@ -46,6 +49,10 @@ private:
 	VkSamplerAddressMode m_addressModeW;
 	VkBorderColor m_borderColor;
 	float m_maxAnisotropy;
+	float m_minLod;
+	float m_maxLod;
+	float m_mipmapLodBias;
+	bool m_isDepthSampler;
 };
 
 NW_NAMESPACE_END
