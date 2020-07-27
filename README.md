@@ -32,7 +32,7 @@ About how to use the dependencies please take a look to their own owner. (also f
 
 # Build Status
 
-| Platform | Branch | Build Status |
-|:--------:|:------:|:------------:|
-| Windows (Visual Studio 2017) | Dev | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/kabalmcblade/northwind?branch=dev&svg=true)](https://ci.appveyor.com/project/kabalmcblade/northwind) |
-| Windows (Visual Studio 2017) | Master | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/kabalmcbladenorthwind?branch=master&svg=true)](https://ci.appveyor.com/project/kabalmcblade/northwind) |
+|   Platform   | Branch | Build Status |
+|:------------:|:------:|:------------:|
+| Windows (Visual Studio 2017/19) | Dev | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/kabalmcblade/northwind?branch=dev&svg=true)](https://ci.appveyor.com/project/kabalmcblade/northwind) |
+| Windows (Visual Studio 2017/19) | Master | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/kabalmcbladenorthwind?branch=master&svg=true)](https://ci.appveyor.com/project/kabalmcblade/northwind) |

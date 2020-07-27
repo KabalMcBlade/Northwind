@@ -53,6 +53,7 @@ void Settings::LoadMemorySettings()
 				{"Pipeline", SettingsDefines::Engine::kPipelineAllocatorSize},
 				{"CommandBuffer", SettingsDefines::Engine::kCommandBufferAllocatorSize},
 				{"ThreadPool", SettingsDefines::Engine::kThreadPoolAllocatorSize},
+				{"FrameBuffer", SettingsDefines::Engine::kFrameBufferAllocatorSize},
 				
 			}},
 			{"Generic", {
@@ -67,7 +68,7 @@ void Settings::LoadMemorySettings()
 		};
 
  		std::ofstream os(kMemorySettingsFileName);
-		os << nj;
+		os << nj.dump(4);
 		os.close();
 
 		is.open(kMemorySettingsFileName);
@@ -98,6 +99,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kPipelineAllocatorSize = json["Engine"]["Pipeline"];
 	SettingsDefines::Engine::kCommandBufferAllocatorSize = json["Engine"]["CommandBuffer"];
 	SettingsDefines::Engine::kThreadPoolAllocatorSize = json["Engine"]["ThreadPool"];
+	SettingsDefines::Engine::kFrameBufferAllocatorSize = json["Engine"]["FrameBuffer"];
 
 
 	// actual settings - Generic
