@@ -6,18 +6,16 @@
 
 NW_NAMESPACE_BEGIN
 
-FramebufferAttachment::FramebufferAttachment() 
+FrameBufferAttachment::FrameBufferAttachment() 
 	: m_device(VK_NULL_HANDLE)
 	, m_image(VK_NULL_HANDLE)
 	, m_view(VK_NULL_HANDLE)
 	, m_allocation(GpuMemoryAllocation())
 	, m_format()
-	, m_width(0)
-	, m_height(0)
 {
 }
 
-FramebufferAttachment::~FramebufferAttachment()
+FrameBufferAttachment::~FrameBufferAttachment()
 {
 	if (m_device != VK_NULL_HANDLE)
 	{
@@ -25,15 +23,13 @@ FramebufferAttachment::~FramebufferAttachment()
 	}
 }
 
-bool FramebufferAttachment::Create(const VkDevice& _device, uint32 _width, uint32 _height, uint32_t _layerCount, VkFormat _format, VkImageUsageFlags _usage)
+bool FrameBufferAttachment::Create(const VkDevice& _device, uint32 _width, uint32 _height, uint32_t _layerCount, VkFormat _format, VkImageUsageFlags _usage)
 {
 	VkImageAspectFlags aspectMask = 0;
 	//VkImageLayout imageLayout;
 
 	m_device = _device;
 	m_format = _format;
-	m_width = _width;
-	m_height = _height;
 
 	if (_usage & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)
 	{
@@ -53,8 +49,8 @@ bool FramebufferAttachment::Create(const VkDevice& _device, uint32 _width, uint3
 	image.pNext = nullptr;
 	image.imageType = VK_IMAGE_TYPE_2D;
 	image.format = m_format;
-	image.extent.width = m_width;
-	image.extent.height = m_height;
+	image.extent.width = _width;
+	image.extent.height = _height;
 	image.extent.depth = 1;
 	image.mipLevels = 1;
 	image.arrayLayers = 1;
@@ -101,7 +97,7 @@ bool FramebufferAttachment::Create(const VkDevice& _device, uint32 _width, uint3
 	return m_view != VK_NULL_HANDLE;
 }
 
-void FramebufferAttachment::Destroy()
+void FrameBufferAttachment::Destroy()
 {
 	if (m_image != VK_NULL_HANDLE)
 	{

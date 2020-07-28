@@ -11,11 +11,11 @@
 
 NW_NAMESPACE_BEGIN
 
-class FramebufferAttachment final
+class FrameBufferAttachment final
 {
 public:
-	FramebufferAttachment();
-	~FramebufferAttachment();
+	FrameBufferAttachment();
+	~FrameBufferAttachment();
 
 	bool Create(const VkDevice& _device, uint32 _width, uint32 _height, uint32_t _layerCount, VkFormat _format, VkImageUsageFlags _usage);
 	void Destroy();
@@ -69,14 +69,17 @@ public:
 		return(HasDepthComponents() || HasStencilComponents());
 	}
 
+	NW_INLINE operator const VkImageView& () const
+	{
+		return m_view;
+	}
+
 private:
 	VkDevice m_device;
 	VkImage m_image;
 	VkImageView m_view;
 	VkFormat m_format;
 	GpuMemoryAllocation m_allocation;
-	int32 m_width;
-	int32 m_height;
 };
 
 NW_NAMESPACE_END
