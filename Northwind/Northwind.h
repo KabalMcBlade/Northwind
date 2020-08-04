@@ -3,6 +3,10 @@
 #include "Dependencies/Eos/Eos/Eos.h"
 #include "Dependencies/Nix/Nix/Nix.h"
 
+#include "Dependencies/tiny_gltf.h"
+#include "Dependencies/tiny_ktx.h"
+
+
 #include "Core/BasicDefines.h"
 #include "Core/Assertions.h"
 #include "Core/BasicTypes.h"

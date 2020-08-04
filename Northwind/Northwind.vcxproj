@@ -186,6 +186,7 @@
     <ClInclude Include="Client\CommandLineParser.h" />
     <ClInclude Include="Client\EngineApp.h" />
     <ClInclude Include="Client\FileSystem.h" />
+    <ClInclude Include="Dependencies\tiny_ktx.h" />
     <ClInclude Include="Renderer\FrameBuffer.h" />
     <ClInclude Include="Renderer\FrameBufferAttachment.h" />
     <ClInclude Include="Renderer\Sampler.h" />
