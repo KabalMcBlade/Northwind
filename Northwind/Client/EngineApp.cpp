@@ -50,10 +50,9 @@ void EngineApp::InternalMainLoop()
 
 void EngineApp::InternalCleanup()
 {
-	m_device.Destroy();
-
 	Cleanup();
 
+	m_device.Destroy();
 	m_instance.Destroy();
 }
 

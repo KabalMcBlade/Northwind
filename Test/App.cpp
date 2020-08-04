@@ -4,6 +4,18 @@
 
 NW_USING_NAMESPACE
 
+
+static void KeyCallback(GLFWwindow* _window, int _key, int _scancode, int _action, int _mods)
+{
+	if (_key == GLFW_KEY_ESCAPE && _action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(_window, GLFW_TRUE);
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 void App::InitWindow()
 {
 	m_width = m_commandLine.GetValue<uint32>("-width", 1024);
@@ -36,6 +48,10 @@ void App::InitWindow()
 
 	glfwGetFramebufferSize(m_window, &m_frameWidth, &m_frameheight);
 
+	glfwSetKeyCallback(m_window, KeyCallback);
+
+	glfwMakeContextCurrent(m_window);
+
 	VkResult result = glfwCreateWindowSurface(m_instance.GetInstance(), m_window, GpuMemoryManager::Instance().GetVK(), &m_surface);
 	nwAssertReturnVoid(result == VK_SUCCESS, "Failed to create window surface.");
 
@@ -55,11 +71,6 @@ void App::MainLoop()
 	while (!glfwWindowShouldClose(m_window))
 	{
 		glfwPollEvents();
-
-		if (glfwGetKey(m_window, GLFW_KEY_ESCAPE))
-		{
-			glfwTerminate();
-		}
 	}
 }
 

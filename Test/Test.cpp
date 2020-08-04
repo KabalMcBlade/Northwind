@@ -26,6 +26,8 @@ int main(int argc, char **argv)
 	App demo("Test", VK_MAKE_VERSION(0, 0, 1), cmdLine);
 
 	demo.Execute();
+
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
