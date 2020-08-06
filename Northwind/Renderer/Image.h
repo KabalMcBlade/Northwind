@@ -9,6 +9,7 @@
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
+#include "../GPU/GpuDataStructure.h"
 
 NW_NAMESPACE_BEGIN
 

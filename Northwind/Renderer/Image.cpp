@@ -1,6 +1,5 @@
 #include "Image.h"
 
-#include "../GPU/GpuDataStructure.h"
 #include "../GPU/GpuMemoryManager.h"
 
 
