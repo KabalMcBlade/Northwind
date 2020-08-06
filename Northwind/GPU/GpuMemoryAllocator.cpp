@@ -105,24 +105,6 @@ GpuMemoryAllocation GpuMemoryAllocator::Alloc(const GpuMemoryCreateInfo& _create
 		memoryTypeIndex = i;
 	}
 
-
-	for (uint32 i = 0; i < m_memProperties.memoryTypeCount; ++i)
-	{
-		if (((_createInfo.m_memoryTypeBits >> i) & 1) == 0)
-		{
-			continue;
-		}
-
-		const VkMemoryPropertyFlags properties = m_memProperties.memoryTypes[i].propertyFlags;
-		if ((properties & required) != required)
-		{
-			continue;
-		}
-
-		memoryTypeIndex = i;
-	}
-
-
 	eosAssertReturnValue(memoryTypeIndex != UINT32_MAX, allocation, "Unable to allocate memory for the create info passed.");
 
 	eos::Vector<GpuMemoryList*, GpuAllocator, GetAllocator>& memoryList = m_gpuMemory[memoryTypeIndex];

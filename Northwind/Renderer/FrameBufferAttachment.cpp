@@ -114,6 +114,7 @@ void FrameBufferAttachment::Destroy()
 	if (m_allocation.m_memory != VK_NULL_HANDLE)
 	{
 		GpuMemoryManager::Instance().GetGPU()->Free(m_allocation);
+		m_allocation = GpuMemoryAllocation();
 	}
 }
 

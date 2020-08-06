@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <assert.h>
 
 #include "BasicDefines.h"
 
@@ -10,6 +11,7 @@
 #define nwAssert( condition, format, ... ) \
     if( !(condition) ) { \
         fprintf (stderr, "%s(%u): " format "\n", __FILE__, __LINE__, __VA_ARGS__); \
+		assert(condition); \
     }
 #define nwAssertVoid( condition, format, ... ) \
     if( !(condition) ) { \
