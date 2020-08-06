@@ -3,13 +3,13 @@
 #define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan/vulkan.h>
 
-#include "../Dependencies/Eos/Eos/Eos.h"
 
 #include "../Core/Assertions.h"
 #include "../Core/BasicDefines.h"
 #include "../Core/BasicTypes.h"
 
 #include "../GPU/GpuDataStructure.h"
+
 
 NW_NAMESPACE_BEGIN
 

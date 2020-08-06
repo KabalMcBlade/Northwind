@@ -51,6 +51,8 @@
 #include "Renderer/Sampler.h"
 #include "Renderer/FrameBufferAttachment.h"
 #include "Renderer/FrameBuffer.h"
+#include "Renderer/Image.h"
+#include "Renderer/ImageView.h"
 
 #include "Shaders/Shader.h"
 
