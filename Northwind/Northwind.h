@@ -50,6 +50,8 @@
 #include "Renderer/Image.h"
 #include "Renderer/ImageView.h"
 
+#include "Texture/Texture.h"
+
 #include "Shaders/Shader.h"
 
 #include "Geometry/AABB.h"
