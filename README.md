@@ -24,6 +24,7 @@ I will work on this engine in order to let it be a proper engine and I'm writing
 	- **stb_image_write.h** is under MIT License OR Public Domain
 	- **tiny_gltf.h** is under MIT License
 	- **tiny_ktx.h** is under BSD 2-Clause License
+	- **tiny_dds.h** is under MIT License
 
 
 ### About dependencies

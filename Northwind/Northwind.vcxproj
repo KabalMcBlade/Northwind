@@ -186,6 +186,7 @@
     <ClInclude Include="Client\CommandLineParser.h" />
     <ClInclude Include="Client\EngineApp.h" />
     <ClInclude Include="Client\FileSystem.h" />
+    <ClInclude Include="Dependencies\tiny_dds.h" />
     <ClInclude Include="Dependencies\tiny_ktx.h" />
     <ClInclude Include="Renderer\ImageView.h" />
     <ClInclude Include="Renderer\Image.h" />
