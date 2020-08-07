@@ -16,10 +16,11 @@
 NW_NAMESPACE_BEGIN
 
 class CommandLineParser;
+class FileSystem;
 class NW_DLL EngineApp
 {
 public:
-	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
+	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const FileSystem& _fileSystem, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
 	~EngineApp();
 
 	void Execute();
@@ -42,6 +43,7 @@ private:
 
 protected:
 	const CommandLineParser& m_commandLine;
+	const FileSystem& m_fileSystem;
 	Instance m_instance;
 	Device m_device;
 	VkPhysicalDeviceFeatures m_enabledFeatures;

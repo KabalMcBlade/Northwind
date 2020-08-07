@@ -84,6 +84,16 @@ nwString FileSystem::RemoveExt(const nwString& _file)
 	return("");
 }
 
+nwString FileSystem::GetShaderTypeExt(const nwString& _path)
+{
+	nwString leftmostExt = Northwind::FileSystem::GetFileLeftMostExt(_path);
+	return Northwind::FileSystem::RemoveExt(leftmostExt);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
 FileSystem::FileSystem(const nwString& _mainPath,
 	const nwString& _shadersPath,
 	const nwString& _texturesPath,
@@ -109,15 +119,8 @@ FileSystem::FileSystem(const nwString& _mainPath,
 	m_modelsPath.append("/");
 }
 
-
 FileSystem::~FileSystem()
 {
-}
-
-nwString FileSystem::GetShaderTypeExt(const nwString& _name) const
-{
-	nwString leftmostExt = Northwind::FileSystem::GetFileLeftMostExt(_name);
-	return Northwind::FileSystem::RemoveExt(leftmostExt);
 }
 
 bool FileSystem::GetFullPath(const nwString& partialPath, nwString& _fullPath)

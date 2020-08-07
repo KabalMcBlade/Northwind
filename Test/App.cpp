@@ -64,6 +64,24 @@ void App::InitEngine()
 {
 	GpuMemoryManager::Instance().Init(m_device.GetPhysicalDevice(), m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
 	StagingBufferManager::Instance().Create(m_device.GetDevice(), m_device.GetGraphicsQueue(), m_device.GetQueueFamily().GetGraphicsFamily());
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sample load Shader (just to remind me relative path management)
+	nwString vertpath = m_fileSystem.GetShadersPath() + "ShaderTest.vert.spv";
+	nwString fragpath = m_fileSystem.GetShadersPath() + "ShaderTest.frag.spv";
+
+	Shader testVert;
+	Shader testFrag;
+
+	bool shaderCreated = false;
+
+	shaderCreated = testVert.Create(m_device.GetDevice(), vertpath);
+	nwAssert(shaderCreated, "Vertex Shader cannot be created at path %s", vertpath.c_str());
+
+	shaderCreated = testFrag.Create(m_device.GetDevice(), fragpath);
+	nwAssert(shaderCreated, "Fragment Shader cannot be created at path %s", fragpath.c_str());
+	//////////////////////////////////////////////////////////////////////////
 }
 
 void App::MainLoop()

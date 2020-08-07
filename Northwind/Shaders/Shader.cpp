@@ -70,16 +70,15 @@ Shader::~Shader()
 	}
 }
 
-bool Shader::Create(const VkDevice& _device, const FileSystem& _fileSystem, const nwString& _name)
+bool Shader::Create(const VkDevice& _device, const nwString& _path)
 {
 	m_device = _device;
 
-	nwString path = _fileSystem.GetShadersPath().c_str();
-	nwString type = _fileSystem.GetShaderTypeExt(m_name.c_str()).c_str();
+	nwString type = FileSystem::GetShaderTypeExt(_path);
 
 	m_stage = ConvertExtToShaderStage(type);
 
-	std::ifstream fileStream((path + m_name).c_str(), std::ios::binary);
+	std::ifstream fileStream(_path.c_str(), std::ios::binary);
 
 	fileStream.seekg(0, std::ios_base::end);
 	const size fileSize = fileStream.tellg();
@@ -103,7 +102,7 @@ bool Shader::Create(const VkDevice& _device, const FileSystem& _fileSystem, cons
 
 	nwAssertReturnValue(result == VK_SUCCESS, false, "Cannot create shader!");
 
-	m_hash = HashTools::MakeHash32(m_name.c_str(), static_cast<uint32>(m_name.length()), kShaderNameHashSeed);
+	m_hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kShaderNameHashSeed);
 
 	return true;
 }
@@ -113,6 +112,7 @@ void Shader::Destroy()
 	if (m_module != VK_NULL_HANDLE)
 	{
 		vkDestroyShaderModule(m_device, m_module, GpuMemoryManager::Instance().GetVK());
+		m_module = VK_NULL_HANDLE;
 	}
 }
 

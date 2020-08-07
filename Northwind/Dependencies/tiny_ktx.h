@@ -1044,7 +1044,7 @@ void const *TinyKtx_ImageRawData(TinyKtx_ContextHandle handle, uint32_t mipmaple
 	if (size == 0)
 		return NULL;
 
-	ctx->mipmaps[mipmaplevel] = ctx->callbacks.alloc(ctx->user, size);
+	ctx->mipmaps[mipmaplevel] = reinterpret_cast<const uint8_t*>(ctx->callbacks.alloc(ctx->user, size));
 	if (ctx->mipmaps[mipmaplevel]) {
 		ctx->callbacks.read(ctx->user, (void *) ctx->mipmaps[mipmaplevel], size);
 	}

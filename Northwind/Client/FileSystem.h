@@ -17,6 +17,10 @@ public:
 	static nwString GetFileLeftMostExt(const nwString& _file);
 	static nwString RemoveExt(const nwString& _file);
 
+	// specific calls
+public:
+	static nwString GetShaderTypeExt(const nwString& _path);
+
 public:
 	FileSystem(const nwString& _mainPath,
 		const nwString& _shadersPath,
@@ -29,7 +33,6 @@ public:
 	const nwString& GetTexturesPath() const { return m_texturesPath; }
 	const nwString& GetModelsPath() const { return m_modelsPath; }
 
-	nwString GetShaderTypeExt(const nwString& _name) const;
 
 private:
 	bool GetFullPath(const nwString& partialPath, nwString& _fullPath);

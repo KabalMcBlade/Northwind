@@ -5,14 +5,15 @@
 #include "../Core/Assertions.h"
 
 #include "CommandLineParser.h"
-
+#include "FileSystem.h"
 
 NW_NAMESPACE_BEGIN
 
-EngineApp::EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
+EngineApp::EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const FileSystem& _fileSystem, const VkPhysicalDeviceFeatures& _enabledFeatures /*= {}*/)
 	: m_name(_name)
 	, m_version(_version)
 	, m_commandLine(_commandLine)
+	, m_fileSystem(_fileSystem)
 	, m_enabledFeatures(_enabledFeatures)
 {
 }

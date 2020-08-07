@@ -10,7 +10,7 @@ NW_USING_NAMESPACE
 class App final : public EngineApp
 {
 public:
-	App(const char* _name, uint32 _version, const CommandLineParser& _commandLine) : EngineApp(_name, _version, _commandLine) {}
+	App(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const FileSystem& _fileSystem) : EngineApp(_name, _version, _commandLine, _fileSystem) {}
 	~App() {}
 
 	NW_INLINE const GLFWwindow* GetWindow() const { return m_window; }

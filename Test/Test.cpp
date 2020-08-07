@@ -23,7 +23,9 @@ int main(int argc, char **argv)
 	cmdLine.AddWithValueAndDefault("-showcursor", false, true);
 	cmdLine.Parse(argc, argv);
 
-	App demo("Test", VK_MAKE_VERSION(0, 0, 1), cmdLine);
+	FileSystem fileSystem("Assets", "Shaders", "Textures", "Models");
+
+	App demo("Test", VK_MAKE_VERSION(0, 0, 1), cmdLine, fileSystem);
 
 	demo.Execute();
 

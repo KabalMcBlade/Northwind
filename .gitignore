@@ -357,3 +357,4 @@ MigrationBackup/
 /Test/GenericCommonAllocator.csv
 /Test/ClientOptionAllocator.csv
 /Test/DeviceAllocator.csv
+/Test/ShaderAllocator.csv
