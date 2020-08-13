@@ -18,6 +18,11 @@ public:
 	ImageView();
 	~ImageView();
 
+	NW_INLINE operator const VkImageView& () const
+	{
+		return m_imageView;
+	}
+
 	bool Create(const VkDevice& _device, const Image& _image, VkImageViewType _viewType, VkImageAspectFlags _aspectFlags,
 		uint32 _baseMipLevel = 0, uint32 _levelCount = 1, uint32 _baseArrayLayer = 0, uint32 _layerCount = 1,
 		VkComponentMapping _componentMapping = {}, VkImageViewCreateFlags _flags = 0);

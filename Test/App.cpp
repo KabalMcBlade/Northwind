@@ -68,20 +68,41 @@ void App::InitEngine()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Sample load Shader (just to remind me relative path management)
-	nwString vertpath = m_fileSystem.GetShadersPath() + "ShaderTest.vert.spv";
-	nwString fragpath = m_fileSystem.GetShadersPath() + "ShaderTest.frag.spv";
+	{
+		nwString vertpath = m_fileSystem.GetShadersPath() + "ShaderTest.vert.spv";
+		nwString fragpath = m_fileSystem.GetShadersPath() + "ShaderTest.frag.spv";
 
-	Shader testVert;
-	Shader testFrag;
+		Shader testVert;
+		Shader testFrag;
 
-	bool shaderCreated = false;
+		bool shaderCreated = false;
 
-	shaderCreated = testVert.Create(m_device.GetDevice(), vertpath);
-	nwAssert(shaderCreated, "Vertex Shader cannot be created at path %s", vertpath.c_str());
+		shaderCreated = testVert.Create(m_device.GetDevice(), vertpath);
+		nwAssert(shaderCreated, "Vertex Shader cannot be created at path %s", vertpath.c_str());
 
-	shaderCreated = testFrag.Create(m_device.GetDevice(), fragpath);
-	nwAssert(shaderCreated, "Fragment Shader cannot be created at path %s", fragpath.c_str());
+		shaderCreated = testFrag.Create(m_device.GetDevice(), fragpath);
+		nwAssert(shaderCreated, "Fragment Shader cannot be created at path %s", fragpath.c_str());
+	}
 	//////////////////////////////////////////////////////////////////////////
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sample load texture (ktx test)
+	{
+		nwString coloredglassrgbaPath = m_fileSystem.GetTexturesPath() + "colored_glass_rgba.ktx";
+
+		Texture ktxTest;
+		ktxTest.Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB, VK_FILTER_LINEAR, VK_FILTER_LINEAR, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sample load texture (NO ktx test)
+	{
+		nwString Yokohama3FrontPath = m_fileSystem.GetTexturesPath() + "Yokohama3_front.jpg";
+
+		Texture jpgTest;
+		jpgTest.Load2D(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB, VK_FILTER_LINEAR, VK_FILTER_LINEAR, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT);
+	}
 }
 
 void App::MainLoop()

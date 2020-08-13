@@ -38,6 +38,10 @@ public:
 	void Destroy();
 
 	uint8* Stage(size _size, size _alignment, VkCommandBuffer& _outCommandBuffer, VkBuffer& _outBuffer, size& _outBufferOffset);
+	uint8* Stage(size _size, VkCommandBuffer& _outCommandBuffer, VkBuffer& _outBuffer, size& _outBufferOffset);
+
+	// Call at the beginning of the frame! Before Render frame!
+	// Call also when the window/surface is recreated.
 	void Submit();
 
 private:
@@ -50,6 +54,7 @@ private:
 	VkQueue m_graphicsQueue;
 	int32 m_graphicsFamilyIndex;
 	size m_maxBufferSize;
+	size m_defaultAlignment;
 	uint8* m_mappedData;
 	VkDeviceMemory m_memory;
 	VkCommandPool m_commandPool;

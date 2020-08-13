@@ -358,3 +358,4 @@ MigrationBackup/
 /Test/ClientOptionAllocator.csv
 /Test/DeviceAllocator.csv
 /Test/ShaderAllocator.csv
+/Test/TexturesAllocator.csv

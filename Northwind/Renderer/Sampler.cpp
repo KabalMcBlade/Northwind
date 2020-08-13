@@ -66,6 +66,7 @@ void Sampler::Destroy()
 	if (m_sampler != VK_NULL_HANDLE)
 	{
 		vkDestroySampler(m_device, m_sampler, GpuMemoryManager::Instance().GetVK());
+		m_sampler = VK_NULL_HANDLE;
 	}
 }
 

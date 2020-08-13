@@ -22,22 +22,22 @@ public:
 	bool Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
 	void Destroy();
 
-	const VkPhysicalDevice& GetPhysicalDevice() const
+	NW_INLINE const VkPhysicalDevice& GetPhysicalDevice() const
 	{
 		return m_physicalDevice;
 	}
 
-	const VkDevice& GetDevice() const
+	NW_INLINE const VkDevice& GetDevice() const
 	{
 		return m_device;
 	}
 
-	const QueueFamily& GetQueueFamily() const
+	NW_INLINE const QueueFamily& GetQueueFamily() const
 	{
 		return m_queueFamily;
 	}
 
-	const VkPhysicalDeviceProperties& GetPhysicalDeviceProperties() const
+	NW_INLINE const VkPhysicalDeviceProperties& GetPhysicalDeviceProperties() const
 	{
 		return m_physicalDeviceProperties;
 	}

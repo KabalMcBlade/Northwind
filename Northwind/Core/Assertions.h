@@ -8,6 +8,7 @@
 
 #ifdef _DEBUG
 
+#define nwWarning( format, ... ) fprintf (stderr, "%s(%u): " format "\n", __FILE__, __LINE__, __VA_ARGS__);
 #define nwAssert( condition, format, ... ) \
     if( !(condition) ) { \
         fprintf (stderr, "%s(%u): " format "\n", __FILE__, __LINE__, __VA_ARGS__); \
@@ -26,6 +27,7 @@
 
 #else
 
+#define nwWarning( format, ... )
 #define nwAssert( condition, format, ... )
 #define nwAssertVoid( condition, format, ... )
 #define nwAssertValue( condition, return_value, format, ... )

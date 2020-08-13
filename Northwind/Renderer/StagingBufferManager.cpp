@@ -61,6 +61,8 @@ bool StagingBufferManager::Create(VkDevice _device, VkQueue _graphicsQueue, int3
 	VkDeviceSize mask = memoryRequirements.alignment - 1;
 	VkDeviceSize size = (memoryRequirements.size + mask) & ~mask;
 
+	m_defaultAlignment = memoryRequirements.alignment;
+
 	GpuMemoryCreateInfo createInfo = {};
 	createInfo.m_size = memoryRequirements.size;
 	createInfo.m_align = memoryRequirements.alignment;
@@ -141,6 +143,7 @@ void StagingBufferManager::Destroy()
 		vkDestroyCommandPool(m_device, m_commandPool, GpuMemoryManager::Instance().GetVK());
 
 		m_maxBufferSize = 0;
+		m_defaultAlignment = 0;
 	}
 }
 
@@ -179,6 +182,7 @@ uint8* StagingBufferManager::Stage(size _size, size _alignment, VkCommandBuffer&
 		nwAssertReturnValue(result == VK_SUCCESS, nullptr, "Cannot begin command buffer for staging!");
 	}
 
+	// need to add this in array per frame
 	_outCommandBuffer = stagingBuffer.m_vkCommandBuffer;
 	_outBuffer = stagingBuffer.m_vkBuffer;
 	_outBufferOffset = stagingBuffer.m_vkOffset;
@@ -187,6 +191,12 @@ uint8* StagingBufferManager::Stage(size _size, size _alignment, VkCommandBuffer&
 	stagingBuffer.m_vkOffset += _size;
 
 	return data;
+}
+
+
+uint8* StagingBufferManager::Stage(size _size, VkCommandBuffer& _outCommandBuffer, VkBuffer& _outBuffer, size& _outBufferOffset)
+{
+	return Stage(_size, m_defaultAlignment, _outCommandBuffer, _outBuffer, _outBufferOffset);
 }
 
 void StagingBufferManager::Submit()
@@ -204,20 +214,23 @@ void StagingBufferManager::Submit()
 	barrier.dstAccessMask = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT | VK_ACCESS_INDEX_READ_BIT;
 	vkCmdPipelineBarrier(stagingBuffer.m_vkCommandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, 0, 1, &barrier, 0, nullptr, 0, nullptr);
 
-	vkEndCommandBuffer(stagingBuffer.m_vkCommandBuffer);
+	VkResult result = vkEndCommandBuffer(stagingBuffer.m_vkCommandBuffer);
+	nwAssertReturnVoid(result == VK_SUCCESS, "Cannot end command buffer for staging!");
 
 	VkMappedMemoryRange memoryRange = {};
 	memoryRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	memoryRange.memory = m_memory;
 	memoryRange.size = VK_WHOLE_SIZE;
-	vkFlushMappedMemoryRanges(m_device, 1, &memoryRange);
+	result = vkFlushMappedMemoryRanges(m_device, 1, &memoryRange);
+	nwAssertReturnVoid(result == VK_SUCCESS, "Cannot flush mapped memory for staging!");
 
 	VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &stagingBuffer.m_vkCommandBuffer;
 
-	vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, stagingBuffer.m_vkFence);
+	result = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, stagingBuffer.m_vkFence);
+	nwAssertReturnVoid(result == VK_SUCCESS, "Cannot submit the graphic queue for staging!");
 
 	stagingBuffer.m_submitted = true;
 }

@@ -119,6 +119,8 @@ bool Device::Create(const VkInstance& _instance, const VkSurfaceKHR& _surface, c
 	}
 
 	nwAssertReturnValue(false, false, "No suitable device found");
+
+	return false;
 }
 
 void Device::Destroy()

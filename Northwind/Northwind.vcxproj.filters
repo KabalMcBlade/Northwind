@@ -327,19 +327,16 @@
     <ClInclude Include="Renderer\FrameBufferAttachment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\tiny_ktx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\ImageView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\tiny_dds.h">
+    <ClInclude Include="Texture\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture\Texture.h">
+    <ClInclude Include="Dependencies\tiny_ktx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

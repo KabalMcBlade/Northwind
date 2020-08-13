@@ -56,6 +56,9 @@ VkShaderStageFlagBits Shader::ConvertExtToShaderStage(const nwString& _ext)
 	}
 
 	nwAssertReturnValue(false, VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM, "No Valid conversion found!");
+
+	// this is needed in release
+	return VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM;
 }
 
 Shader::Shader(): m_device(VK_NULL_HANDLE), m_module(VK_NULL_HANDLE)
