@@ -147,7 +147,8 @@ bool Image::Create3D(const VkDevice& _device, uint32 _width, uint32 _height, uin
 
 
 bool Image::CreateCube(const VkDevice& _device, uint32 _width, uint32 _height, VkFormat _format, VkImageUsageFlags _usage, EMemoryUsage _memoryUsage, EGpuMemoryType _memoryType,
-	uint32 _mipLevels /*= 1*/, VkImageLayout _initialLayout /*= VK_IMAGE_LAYOUT_PREINITIALIZED*/, VkImageTiling _tiling /*= VK_IMAGE_TILING_OPTIMAL*/)
+	uint32 _mipLevels /*= 1*/, VkSampleCountFlagBits _sampleCount /*= VK_SAMPLE_COUNT_1_BIT*/,
+	VkImageLayout _initialLayout /*= VK_IMAGE_LAYOUT_PREINITIALIZED*/, VkImageTiling _tiling /*= VK_IMAGE_TILING_OPTIMAL*/)
 {
 	m_device = _device;
 
@@ -163,7 +164,7 @@ bool Image::CreateCube(const VkDevice& _device, uint32 _width, uint32 _height, V
 	createInfo.tiling = _tiling;
 	createInfo.initialLayout = _initialLayout;
 	createInfo.usage = _usage;
-	createInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+	createInfo.samples = _sampleCount;
 	createInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	createInfo.flags = VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT;
 

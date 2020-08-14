@@ -28,7 +28,8 @@ public:
 		VkImageLayout _initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED, VkImageTiling _tiling = VK_IMAGE_TILING_OPTIMAL);
 
 	bool CreateCube(const VkDevice& _device, uint32 _width, uint32 _height, VkFormat _format, VkImageUsageFlags _usage, EMemoryUsage _memoryUsage, EGpuMemoryType _memoryType,
-		uint32 _mipLevels = 1, VkImageLayout _initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED, VkImageTiling _tiling = VK_IMAGE_TILING_OPTIMAL);
+		uint32 _mipLevels = 1, VkSampleCountFlagBits _sampleCount = VK_SAMPLE_COUNT_1_BIT,
+		VkImageLayout _initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED, VkImageTiling _tiling = VK_IMAGE_TILING_OPTIMAL);
 
 	void Destroy();
 

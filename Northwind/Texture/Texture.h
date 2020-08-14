@@ -21,28 +21,34 @@ public:
 	Texture();
 	~Texture();
 
-	// note: the VkFormat _format can be avoided if loaded via KTX, because the type is internal to the file, so just pass VK_FORMAT_UNDEFINED
-	bool Load2D(const Device& m_device, const nwString& _path,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	// note: the VkFormat _format can be avoided if loaded via KTX, because the type is internal to the file, u can pass in order the format found in the ktx file is VK_FORMAT_UNDEFINED
+	bool Load2D(const Device& _device, const nwString& _path,
+		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
-	bool LoadArray(const Device& m_device, const nwString& _path,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	bool LoadArray(const Device& _device, const nwString& _path,
+		VkFormat _format, uint32 _sliceCount = 0, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
-	bool LoadCube(const Device& m_device, const nwString& _path,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	bool LoadCube(const Device& _device, const nwString& _path,
+		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
 
 
-	bool Load2D(const Device& _device, const uint8* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	bool Load2D(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
 		uint64* _mipmpapsOffsets = nullptr,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
-	bool LoadArray(const Device& m_device, const uint8* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	bool LoadArray(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+		VkFormat _format, uint32 _sliceCount = 1, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
 		uint64* _mipmpapsOffsets = nullptr,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
-	bool LoadCube(const Device& m_device, const uint8* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
-		VkFormat _format, VkFilter _magFilter, VkFilter _minFilter, VkSamplerAddressMode _addressModeU, VkSamplerAddressMode _addressModeV, VkSamplerAddressMode _addressModeW,
+	bool LoadCube(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
 		uint64* _mipmpapsOffsets = nullptr,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
 
@@ -50,15 +56,31 @@ public:
 
 	void UpdateDescriptor();
 
+	NW_INLINE operator VkDescriptorImageInfo() const { return m_descriptor; }
+
 	NW_INLINE const uint32 GetId() const { return m_hash; }
-	NW_INLINE const VkDescriptorImageInfo GetDescriptor() const { return m_descriptor; }
+
+	NW_INLINE const Image& GetImage() const { return m_image; }
+	NW_INLINE const ImageView& GetView() const { return m_view; }
+	NW_INLINE const Sampler& GetSampler() const { return m_sampler; }
+
+	NW_INLINE const uint32 GetMipmapsCount() const { return m_mipmaps; }
+	NW_INLINE const uint32 GetWidth() const { return m_width; }
+	NW_INLINE const uint32 GetHeight() const { return m_height; }
+
 
 public:
 	static void SetImageLayout(VkCommandBuffer _cmdbuffer, VkImage _image, VkImageLayout _oldImageLayout, VkImageLayout _newImageLayout, VkImageSubresourceRange _subresourceRange, VkPipelineStageFlags _srcStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VkPipelineStageFlags _dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT);
 	static void SetImageLayout(VkCommandBuffer _cmdbuffer, VkImage _image, VkImageAspectFlags _aspectMask, VkImageLayout _oldImageLayout, VkImageLayout _newImageLayout, VkPipelineStageFlags _srcStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VkPipelineStageFlags _dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT);
 
 private:
-	void GenerateMipmaps2D(const Device& _device, VkImageSubresourceRange _subresourceRange);
+	// _type: 0 == 2D, 1 == array, 2 == cube
+	bool Load(const Device& _device, const nwString& _path, uint8 _type,
+		VkFormat _format, uint32 _sliceCount = 0, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
+
+	void GenerateMipmaps(const Device& _device, VkImageSubresourceRange _subresourceRange, uint32 _faceCount = 1);
 	bool CanGenerateMipmaps(const Device& _device, VkFormat _format);
 
 private:
@@ -87,8 +109,6 @@ private:
 	uint32 m_mipmaps;
 	uint32 m_width;
 	uint32 m_height;
-	//uint32 m_depth;
-	//uint32 m_slices;
 };
 
 NW_NAMESPACE_END

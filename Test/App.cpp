@@ -65,7 +65,8 @@ void App::InitEngine()
 	GpuMemoryManager::Instance().Init(m_device.GetPhysicalDevice(), m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
 	StagingBufferManager::Instance().Create(m_device.GetDevice(), m_device.GetGraphicsQueue(), m_device.GetQueueFamily().GetGraphicsFamily());
 
-
+	// SOME TESTS, TO REMOVE WHEN COMPLETED
+	/*
 	//////////////////////////////////////////////////////////////////////////
 	// Sample load Shader (just to remind me relative path management)
 	{
@@ -92,17 +93,36 @@ void App::InitEngine()
 		nwString coloredglassrgbaPath = m_fileSystem.GetTexturesPath() + "colored_glass_rgba.ktx";
 
 		Texture ktxTest;
-		ktxTest.Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB, VK_FILTER_LINEAR, VK_FILTER_LINEAR, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT);
+		ktxTest.Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	// Sample load texture (NO ktx test)
+	// Sample load texture (HDR test)
+	{
+		nwString mistyPines4kHDR = m_fileSystem.GetTexturesPath() + "misty_pines_4k.hdr";
+
+		Texture hdrTest;
+		hdrTest.Load2D(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sample load Cube texture (HDR test)
+	{
+		nwString mistyPines4kHDR = m_fileSystem.GetTexturesPath() + "misty_pines_4k.hdr";
+
+		Texture hdrTest;
+		hdrTest.LoadCube(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sample load texture (general texture, NO KTX NOR HDR test)
 	{
 		nwString Yokohama3FrontPath = m_fileSystem.GetTexturesPath() + "Yokohama3_front.jpg";
 
 		Texture jpgTest;
-		jpgTest.Load2D(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB, VK_FILTER_LINEAR, VK_FILTER_LINEAR, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT, VK_SAMPLER_ADDRESS_MODE_REPEAT);
+		jpgTest.Load2D(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB);
 	}
+	*/
 }
 
 void App::MainLoop()
