@@ -36,8 +36,8 @@ public:
 	NW_INLINE const uint32 GetHeight() const { return m_height; }
 
 
-	// used by he friend class texture manager
 private:
+	friend class TextureManager;
 
 	// note: the VkFormat _format can be avoided if loaded via KTX, because the type is internal to the file, u can pass ti anyway in case the format found in the ktx file is VK_FORMAT_UNDEFINED
 	bool Load2D(const Device& _device, const nwString& _path,
@@ -112,10 +112,6 @@ private:
 	uint32 m_mipmaps;
 	uint32 m_width;
 	uint32 m_height;
-
-private:
-	friend class TextureManager;
-	static constexpr uint32 kTextureNameHashSeed = 11235;
 };
 
 NW_NAMESPACE_END

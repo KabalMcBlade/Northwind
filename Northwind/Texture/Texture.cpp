@@ -603,8 +603,6 @@ bool Texture::Load2D(const Device& _device, const void* _buffer, size _size, boo
 
 	// Update descriptor image info member that can be used for setting up descriptor sets
 	UpdateDescriptor();
-	
-	m_hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
 
 	return true;
 }
@@ -725,8 +723,6 @@ bool Texture::LoadArray(const Device& _device, const void* _buffer, size _size, 
 	// Update descriptor image info member that can be used for setting up descriptor sets
 	UpdateDescriptor();
 
-	m_hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
-
 	return true;
 }
 
@@ -843,8 +839,6 @@ bool Texture::LoadCube(const Device& _device, const void* _buffer, size _size, b
 
 	// Update descriptor image info member that can be used for setting up descriptor sets
 	UpdateDescriptor();
-
-	m_hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
 
 	return true;
 }

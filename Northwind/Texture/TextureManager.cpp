@@ -10,6 +10,8 @@
 NW_NAMESPACE_BEGIN
 
 
+constexpr uint32 kTextureNameHashSeed = 11235;
+
 TextureManager::TextureManagerAllocator* TextureManager::GetAllocator()
 {
 	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kTextureManagerAllocatorSize);
@@ -42,7 +44,7 @@ Texture* TextureManager::Load2D(const Device& _device, const nwString& _path,
 		texture = eosNew(Texture, GetAllocator());
 		texture->Load(_device, _path, 0, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -65,7 +67,7 @@ Texture* TextureManager::LoadArray(const Device& _device, const nwString& _path,
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
 		texture->Load(_device, _path, 1, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -88,7 +90,7 @@ Texture* TextureManager::LoadCube(const Device& _device, const nwString& _path,
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
 		texture->Load(_device, _path, 2, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -115,7 +117,7 @@ Texture* TextureManager::Load2D(const Device& _device, const void* _buffer, size
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
 		texture->Load2D(_device, _buffer, _size, _needGenerateMipmaps, _name, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -139,7 +141,7 @@ Texture* TextureManager::LoadArray(const Device& _device, const void* _buffer, s
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
 		texture->LoadArray(_device, _buffer, _size, _needGenerateMipmaps, _name, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -163,7 +165,7 @@ Texture* TextureManager::LoadCube(const Device& _device, const void* _buffer, si
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
 		texture->LoadCube(_device, _buffer, _size, _needGenerateMipmaps, _name, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), Texture::kTextureNameHashSeed);
+		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
 		m_textures[hash] = texture;
 	}
 
@@ -172,7 +174,7 @@ Texture* TextureManager::LoadCube(const Device& _device, const void* _buffer, si
 
 void TextureManager::Destroy(const nwString& _pathOrName)
 {
-	uint32 hash = HashTools::MakeHash32(_pathOrName.c_str(), static_cast<uint32>(_pathOrName.length()), Texture::kTextureNameHashSeed);
+	uint32 hash = HashTools::MakeHash32(_pathOrName.c_str(), static_cast<uint32>(_pathOrName.length()), kTextureNameHashSeed);
 
 	auto search = m_textures.find(hash);
 	if (search != m_textures.end())
@@ -210,7 +212,7 @@ Texture* TextureManager::GetTexture(const nwString& _pathOrName) const
 		return nullptr;
 	}
 
-	uint32 hash = HashTools::MakeHash32(_pathOrName.c_str(), static_cast<uint32>(_pathOrName.length()), Texture::kTextureNameHashSeed);
+	uint32 hash = HashTools::MakeHash32(_pathOrName.c_str(), static_cast<uint32>(_pathOrName.length()), kTextureNameHashSeed);
 
 	auto search = m_textures.find(hash);
 	if (search != m_textures.end())
