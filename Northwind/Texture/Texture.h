@@ -25,8 +25,6 @@ public:
 
 	NW_INLINE operator VkDescriptorImageInfo() const { return m_descriptor; }
 
-	NW_INLINE const uint32 GetId() const { return m_hash; }
-
 	NW_INLINE const Image& GetImage() const { return m_image; }
 	NW_INLINE const ImageView& GetView() const { return m_view; }
 	NW_INLINE const Sampler& GetSampler() const { return m_sampler; }
@@ -107,8 +105,6 @@ private:
 	ImageView m_view;
 	Sampler m_sampler;
 	VkDescriptorImageInfo m_descriptor;
-	std::ifstream m_fileStream;	// this is not great to store here, but it will let me load different texture from different thread without issue
-	uint32 m_hash;
 	uint32 m_mipmaps;
 	uint32 m_width;
 	uint32 m_height;

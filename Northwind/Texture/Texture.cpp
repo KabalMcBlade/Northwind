@@ -23,11 +23,9 @@
 
 #include "../Client/FileSystem.h"
 
-#include "../Utilities/HashTools.h"
 
 
 NW_NAMESPACE_BEGIN
-
 
 
 using TexturesAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
@@ -45,7 +43,7 @@ namespace
 
 //////////////////////////////////////////////////////////////////////////
 
-static std::ifstream m_fileStream;
+ std::ifstream fileStream;
 
 void* Texture::KTX_Allocation(void* _pUserData, size _size)
 {
@@ -90,17 +88,17 @@ void Texture::KTX_Free(void* _pMemory)
 size Texture::KTX_Read(void* _pMemory, size _size)
 {
 	char* binary = reinterpret_cast<char*>(_pMemory);
-	return m_fileStream.read(binary, _size).gcount();
+	return fileStream.read(binary, _size).gcount();
 }
 
 bool Texture::KTX_Seek(int64 _offset)
 {
-	return !!m_fileStream.seekg(_offset, std::ios_base::beg);
+	return !!fileStream.seekg(_offset, std::ios_base::beg);
 }
 
 int64 Texture::KTX_Tell()
 {
-	return static_cast<int64>(m_fileStream.tellg());
+	return static_cast<int64>(fileStream.tellg());
 }
 
 void Texture::KTX_Error(char const *_msg)
@@ -240,7 +238,7 @@ void Texture::SetImageLayout(VkCommandBuffer _cmdbuffer, VkImage _image, VkImage
 
 //////////////////////////////////////////////////////////////////////////
 
-Texture::Texture() : m_hash(0), m_mipmaps(0)
+Texture::Texture() : m_mipmaps(0)
 {
 }
 
@@ -286,7 +284,7 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 
 	if (ext == "ktx")
 	{
-		m_fileStream.open(_path.c_str(), std::ios::binary);
+		fileStream.open(_path.c_str(), std::ios::binary);
 
 		TinyKtx_Callbacks callbacks{
 		   &Texture::KTX_Error,
@@ -301,7 +299,7 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 		if (!TinyKtx_ReadHeader(ctx))
 		{
 			TinyKtx_DestroyContext(ctx);
-			m_fileStream.close();
+			fileStream.close();
 			nwAssertReturnValue(false, result, "KTX Texture Header cannot be read!");
 		}
 
@@ -319,7 +317,7 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 			_format = format;
 			nwWarning("KTX Texture Format undefined, the user passed will be used instead.");
 			//TinyKtx_DestroyContext(ctx);
-			//m_fileStream.close();
+			//fileStream.close();
 			//nwAssertReturnValue(false, result, "KTX Texture Format undefined!");
 		}
 
@@ -390,7 +388,7 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 
 		TinyKtx_DestroyContext(ctx);
 
-		m_fileStream.close();
+		fileStream.close();
 	}
 	else if (ext == "hdr")
 	{
