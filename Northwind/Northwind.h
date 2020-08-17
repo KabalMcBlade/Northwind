@@ -51,6 +51,7 @@
 #include "Renderer/ImageView.h"
 
 #include "Texture/Texture.h"
+#include "Texture/TextureManager.h"
 
 #include "Shaders/Shader.h"
 

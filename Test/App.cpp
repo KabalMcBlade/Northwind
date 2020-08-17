@@ -85,24 +85,31 @@ void App::InitEngine()
 		nwAssert(shaderCreated, "Fragment Shader cannot be created at path %s", fragpath.c_str());
 	}
 	//////////////////////////////////////////////////////////////////////////
+	*/
 
 
+	/*
 	//////////////////////////////////////////////////////////////////////////
 	// Sample load texture (ktx test)
 	{
 		nwString coloredglassrgbaPath = m_fileSystem.GetTexturesPath() + "colored_glass_rgba.ktx";
 
-		Texture ktxTest;
-		ktxTest.Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB);
+		Texture* ktxTest = TextureManager::Instance().Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB);
+		Texture* ktxTest2 = TextureManager::Instance().Load2D(m_device, coloredglassrgbaPath, VK_FORMAT_R8G8B8A8_SRGB);
+
+		TextureManager::Instance().Destroy(coloredglassrgbaPath);
 	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Sample load texture (HDR test)
 	{
 		nwString mistyPines4kHDR = m_fileSystem.GetTexturesPath() + "misty_pines_4k.hdr";
 
-		Texture hdrTest;
-		hdrTest.Load2D(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+		Texture* hdrTest = TextureManager::Instance().Load2D(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+		Texture* hdrTest2 = TextureManager::Instance().Load2D(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+
+		TextureManager::Instance().Destroy(mistyPines4kHDR);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -110,8 +117,10 @@ void App::InitEngine()
 	{
 		nwString mistyPines4kHDR = m_fileSystem.GetTexturesPath() + "misty_pines_4k.hdr";
 
-		Texture hdrTest;
-		hdrTest.LoadCube(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+		Texture* hdrTestCube = TextureManager::Instance().LoadCube(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+		Texture* hdrTestCube2 = TextureManager::Instance().LoadCube(m_device, mistyPines4kHDR, VK_FORMAT_R32G32B32A32_SFLOAT);
+
+		TextureManager::Instance().Destroy(mistyPines4kHDR);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -119,8 +128,10 @@ void App::InitEngine()
 	{
 		nwString Yokohama3FrontPath = m_fileSystem.GetTexturesPath() + "Yokohama3_front.jpg";
 
-		Texture jpgTest;
-		jpgTest.Load2D(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB);
+		Texture* jpgTest = TextureManager::Instance().LoadCube(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB);
+		Texture* jpgTest2 = TextureManager::Instance().LoadCube(m_device, Yokohama3FrontPath, VK_FORMAT_R8G8B8A8_SRGB);
+
+		TextureManager::Instance().Destroy(Yokohama3FrontPath);
 	}
 	*/
 }

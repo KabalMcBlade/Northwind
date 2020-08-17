@@ -21,7 +21,25 @@ public:
 	Texture();
 	~Texture();
 
-	// note: the VkFormat _format can be avoided if loaded via KTX, because the type is internal to the file, u can pass in order the format found in the ktx file is VK_FORMAT_UNDEFINED
+	void UpdateDescriptor();
+
+	NW_INLINE operator VkDescriptorImageInfo() const { return m_descriptor; }
+
+	NW_INLINE const uint32 GetId() const { return m_hash; }
+
+	NW_INLINE const Image& GetImage() const { return m_image; }
+	NW_INLINE const ImageView& GetView() const { return m_view; }
+	NW_INLINE const Sampler& GetSampler() const { return m_sampler; }
+
+	NW_INLINE const uint32 GetMipmapsCount() const { return m_mipmaps; }
+	NW_INLINE const uint32 GetWidth() const { return m_width; }
+	NW_INLINE const uint32 GetHeight() const { return m_height; }
+
+
+	// used by he friend class texture manager
+private:
+
+	// note: the VkFormat _format can be avoided if loaded via KTX, because the type is internal to the file, u can pass ti anyway in case the format found in the ktx file is VK_FORMAT_UNDEFINED
 	bool Load2D(const Device& _device, const nwString& _path,
 		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
 		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
@@ -53,21 +71,6 @@ public:
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
 
 	void Destroy();
-
-	void UpdateDescriptor();
-
-	NW_INLINE operator VkDescriptorImageInfo() const { return m_descriptor; }
-
-	NW_INLINE const uint32 GetId() const { return m_hash; }
-
-	NW_INLINE const Image& GetImage() const { return m_image; }
-	NW_INLINE const ImageView& GetView() const { return m_view; }
-	NW_INLINE const Sampler& GetSampler() const { return m_sampler; }
-
-	NW_INLINE const uint32 GetMipmapsCount() const { return m_mipmaps; }
-	NW_INLINE const uint32 GetWidth() const { return m_width; }
-	NW_INLINE const uint32 GetHeight() const { return m_height; }
-
 
 public:
 	static void SetImageLayout(VkCommandBuffer _cmdbuffer, VkImage _image, VkImageLayout _oldImageLayout, VkImageLayout _newImageLayout, VkImageSubresourceRange _subresourceRange, VkPipelineStageFlags _srcStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VkPipelineStageFlags _dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT);
@@ -104,11 +107,15 @@ private:
 	ImageView m_view;
 	Sampler m_sampler;
 	VkDescriptorImageInfo m_descriptor;
-	std::ifstream m_fileStream;
+	std::ifstream m_fileStream;	// this is not great to store here, but it will let me load different texture from different thread without issue
 	uint32 m_hash;
 	uint32 m_mipmaps;
 	uint32 m_width;
 	uint32 m_height;
+
+private:
+	friend class TextureManager;
+	static constexpr uint32 kTextureNameHashSeed = 11235;
 };
 
 NW_NAMESPACE_END

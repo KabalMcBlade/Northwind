@@ -359,3 +359,4 @@ MigrationBackup/
 /Test/DeviceAllocator.csv
 /Test/ShaderAllocator.csv
 /Test/TexturesAllocator.csv
+/Test/TextureManagerAllocator.csv

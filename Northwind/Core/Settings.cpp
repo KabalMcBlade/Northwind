@@ -55,6 +55,7 @@ void Settings::LoadMemorySettings()
 				{"ThreadPool", SettingsDefines::Engine::kThreadPoolAllocatorSize},
 				{"FrameBuffer", SettingsDefines::Engine::kFrameBufferAllocatorSize},
 				{"Textures", SettingsDefines::Engine::kTexturesAllocatorSize },
+				{"TextureManager", SettingsDefines::Engine::kTextureManagerAllocatorSize },
 				
 			}},
 			{"Generic", {
@@ -102,6 +103,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kThreadPoolAllocatorSize = json["Engine"]["ThreadPool"];
 	SettingsDefines::Engine::kFrameBufferAllocatorSize = json["Engine"]["FrameBuffer"];
 	SettingsDefines::Engine::kTexturesAllocatorSize = json["Engine"]["Textures"];
+	SettingsDefines::Engine::kTextureManagerAllocatorSize = json["Engine"]["TextureManager"];
 
 
 	// actual settings - Generic

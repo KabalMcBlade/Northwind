@@ -28,7 +28,7 @@
 
 NW_NAMESPACE_BEGIN
 
-constexpr uint32 kTextureNameHashSeed = 11235;
+
 
 using TexturesAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
 
@@ -44,6 +44,8 @@ namespace
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+static std::ifstream m_fileStream;
 
 void* Texture::KTX_Allocation(void* _pUserData, size _size)
 {
