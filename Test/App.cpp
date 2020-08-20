@@ -88,7 +88,7 @@ void App::InitEngine()
 	*/
 
 
-	
+	/*
 	//////////////////////////////////////////////////////////////////////////
 	// Sample load texture (ktx test)
 	{
@@ -133,6 +133,7 @@ void App::InitEngine()
 
 		TextureManager::Instance().Destroy(Yokohama3FrontPath);
 	}
+	*/
 }
 
 void App::MainLoop()

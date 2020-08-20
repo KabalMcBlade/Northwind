@@ -20,7 +20,7 @@ class FileSystem;
 class NW_DLL EngineApp
 {
 public:
-	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const FileSystem& _fileSystem, const VkPhysicalDeviceFeatures& _enabledFeatures = {});
+	EngineApp(const char* _name, uint32 _version, const CommandLineParser& _commandLine, const FileSystem& _fileSystem);
 	~EngineApp();
 
 	void Execute();
