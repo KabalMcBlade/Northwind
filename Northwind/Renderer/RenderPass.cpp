@@ -69,7 +69,7 @@ void RenderPass::Destroy()
 	}
 }
 
-VkRenderPassBeginInfo RenderPass::GetBeginInfo()
+const VkRenderPassBeginInfo RenderPass::GetBeginInfo() const
 {
 	VkRenderPassBeginInfo beginInfo{};
 	beginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

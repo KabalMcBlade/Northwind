@@ -41,7 +41,7 @@ public:
 		return m_framebuffer;
 	}
 
-	VkRenderPassBeginInfo GetBeginInfo();
+	const VkRenderPassBeginInfo GetBeginInfo() const;
 
 	void SetDimensions(int32 _width, int32 _height);
 	void SetOffset(int32 _offsetX, int32 _offsetY);
