@@ -371,16 +371,16 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 				_sliceCount = TinyKtx_ArraySlices(ctx);
 			}
 
-			result = LoadArray(_device, buffer, size, needMipMapsGenerated, _path, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadArray(_device, buffer, size, needMipMapsGenerated, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
 		case 2:
-			result = LoadCube(_device, buffer, size, needMipMapsGenerated, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadCube(_device, buffer, size, needMipMapsGenerated, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 		
 		case 0:
 		default:
-			result = Load2D(_device, buffer, size, needMipMapsGenerated, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = Load2D(_device, buffer, size, needMipMapsGenerated, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 		}
 
@@ -428,16 +428,16 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 				_sliceCount = 1;
 				nwWarning("A Texture Array was requested but with no slice. Will be set 1 slice.");
 			}
-			result = LoadArray(_device, buffer, size, true, _path, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadArray(_device, buffer, size, true, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
 		case 2:
-			result = LoadCube(_device, buffer, size, true, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadCube(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
 		case 0:
 		default:
-			result = Load2D(_device, buffer, size, true, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = Load2D(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 		}
 
@@ -472,16 +472,16 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 				_sliceCount = 1;
 				nwWarning("A Texture Array was requested but with no slice. Will be set 1 slice.");
 			}
-			result = LoadArray(_device, buffer, size, true, _path, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadArray(_device, buffer, size, true, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
 		case 2:
-			result = LoadCube(_device, buffer, size, true, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = LoadCube(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
 		case 0:
 		default:
-			result = Load2D(_device, buffer, size, true, _path, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			result = Load2D(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 		}
 
@@ -494,7 +494,7 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 
 //////////////////////////////////////////////////////////////////////////
 
-bool Texture::Load2D(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+bool Texture::Load2D(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, 
 	VkFormat _format, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
 	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
 	uint64* _mipmpapsOffsets /*= nullptr*/,
@@ -605,7 +605,7 @@ bool Texture::Load2D(const Device& _device, const void* _buffer, size _size, boo
 	return true;
 }
 
-bool Texture::LoadArray(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+bool Texture::LoadArray(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, 
 	VkFormat _format, uint32 _sliceCount /*= 1*/, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
 	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/,
 	uint64* _mipmpapsOffsets /*= nullptr*/,
@@ -724,7 +724,7 @@ bool Texture::LoadArray(const Device& _device, const void* _buffer, size _size, 
 	return true;
 }
 
-bool Texture::LoadCube(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, const nwString& _name,
+bool Texture::LoadCube(const Device& _device, const void* _buffer, size _size, bool _needGenerateMipmaps, 
 	VkFormat _format, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
 	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/,
 	uint64* _mipmpapsOffsets /*= nullptr*/,
@@ -840,6 +840,104 @@ bool Texture::LoadCube(const Device& _device, const void* _buffer, size _size, b
 
 	return true;
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+
+bool Texture::Generate2D(const Device& _device, uint32 _width, uint32 _height, bool _generateMipmaps,
+	VkFormat _format, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	m_width = _width;
+	m_height = _height;
+	size imageSize = m_width * m_height * STBI_rgb_alpha * (_format == VK_FORMAT_R32G32B32A32_SFLOAT ? sizeof(float) : sizeof(uint8));
+
+
+	VkCommandBuffer copyCmd;
+	VkBuffer stagingBuffer;
+	size bufferOffset;
+	StagingBufferManager::Instance().Stage(imageSize, 16, copyCmd, stagingBuffer, bufferOffset);
+
+	eos::Vector<VkBufferImageCopy, TexturesAllocator, GetAllocator> bufferCopyRegions;
+
+
+	VkImageSubresourceRange subresourceRange = {};
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.layerCount = 1;
+
+	uint32 maxLodLevel = 0;
+	
+	VkBufferImageCopy bufferCopyRegion = {};
+	bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	bufferCopyRegion.imageSubresource.mipLevel = 0;
+	bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
+	bufferCopyRegion.imageSubresource.layerCount = 1;
+	bufferCopyRegion.imageExtent.width = m_width;
+	bufferCopyRegion.imageExtent.height = m_height;
+	bufferCopyRegion.imageExtent.depth = 1;
+
+	bufferCopyRegions.push_back(bufferCopyRegion);
+
+	bool canGenerateMipMap = _generateMipmaps && CanGenerateMipmaps(_device, _format);
+	if (canGenerateMipMap)
+	{
+		maxLodLevel = m_mipmaps = static_cast<uint32>(std::floor(std::log2(std::max(m_width, m_height)))) + 1;
+	}
+	else
+	{
+		m_mipmaps = 1;
+		maxLodLevel = 0;
+	}
+
+	subresourceRange.levelCount = 1;	// in any case here still 1, will be changed after during the generation
+	
+	if (!(_imageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT))
+	{
+		_imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	}
+	m_image.Create2D(_device.GetDevice(), m_width, m_height, _format, _imageUsageFlags, EMemoryUsage_CPU_to_GPU, EGpuMemoryType_ImageOptimal, m_mipmaps, 1, VK_SAMPLE_COUNT_1_BIT, _imageLayout, VK_IMAGE_TILING_OPTIMAL);
+
+
+	// Image barrier for optimal image (target)
+	// Optimal image will be used as destination for the copy
+	SetImageLayout(copyCmd, m_image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, subresourceRange);
+
+	// Copy mip levels from staging buffer
+	vkCmdCopyBufferToImage(copyCmd, stagingBuffer, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, static_cast<uint32>(bufferCopyRegions.size()), bufferCopyRegions.data());
+
+	// Change texture image layout to shader read after all mip levels have been copied
+	SetImageLayout(copyCmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout, subresourceRange);
+
+	if (canGenerateMipMap)
+	{
+		GenerateMipmaps(_device, subresourceRange);
+	}
+
+	// Create sampler (for now a sampler is associated to the very same texture, later can be a sampler manager, and share the sampler with textures and other way round)
+	m_sampler.SetAddressModeU(_addressModeU);
+	m_sampler.SetAddressModeV(_addressModeV);
+	m_sampler.SetAddressModeW(_addressModeW);
+	m_sampler.SetMinFilter(_minFilter);
+	m_sampler.SetMagFilter(_magFilter);
+	m_sampler.SetMipMap(VK_SAMPLER_MIPMAP_MODE_LINEAR, 0.0f);
+	m_sampler.SetMaxAnisotropy(static_cast<float>(_maxAnisotrpy));
+	m_sampler.SetLod(0.0f, static_cast<float>(maxLodLevel));
+	m_sampler.SetBorderColor(VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE);
+	m_sampler.SetDepthSampler(false);
+	m_sampler.Create(_device.GetDevice());
+
+	m_view.Create(_device.GetDevice(), m_image, VK_IMAGE_VIEW_TYPE_2D, _format, VK_IMAGE_ASPECT_COLOR_BIT, 0, m_mipmaps, 0, 1, { VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G, VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A }, 0);
+
+	// Update descriptor image info member that can be used for setting up descriptor sets
+	UpdateDescriptor();
+
+	return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
 
 bool Texture::CanGenerateMipmaps(const Device& _device, VkFormat _format)
 {

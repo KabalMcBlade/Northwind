@@ -3,6 +3,73 @@
 
 NW_NAMESPACE_BEGIN
 
+nix::Matrix4x4 Transform::LookAt(const nix::Vector4& _eye, const nix::Vector4& _center, const nix::Vector4& _up)
+{
+	// make rotation matrix
+	nix::Vector4 z = (_eye - _center).Normalize3();
+	nix::Vector4 y = _up.Normalize3();
+	nix::Vector4 x = y.Cross(z);
+	y = z.Cross(x);
+
+	// cross product gives area of parallelogram, which is < 1.0 for non-perpendicular unit-length vectors; so normalize x, y here
+	x = x.Normalize3();
+	y = y.Normalize3();
+
+	// Slow, but for test I just want to see if is working right.
+	const float xx = nix::MathFunctions::ExtractX(x);
+	const float xy = nix::MathFunctions::ExtractY(x);
+	const float xz = nix::MathFunctions::ExtractZ(x);
+
+	const float yx = nix::MathFunctions::ExtractX(y);
+	const float yy = nix::MathFunctions::ExtractY(y);
+	const float yz = nix::MathFunctions::ExtractZ(y);
+
+	const float zx = nix::MathFunctions::ExtractX(z);
+	const float zy = nix::MathFunctions::ExtractY(z);
+	const float zz = nix::MathFunctions::ExtractZ(z);
+
+	const float eye_x = nix::MathFunctions::ExtractX(_eye);
+	const float eye_y = nix::MathFunctions::ExtractY(_eye);
+	const float eye_z = nix::MathFunctions::ExtractZ(_eye);
+
+	return nix::Matrix4x4(
+		xx, xy, xz, -xx * eye_x - xy * eye_y - xz * eye_z,
+		yx, yy, yz, -yx * eye_x - yy * eye_y - yz * eye_z,
+		zx, zy, zz, -zx * eye_x - zy * eye_y - zz * eye_z,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+}
+
+nix::Matrix4x4 Transform::PerspectiveProjection(float _fov, float _aspect, float _zNear, float _zFar)
+{
+	const float f = _zFar;
+	const float n = _zNear;
+
+	const float t = n * std::tanf(_fov * 0.5f);
+	const float b = -t;
+
+	const float l = b * _aspect;
+	const float r = t * _aspect;
+
+	return nix::Matrix4x4(
+		(2.0f * n) / (r - l),			0.0f,					0.0f,				0.0f,
+		0.0f,							-(2.0f * n) / (t - b),	0.0f,				0.0f,
+		(r + l) / (r - l),				(t + b) / (t - b),		-(f) / (f - n),		-1.0f,
+		0.0f,							0.0f,					(f * n) / (n - f),	0.0f
+	);
+}
+
+nix::Matrix4x4 Transform::OrthographicProjection(float _left, float _right, float _bottom, float _top, float _zNear, float _zFar)
+{
+	return nix::Matrix4x4(
+		2.0f / (_right - _left),		0.0f,							0.0f,						-(_right + _left) / (_right - _left),
+		0.0f,							2.0f / (_top - _bottom),		0.0f,						-(_top + _bottom) / (_top - _bottom),
+		0.0f,							0.0f,							-2.0f / (_zFar - _zNear),	-(_zFar + _zNear) / (_zFar - _zNear),
+		0.0f,							0.0f,							0.0,						1.0f
+	);
+}
+
+
 Transform::Transform(const nix::Vector4& _position, float _scale, const nix::Quaternion& _rotation)
 {
     SetPosition(_position);

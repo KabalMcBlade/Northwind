@@ -12,6 +12,11 @@ NW_NAMESPACE_BEGIN
 class NW_DLL Transform final
 {
 public:
+	static nix::Matrix4x4 LookAt(const nix::Vector4& _eye, const nix::Vector4& _center, const nix::Vector4& _up);
+	static nix::Matrix4x4 PerspectiveProjection(float _fov, float _aspect, float _zNear, float _zFar);
+	static nix::Matrix4x4 OrthographicProjection(float _left, float _right, float _bottom, float _top, float _zNear, float _zFar);
+
+public:
 	static const nix::Matrix4x4 kIdentity;
 
 	Transform() : m_rotation(), m_scale(1.0f, 1.0f, 1.0f, 0.0f), m_position(0.0f, 0.0f, 0.0f, 1.0f), m_dirty(true) {}

@@ -48,8 +48,6 @@ private:
 	StagingBufferManager();
 	~StagingBufferManager();
 
-	friend class RenderManager;
-
 	VkDevice m_device;
 	VkQueue m_graphicsQueue;
 	int32 m_graphicsFamilyIndex;
