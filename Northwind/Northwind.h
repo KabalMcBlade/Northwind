@@ -49,6 +49,9 @@
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/Image.h"
 #include "Renderer/ImageView.h"
+#include "Renderer/RenderManager.h"
+#include "Renderer/RenderConfig.h"
+#include "Renderer/VertexCacheManager.h"
 
 #include "Texture/Texture.h"
 #include "Texture/TextureManager.h"
@@ -58,6 +61,7 @@
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
 #include "Geometry/Frustum.h"
+#include "Geometry/PrimitiveHelper.h"
 
 #include "Client/FileSystem.h"
 #include "Client/CommandLineParser.h"

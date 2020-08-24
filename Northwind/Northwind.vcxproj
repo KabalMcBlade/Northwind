@@ -185,11 +185,14 @@
     <ClInclude Include="Client\EngineApp.h" />
     <ClInclude Include="Client\FileSystem.h" />
     <ClInclude Include="Dependencies\tiny_ktx.h" />
+    <ClInclude Include="Geometry\PrimitiveHelper.h" />
     <ClInclude Include="Renderer\ImageView.h" />
     <ClInclude Include="Renderer\Image.h" />
     <ClInclude Include="Renderer\FrameBuffer.h" />
     <ClInclude Include="Renderer\FrameBufferAttachment.h" />
+    <ClInclude Include="Renderer\RenderConfig.h" />
     <ClInclude Include="Renderer\Sampler.h" />
+    <ClInclude Include="Renderer\RenderManager.h" />
     <ClInclude Include="Scene\Entity.h" />
     <ClInclude Include="Geometry\AABB.h" />
     <ClInclude Include="Geometry\Frustum.h" />
@@ -290,16 +293,19 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Northwind.h" />
     <ClInclude Include="Renderer\VertexDescriptor.h" />
+    <ClInclude Include="Renderer\VertexCacheManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client\CommandLineParser.cpp" />
     <ClCompile Include="Client\EngineApp.cpp" />
     <ClCompile Include="Client\FileSystem.cpp" />
+    <ClCompile Include="Geometry\PrimitiveHelper.cpp" />
     <ClCompile Include="Renderer\ImageView.cpp" />
     <ClCompile Include="Renderer\Image.cpp" />
     <ClCompile Include="Renderer\FrameBuffer.cpp" />
     <ClCompile Include="Renderer\FrameBufferAttachment.cpp" />
     <ClCompile Include="Renderer\Sampler.cpp" />
+    <ClCompile Include="Renderer\RenderManager.cpp" />
     <ClCompile Include="Scene\Entity.cpp" />
     <ClCompile Include="Geometry\AABB.cpp" />
     <ClCompile Include="Geometry\Frustum.cpp" />
@@ -338,6 +344,7 @@
     <ClCompile Include="Renderer\QueueFamily.cpp" />
     <ClCompile Include="Northwind.cpp" />
     <ClCompile Include="Renderer\VertexDescriptor.cpp" />
+    <ClCompile Include="Renderer\VertexCacheManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

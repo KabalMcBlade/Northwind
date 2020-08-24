@@ -975,6 +975,7 @@ void Texture::GenerateMipmaps(const Device& _device, VkImageSubresourceRange _su
 			imageBlit.srcSubresource.layerCount = 1;
 			imageBlit.srcSubresource.mipLevel = i - 1;
 			imageBlit.srcSubresource.baseArrayLayer = f;
+			imageBlit.srcOffsets[0] = { 0, 0, 0 };
 			imageBlit.srcOffsets[1].x = static_cast<uint32>(m_width >> (i - 1));
 			imageBlit.srcOffsets[1].y = static_cast<uint32>(m_height >> (i - 1));
 			imageBlit.srcOffsets[1].z = 1;
@@ -984,6 +985,7 @@ void Texture::GenerateMipmaps(const Device& _device, VkImageSubresourceRange _su
 			imageBlit.dstSubresource.layerCount = 1;
 			imageBlit.dstSubresource.mipLevel = i;
 			imageBlit.dstSubresource.baseArrayLayer = f;
+			imageBlit.dstOffsets[0] = { 0, 0, 0 };
 			imageBlit.dstOffsets[1].x = static_cast<uint32>(m_width >> i);
 			imageBlit.dstOffsets[1].y = static_cast<uint32>(m_height >> i);
 			imageBlit.dstOffsets[1].z = 1;

@@ -74,6 +74,15 @@ public:
 		return m_view;
 	}
 
+	NW_INLINE const VkImageView& GetImageView() const
+	{
+		return m_view;
+	}
+	NW_INLINE const VkImage& GetImage() const
+	{
+		return m_image;
+	}
+
 private:
 	VkDevice m_device;
 	VkImage m_image;

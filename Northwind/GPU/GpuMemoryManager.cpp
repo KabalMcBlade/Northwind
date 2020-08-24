@@ -13,12 +13,12 @@ GpuMemoryManager& GpuMemoryManager::Instance()
 	return instance;
 }
 
-void GpuMemoryManager::Init(const VkPhysicalDevice& _physicalDevice, const VkDevice& _device, size _granularity)
+void GpuMemoryManager::Create(const VkPhysicalDevice& _physicalDevice, const VkDevice& _device, size _granularity)
 {
 	m_gpuAllocator.Init(_physicalDevice, _device, _granularity);
 }
 
-void GpuMemoryManager::Shutdown()
+void GpuMemoryManager::Destroy()
 {
 	m_gpuAllocator.Shutdown();
 }

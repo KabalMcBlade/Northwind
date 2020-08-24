@@ -62,8 +62,9 @@ void App::InitWindow()
 
 void App::InitEngine()
 {
-	GpuMemoryManager::Instance().Init(m_device.GetPhysicalDevice(), m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
+	GpuMemoryManager::Instance().Create(m_device.GetPhysicalDevice(), m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.bufferImageGranularity);
 	StagingBufferManager::Instance().Create(m_device.GetDevice(), m_device.GetGraphicsQueue(), m_device.GetQueueFamily().GetGraphicsFamily());
+	VertexCacheManager::Instance().Create(m_device.GetDevice(), m_device.GetPhysicalDeviceProperties().limits.minUniformBufferOffsetAlignment);
 
 	// SOME TESTS, TO REMOVE WHEN COMPLETED
 	/*
@@ -152,6 +153,7 @@ void App::Cleanup()
 
 	glfwTerminate();
 
+	VertexCacheManager::Instance().Destroy();
 	StagingBufferManager::Instance().Destroy();
-	GpuMemoryManager::Instance().Shutdown();
+	GpuMemoryManager::Instance().Destroy();
 }

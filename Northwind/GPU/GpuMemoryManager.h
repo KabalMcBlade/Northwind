@@ -25,8 +25,8 @@ public:
 
 	static GpuMemoryManager& Instance();
 
-	void Init(const VkPhysicalDevice& _physicalDevice, const VkDevice& _device, size _granularity);
-	void Shutdown();
+	void Create(const VkPhysicalDevice& _physicalDevice, const VkDevice& _device, size _granularity);
+	void Destroy();
 
 	NW_INLINE const VkAllocationCallbacks* GetVK() const { return &m_vulkanAllocator.GetCallbacks(); }
 

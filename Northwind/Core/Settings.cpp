@@ -56,7 +56,8 @@ void Settings::LoadMemorySettings()
 				{"FrameBuffer", SettingsDefines::Engine::kFrameBufferAllocatorSize},
 				{"Textures", SettingsDefines::Engine::kTexturesAllocatorSize },
 				{"TextureManager", SettingsDefines::Engine::kTextureManagerAllocatorSize },
-				
+				{"VertexMemoryPerFrame", SettingsDefines::Engine::kRenderVertexMemorySizePerFrame },
+				{"IndexMemoryPerFrame", SettingsDefines::Engine::kRenderIndexMemorySizePerFrame },
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
@@ -104,7 +105,8 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kFrameBufferAllocatorSize = json["Engine"]["FrameBuffer"];
 	SettingsDefines::Engine::kTexturesAllocatorSize = json["Engine"]["Textures"];
 	SettingsDefines::Engine::kTextureManagerAllocatorSize = json["Engine"]["TextureManager"];
-
+	SettingsDefines::Engine::kRenderVertexMemorySizePerFrame = json["Engine"]["VertexMemoryPerFrame"];
+	SettingsDefines::Engine::kRenderIndexMemorySizePerFrame = json["Engine"]["IndexMemoryPerFrame"];
 
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];
