@@ -23,7 +23,7 @@ public:
 
 	void UpdateDescriptor();
 
-	NW_INLINE operator const VkDescriptorImageInfo& const () { return m_descriptor; }
+	NW_INLINE operator const VkDescriptorImageInfo () { return m_descriptor; }
 
 	NW_INLINE const VkDescriptorImageInfo* GetDescriptor() const { return &m_descriptor; }
 

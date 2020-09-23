@@ -52,6 +52,7 @@ namespace SettingsDefines
 		static uint32 kFrameBufferAllocatorSize = NW_MEMORY_4_MB;
 		static uint32 kTexturesAllocatorSize = NW_MEMORY_128_MB;
 		static uint32 kTextureManagerAllocatorSize = NW_MEMORY_32_KB;
+		static uint32 kShaderManagerAllocatorSize = NW_MEMORY_32_KB;
 		static uint32 kStagingBufferSize = NW_MEMORY_512_MB;
 		static uint32 kGpuDeviceLocalSize = NW_MEMORY_128_MB;
 		static uint32 kGpuHostVisibleSize = NW_MEMORY_2048_MB;	// for CPU to GPU, require far more memory

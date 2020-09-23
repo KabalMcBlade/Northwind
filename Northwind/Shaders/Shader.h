@@ -19,9 +19,6 @@ public:
 	Shader();
 	~Shader();
 
-	bool Create(const VkDevice& _device, const nwString& _path);
-	void Destroy();
-
 	NW_INLINE operator const VkShaderModule& () const { return m_module; }
 	NW_INLINE operator VkShaderModule& () { return m_module; }
 
@@ -29,6 +26,12 @@ public:
 	NW_INLINE operator VkShaderStageFlagBits& () { return m_stage; }
 
 	NW_INLINE const uint32 GetId() const { return m_hash; }
+
+private:
+	friend class ShaderManager;
+
+	bool Create(const VkDevice& _device, const nwString& _path);
+	void Destroy();
 
 private:
 	static VkShaderStageFlagBits ConvertExtToShaderStage(const nwString& _ext);

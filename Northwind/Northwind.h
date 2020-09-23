@@ -57,6 +57,7 @@
 #include "Texture/TextureManager.h"
 
 #include "Shaders/Shader.h"
+#include "Shaders/ShaderManager.h"
 
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
