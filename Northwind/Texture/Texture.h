@@ -23,7 +23,9 @@ public:
 
 	void UpdateDescriptor();
 
-	NW_INLINE operator VkDescriptorImageInfo() const { return m_descriptor; }
+	NW_INLINE operator const VkDescriptorImageInfo& const () { return m_descriptor; }
+
+	NW_INLINE const VkDescriptorImageInfo* GetDescriptor() const { return &m_descriptor; }
 
 	NW_INLINE const Image& GetImage() const { return m_image; }
 	NW_INLINE const ImageView& GetView() const { return m_view; }
@@ -74,6 +76,11 @@ private:
 		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
 		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
 
+	bool GenerateCube(const Device& _device, uint32 _width, uint32 _height, bool _generateMipmaps,
+		VkFormat _format, VkFilter _magFilter = VK_FILTER_LINEAR, VkFilter _minFilter = VK_FILTER_LINEAR,
+		VkSamplerAddressMode _addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE, VkSamplerAddressMode _addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
+		VkImageUsageFlags _imageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT, VkImageLayout _imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, uint32 _maxAnisotrpy = 1);
+
 
 	void Destroy();
 
@@ -90,6 +97,8 @@ private:
 
 	void GenerateMipmaps(const Device& _device, VkImageSubresourceRange _subresourceRange, uint32 _faceCount = 1);
 	bool CanGenerateMipmaps(const Device& _device, VkFormat _format);
+
+	bool IsFloatFormat(VkFormat _format);
 
 private:
 	static void* KTX_Allocation(void* _pUserData, size _size);

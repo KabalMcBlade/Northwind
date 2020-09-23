@@ -197,6 +197,31 @@ Texture* TextureManager::Generate2D(const Device& _device, const nwString& _name
 	return texture;
 }
 
+Texture* TextureManager::GenerateCube(const Device& _device, const nwString& _name, uint32 _width, uint32 _height, bool _generateMipmaps,
+	VkFormat _format, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	if (_name.empty())
+	{
+		return nullptr;
+	}
+
+	Texture* texture = GetTexture(_name);
+	if (texture == nullptr)
+	{
+		texture = eosNewAligned(Texture, GetAllocator(), 16);
+		texture->GenerateCube(_device, _width, _height, _generateMipmaps, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+
+		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
+		m_textures[hash] = texture;
+	}
+
+	return texture;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void TextureManager::Destroy(const nwString& _pathOrName)
 {
 	uint32 hash = HashTools::MakeHash32(_pathOrName.c_str(), static_cast<uint32>(_pathOrName.length()), kTextureNameHashSeed);
