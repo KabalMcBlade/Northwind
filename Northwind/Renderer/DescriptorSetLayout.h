@@ -49,7 +49,6 @@ public:
 
 	void Push(EDescriptorStage _stage, EBindingType _type, uint32 _index);
 
-private:
 	static VkShaderStageFlags ConvertDescriptorStage(EDescriptorStage _stage);
 	static VkDescriptorType ConvertBindingType(EBindingType _type);
 

@@ -41,6 +41,48 @@ public:
 		return m_framebuffer;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+	NW_INLINE const size GetAttachmentDescriptorsCount() const
+	{
+		return m_attachmentDescriptors.size();
+	}
+
+	NW_INLINE const VkAttachmentDescription* GetAttachmentDescriptors() const
+	{
+		return m_attachmentDescriptors.data();
+	}
+
+	NW_INLINE const size GetSubpassDependenciesCount() const
+	{
+		return m_subpassDependencies.size();
+	}
+
+	NW_INLINE const VkSubpassDependency* GetSubpassDependencies() const
+	{
+		return m_subpassDependencies.data();
+	}
+
+	NW_INLINE const size GetSubpassDescriptorsCount() const
+	{
+		return m_subpassDescriptors.size();
+	}
+
+	NW_INLINE const VkSubpassDescription* GetSubpassDescriptors() const
+	{
+		return m_subpassDescriptors.data();
+	}
+
+	NW_INLINE const size GetClearValuesCount() const
+	{
+		return m_clearValues.size();
+	}
+
+	NW_INLINE const VkClearValue* GetClearValues() const
+	{
+		return m_clearValues.data();
+	}
+	//////////////////////////////////////////////////////////////////////////
+
 	const VkRenderPassBeginInfo GetBeginInfo() const;
 
 	void SetDimensions(int32 _width, int32 _height);
