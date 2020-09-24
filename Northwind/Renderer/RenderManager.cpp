@@ -6,11 +6,19 @@
 #include "CommandBuffer.h"
 #include "PipelineLayout.h"
 #include "VertexCacheManager.h"
+#include "Pipeline.h"
+#include "DescriptorSetLayout.h"
+#include "DescriptorPool.h"
+#include "DescriptorSet.h"
+#include "VertexDescriptor.h"
 
 #include "../Core/Assertions.h"
 #include "../Core/SettingsDefines.h"
 
 #include "../Texture/TextureManager.h"
+
+#include "../Shaders/Shader.h"
+#include "../Shaders/ShaderManager.h"
 
 #include "../Dependencies/Nix/Nix/Nix.h"
 
@@ -30,12 +38,14 @@
 
 NW_NAMESPACE_BEGIN
 
+
 struct PushBlock
 {
 	nix::Matrix4x4	m_mvp;
 	float			m_roughness { 0.0f };
 	uint32			m_numSamples { 32u };
 } m_pushBlock;
+
 
 RenderManager& RenderManager::Instance()
 {
@@ -52,22 +62,121 @@ RenderManager::~RenderManager()
 {
 }
 
-Texture* RenderManager::GenerateBRDF(const uint32 _dimension)
+Texture* RenderManager::GenerateBRDF(const Device& _device, const uint32 _dimension)
 {
 	return nullptr;
 }
 
-Texture* RenderManager::GeneratePrefilterDiffuse(const uint32 _dimension)
+Texture* RenderManager::GenerateEnvironmentMap(const Device& _device, const nwString& _name, const Texture* _hdrTexture2D)
 {
 	return nullptr;
 }
 
-Texture* RenderManager::GeneratePrefilterGlossy(const uint32 _dimension)
+Texture* RenderManager::GeneratePrefilterDiffuse(const Device& _device, const nwString& _name, const Shader& _filtercube, const Shader& _prefilterGlossy, const uint32 _dimension, const Texture* _hdrTexture2D, const Texture* _environmentMap)
 {
 	return nullptr;
 }
 
-void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass, const Texture& _filteredEnv, const PipelineLayout& _pipelinelayout, const Pipeline& _pipeline, const DescriptorSet& _descSet, const uint32 _dimension, const VkFormat _format, const uint32 _numMips)
+Texture* RenderManager::GeneratePrefilterGlossy(const Device& _device, const nwString& _name, const Shader& _filtercube, const Shader& _prefilterGlossy, const uint32 _dimension, const Texture* _hdrTexture2D, const Texture* _environmentMap)
+{
+	Texture* prefilterGlossy = TextureManager::Instance().GenerateCube(_device, _name, _dimension, _dimension, true, VK_FORMAT_R16G16B16A16_SFLOAT);
+
+
+	// RenderPass
+
+	RenderPass renderPass;
+
+	VkAttachmentDescription colorAttachment = {};
+	colorAttachment.format = VK_FORMAT_R16G16B16A16_SFLOAT;
+	colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	colorAttachment.finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	VkAttachmentReference colorRef[1];
+	colorRef[0].attachment = 0;
+	colorRef[0].layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	renderPass.PushAttachmentDescription(colorAttachment);
+
+	
+	VkSubpassDescription subpass = {};
+	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpass.colorAttachmentCount = 1;
+	subpass.pColorAttachments = &colorRef[0];
+	subpass.pDepthStencilAttachment = VK_NULL_HANDLE;
+
+	renderPass.PushSubpassDescription(subpass);
+
+
+	VkSubpassDependency dependency = {};
+	dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependency.dstSubpass = 0;
+	dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.srcAccessMask = 0;
+	dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+	renderPass.PushSubpassDependency(dependency);
+
+	renderPass.SetDimensions(static_cast<int32>(_dimension), static_cast<int32>(_dimension));
+	renderPass.PushColorDepthStencilClearValue(0.0f, 0.0f, 0.2f, 0.0f);
+
+	renderPass.Create(_device);
+
+
+	// Descriptors
+
+	DescriptorSetLayout descriptorSetLayout;
+	descriptorSetLayout.Push(EDescriptorStage_Fragment, EBindingType_Sampler, 0);
+	descriptorSetLayout.Push(EDescriptorStage_Fragment, EBindingType_Sampler, 1);
+	descriptorSetLayout.Create(_device.GetDevice());
+
+
+	DescriptorPool descriptorPool;
+	descriptorPool.Push(DescriptorSetLayout::ConvertBindingType(EBindingType_Sampler), 2);	// total above
+	descriptorPool.Create(_device.GetDevice(), 0, 1);
+
+
+	DescriptorSet descriptorSet;
+	descriptorSet.PushLayout(descriptorSetLayout);
+	descriptorSet.PushDescriptor(0, DescriptorSetLayout::ConvertBindingType(EBindingType_Sampler), _hdrTexture2D->GetDescriptor());
+	descriptorSet.PushDescriptor(1, DescriptorSetLayout::ConvertBindingType(EBindingType_Sampler), _environmentMap->GetDescriptor());
+	descriptorSet.Create(_device.GetDevice(), descriptorPool);
+
+
+	// VertexDescriptor
+
+	VertexDescriptor vertexDescriptor;
+	vertexDescriptor.Create(EVertexLayout_P);
+
+
+	// Pipeline
+
+	PipelineLayout pipelinelayout;
+	pipelinelayout.PushConstant(DescriptorSetLayout::ConvertDescriptorStage(EDescriptorStage_Vertex) | DescriptorSetLayout::ConvertDescriptorStage(EDescriptorStage_Fragment), 0, sizeof(PushBlock));
+	pipelinelayout.Create(_device.GetDevice(), descriptorSetLayout);
+
+
+	Pipeline pipeline;
+	pipeline.PushShader(_filtercube);
+	pipeline.PushShader(_prefilterGlossy);
+	pipeline.SetPolygonMode(VK_POLYGON_MODE_FILL, VK_CULL_MODE_NONE);
+	pipeline.SetDepthStencil(VK_FALSE);
+	pipeline.SetVertexInput(vertexDescriptor);
+	pipeline.Create(_device.GetDevice());
+
+	RenderToCube(_device, renderPass, prefilterGlossy, pipelinelayout, pipeline, descriptorSet, _dimension, VK_FORMAT_R16G16B16A16_SFLOAT, _dimension);
+
+	// cleanup made by destructor
+
+	return prefilterGlossy;
+}
+
+void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass, const Texture* _filteredEnv, const PipelineLayout& _pipelinelayout, const Pipeline& _pipeline, const DescriptorSet& _descSet, const uint32 _dimension, const VkFormat _format, const uint32 _numMips)
 {
 	// Rendering to image, then copy to cube
 	FrameBuffer offscreen;
@@ -79,10 +188,9 @@ void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass,
 	offscreen.PushAttachment(attachment);
 	offscreen.Create(_device.GetDevice(), _renderpass, _dimension, _dimension);
 
-
+	// add offscreen frame buffer
 	_renderpass.SetFrameBuffer(offscreen);
-	_renderpass.SetDimensions(static_cast<int32>(_dimension), static_cast<int32>(_dimension));
-	_renderpass.PushColorDepthStencilClearValue(0.0f, 0.0f, 0.2f, 0.0f);
+
 
 	const nix::Vector4 pos;	// 0
 	nix::Matrix4x4 mv[6];
@@ -111,7 +219,7 @@ void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass,
 	subresourceRange.layerCount = 6;
 	subresourceRange.levelCount = _numMips;
 
-	Texture::SetImageLayout(cmdBuf, _filteredEnv.GetImage(), VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, subresourceRange);
+	Texture::SetImageLayout(cmdBuf, _filteredEnv->GetImage(), VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, subresourceRange);
 
 	nix::Matrix4x4 matPers = Transform::PerspectiveProjection(NIX_DEG_TO_RAD(90.0f), 1.0f, 0.1f, 10.0f);
 
@@ -190,7 +298,7 @@ void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass,
 				cmdBuf,
 				attachment.GetImage(),
 				VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-				_filteredEnv.GetImage(),
+				_filteredEnv->GetImage(),
 				VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
 				1,
 				&copyRegion);
@@ -199,10 +307,9 @@ void RenderManager::RenderToCube(const Device& _device, RenderPass& _renderpass,
 		}
 	}
 
-	Texture::SetImageLayout(cmdBuf, _filteredEnv.GetImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, subresourceRange);
+	Texture::SetImageLayout(cmdBuf, _filteredEnv->GetImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, subresourceRange);
 	cmdBuf.End();
 
-	// ?
 	VertexCacheManager::Instance().SwapFrame();
 }
 
