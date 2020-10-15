@@ -9,6 +9,8 @@
 
 NW_NAMESPACE_BEGIN
 
+#define NW_VALIDATION_LAYER "VK_LAYER_KHRONOS_validation"
+
 //////////////////////////////////////////////////////////////////////////
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData)
@@ -67,11 +69,6 @@ Instance::Instance() : m_instance(VK_NULL_HANDLE), m_debugReportCreated(false)
 
 Instance::~Instance()
 {
-	if (m_validationLayerEnabled)
-	{
-		DestroyDebugReport();
-	}
-
 	Destroy();
 }
 
@@ -101,7 +98,7 @@ bool Instance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE_VERSI
 	{
 		enabledExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
-		enabledLayers.push_back("VK_LAYER_LUNARG_standard_validation");
+		enabledLayers.push_back(NW_VALIDATION_LAYER);
 
 		uint32 layerCount = 0;
 		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
@@ -113,7 +110,7 @@ bool Instance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE_VERSI
 		bool found = false;
 		for (uint32 i = 0; i < layerCount; ++i)
 		{
-			if (std::strcmp("VK_LAYER_LUNARG_standard_validation", layers[i].layerName) == 0)
+			if (std::strcmp(NW_VALIDATION_LAYER, layers[i].layerName) == 0)
 			{
 				found = true;
 				break;
@@ -147,6 +144,11 @@ bool Instance::Create(const char* _appName, uint32 _appVersion /*= VK_MAKE_VERSI
 
 void Instance::Destroy()
 {
+	if (m_validationLayerEnabled)
+	{
+		DestroyDebugReport();
+	}
+
 	if (m_instance != VK_NULL_HANDLE)
 	{
 		vkDestroyInstance(m_instance, GpuMemoryManager::Instance().GetVK());

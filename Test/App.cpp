@@ -74,20 +74,14 @@ void App::InitEngine()
 		nwString vertpath = m_fileSystem.GetShadersPath() + "ShaderTest.vert.spv";
 		nwString fragpath = m_fileSystem.GetShadersPath() + "ShaderTest.frag.spv";
 
-		Shader testVert;
-		Shader testFrag;
+		Shader *testVert = ShaderManager::Instance().Load(m_device, vertpath);
+		Shader *testFrag = ShaderManager::Instance().Load(m_device, fragpath);
 
-		bool shaderCreated = false;
-
-		shaderCreated = testVert.Create(m_device.GetDevice(), vertpath);
-		nwAssert(shaderCreated, "Vertex Shader cannot be created at path %s", vertpath.c_str());
-
-		shaderCreated = testFrag.Create(m_device.GetDevice(), fragpath);
-		nwAssert(shaderCreated, "Fragment Shader cannot be created at path %s", fragpath.c_str());
+		ShaderManager::Instance().Destroy(vertpath);
+		ShaderManager::Instance().Destroy(fragpath);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	*/
-
 
 	/*
 	//////////////////////////////////////////////////////////////////////////

@@ -360,3 +360,4 @@ MigrationBackup/
 /Test/ShaderAllocator.csv
 /Test/TexturesAllocator.csv
 /Test/TextureManagerAllocator.csv
+/Test/ShaderManagerAllocator.csv

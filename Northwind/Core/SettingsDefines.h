@@ -33,9 +33,9 @@ namespace SettingsDefines
 {
 	namespace Engine
 	{
-		static uint32 kVulkanAllocatorSize = NW_MEMORY_16_MB;
-		static uint32 kGPUAllocatorSize = NW_MEMORY_8_MB;
-		static uint32 kInstanceAllocatorSize = NW_MEMORY_4_MB;
+		static uint32 kVulkanAllocatorSize = NW_MEMORY_8_MB;
+		static uint32 kGPUAllocatorSize = NW_MEMORY_4_MB;
+		static uint32 kInstanceAllocatorSize = NW_MEMORY_2_MB;
 		static uint32 kQueueFamilyAllocatorSize = NW_MEMORY_256_KB;
 		static uint32 kDeviceAllocatorSize = NW_MEMORY_256_KB;
 		static uint32 kDescriptorPoolAllocatorSize = NW_MEMORY_16_KB;
@@ -48,30 +48,30 @@ namespace SettingsDefines
 		static uint32 kPipelineLayoutAllocatorSize = NW_MEMORY_128_KB;
 		static uint32 kPipelineAllocatorSize = NW_MEMORY_128_KB;
 		static uint32 kCommandBufferAllocatorSize = NW_MEMORY_4_MB;
-		static uint32 kThreadPoolAllocatorSize = NW_MEMORY_4_MB;
-		static uint32 kFrameBufferAllocatorSize = NW_MEMORY_4_MB;
-		static uint32 kTexturesAllocatorSize = NW_MEMORY_128_MB;
+		static uint32 kThreadPoolAllocatorSize = NW_MEMORY_2_MB;
+		static uint32 kFrameBufferAllocatorSize = NW_MEMORY_2_MB;
+		static uint32 kTexturesAllocatorSize = NW_MEMORY_32_MB;
 		static uint32 kTextureManagerAllocatorSize = NW_MEMORY_32_KB;
 		static uint32 kShaderManagerAllocatorSize = NW_MEMORY_32_KB;
-		static uint32 kStagingBufferSize = NW_MEMORY_512_MB;
-		static uint32 kGpuDeviceLocalSize = NW_MEMORY_128_MB;
-		static uint32 kGpuHostVisibleSize = NW_MEMORY_2048_MB;	// for CPU to GPU, require far more memory
+		static uint32 kStagingBufferSize = NW_MEMORY_64_MB;
+		static uint32 kGpuDeviceLocalSize = NW_MEMORY_32_MB;
+		static uint32 kGpuHostVisibleSize = NW_MEMORY_128_MB;	// for CPU to GPU
 
 		// frame
-		static uint32 kRenderVertexMemorySizePerFrame = NW_MEMORY_64_MB;
-		static uint32 kRenderIndexMemorySizePerFrame = NW_MEMORY_16_MB;
+		static uint32 kRenderVertexMemorySizePerFrame = NW_MEMORY_16_MB;
+		static uint32 kRenderIndexMemorySizePerFrame = NW_MEMORY_4_MB;
 	}
 
 	namespace Generic
 	{
-		static uint32 kCommonAllocatorSize = NW_MEMORY_4_MB;
-		static uint32 kStringAllocatorSize = NW_MEMORY_8_MB;
+		static uint32 kCommonAllocatorSize = NW_MEMORY_1_MB;
+		static uint32 kStringAllocatorSize = NW_MEMORY_2_MB;
 		static uint32 kClientOptionAllocatorSize = NW_MEMORY_4_KB;
 	}
 
 	namespace Objects
 	{
-		static uint32 kNodeAllocatorSize = NW_MEMORY_4_MB;
+		static uint32 kNodeAllocatorSize = NW_MEMORY_2_MB;
 	}
 }
 
