@@ -59,6 +59,7 @@ void Settings::LoadMemorySettings()
 				{"ShaderManager", SettingsDefines::Engine::kShaderManagerAllocatorSize },
 				{"VertexMemoryPerFrame", SettingsDefines::Engine::kRenderVertexMemorySizePerFrame },
 				{"IndexMemoryPerFrame", SettingsDefines::Engine::kRenderIndexMemorySizePerFrame },
+				//{"RenderManager", SettingsDefines::Engine::kRenderManagerAllocatorSize },
 			}},
 			{"Generic", {
 				{"Common", SettingsDefines::Generic::kCommonAllocatorSize},
@@ -109,6 +110,7 @@ void Settings::LoadMemorySettings()
 	SettingsDefines::Engine::kShaderManagerAllocatorSize = json["Engine"]["ShaderManager"];
 	SettingsDefines::Engine::kRenderVertexMemorySizePerFrame = json["Engine"]["VertexMemoryPerFrame"];
 	SettingsDefines::Engine::kRenderIndexMemorySizePerFrame = json["Engine"]["IndexMemoryPerFrame"];
+	//SettingsDefines::Engine::kRenderManagerAllocatorSize = json["Engine"]["RenderManager"];
 
 	// actual settings - Generic
 	SettingsDefines::Generic::kCommonAllocatorSize = json["Generic"]["Common"];

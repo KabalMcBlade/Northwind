@@ -47,6 +47,18 @@ struct PushBlock
 } m_pushBlock;
 
 
+
+
+/*
+RenderManager::RenderManagerAllocator* RenderManager::GetAllocator()
+{
+	static eos::HeapAreaR memoryArea(SettingsDefines::Engine::kRenderManagerAllocatorSize);
+	static RenderManagerAllocator memoryAllocator(memoryArea, "RenderManagerAllocator");
+
+	return &memoryAllocator;
+}
+*/
+
 RenderManager& RenderManager::Instance()
 {
 	static RenderManager instance;
@@ -155,11 +167,6 @@ Texture* RenderManager::GenerateBRDF(const Device& _device, const nwString& _nam
 	// cleanup made by destructor
 
 	return brdflut;
-}
-
-Texture* RenderManager::GenerateEnvironmentMap(const Device& _device, const nwString& _name, const Texture* _hdrTexture2D)
-{
-	return nullptr;
 }
 
 Texture* RenderManager::GeneratePrefilterDiffuse(const Device& _device, const nwString& _name, const Shader& _filtercube, const Shader& _prefilterDiffuse, const uint32 _dimension, const Texture* _hdrTexture2D, const Texture* _environmentMap)
@@ -274,6 +281,13 @@ Texture* RenderManager::GeneratePrefiltered(const Device& _device, const nwStrin
 	return prefilter;
 }
 
+/*
+For cube and cube array image views, the layers of the image view starting at baseArrayLayer correspond to faces in the order +X, -X, +Y, -Y, +Z, -Z. 
+For cube arrays, each set of six sequential layers is a single cube, so the number of cube maps in a cube map array view is layerCount / 6, 
+and image array layer (baseArrayLayer + i) is face index (i mod 6) of cube i / 6. 
+If the number of layers in the view, whether set explicitly in layerCount or implied by VK_REMAINING_ARRAY_LAYERS, 
+is not a multiple of 6, the last cube map in the array must not be accessed.
+*/
 void RenderManager::RenderToCube(RenderPass& _renderpassToUpdate, const Device& _device, const Texture* _texture, const PipelineLayout& _pipelinelayout, const Pipeline& _pipeline, const DescriptorSet& _descSet, const uint32 _width, const uint32 _height, const VkFormat _format, const uint32 _numMips)
 {
 	// Rendering to image, then copy to cube
@@ -440,7 +454,7 @@ void RenderManager::RenderToQuad(RenderPass& _renderpassToUpdate, const Device& 
 	VkImageSubresourceRange subresourceRange = {};
 	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 	subresourceRange.baseMipLevel = 0;
-	subresourceRange.layerCount = 6;
+	subresourceRange.layerCount = 1;
 	subresourceRange.levelCount = _numMips;
 
 	Texture::SetImageLayout(cmdBuf, _texture->GetImage(), VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, subresourceRange);

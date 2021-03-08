@@ -111,7 +111,7 @@ void CommandBuffer::EndRenderPass()
 
 void CommandBuffer::BindDescriptorSets(PipelineLayout _layout, eos::Vector<DescriptorSet, CommandBufferAllocator, GetAllocator> _sets, uint32 firstSet /*= 0*/)
 {
-	std::vector<VkDescriptorSet> descSets;
+	eos::Vector<VkDescriptorSet, CommandBufferAllocator, GetAllocator> descSets;
 	for (auto set : _sets)
 	{
 		descSets.push_back(set);

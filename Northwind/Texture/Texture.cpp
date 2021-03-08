@@ -21,6 +21,9 @@
 #define TINYKTX_IMPLEMENTATION
 #include "../Dependencies/tiny_ktx.h"
 
+#include "../Dependencies/Nix/Nix/Nix.h"
+
+
 #include "../Client/FileSystem.h"
 
 
@@ -107,6 +110,52 @@ void Texture::KTX_Error(char const *_msg)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+	struct EnvironmentAcceleration
+	{
+		uint32	m_alias{ 0 };
+		float	m_q{ 0.f };
+		float	m_pdf{ 0.f };
+		float	m_padding{ 0.f };
+	};
+
+	float BuildAliasMap(const eos::Vector<float, TexturesAllocator, GetAllocator>& _data, eos::Vector<EnvironmentAcceleration, TexturesAllocator, GetAllocator>& _ea)
+	{
+		uint32 size = static_cast<uint32>(_data.size());
+
+		float sum = 0.0f;
+		for (float d : _data)
+		{
+			sum += d;
+		}
+
+		const float fsize = static_cast<float>(_data.size());
+		for (uint32 i = 0; i < _data.size(); ++i)
+		{
+			_ea[i].m_q = fsize * _data[i] / sum;
+		}
+
+		eos::Vector<uint32, TexturesAllocator, GetAllocator> partitionTable(size);
+		uint32 s = 0u, large = size;
+
+		for (uint32 i = 0; i < size; ++i)
+		{
+			partitionTable[(_ea[i].m_q < 1.0f) ? (s++) : (--large)] = _ea[i].m_alias = i;
+		}
+
+		for (s = 0; s < large && large < size; ++s)
+		{
+			const uint32 j = partitionTable[s], k = partitionTable[large];
+			_ea[j].m_alias = k;
+			_ea[k].m_q += _ea[j].m_q - 1.0f;
+			large = (_ea[k].m_q < 1.0f) ? (large + 1u) : large;
+		}
+
+		return sum;
+	}
+}
 
 void Texture::SetImageLayout(VkCommandBuffer _cmdbuffer, VkImage _image, VkImageLayout _oldImageLayout, VkImageLayout _newImageLayout, VkImageSubresourceRange _subresourceRange, VkPipelineStageFlags _srcStageMask /*= VK_PIPELINE_STAGE_ALL_COMMANDS_BIT*/, VkPipelineStageFlags _dstStageMask /*= VK_PIPELINE_STAGE_ALL_COMMANDS_BIT*/)
 {
@@ -271,8 +320,16 @@ bool Texture::LoadCube(const Device& _device, const nwString& _path,
 	return Load(_device, _path,  2, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 }
 
+bool Texture::LoadEnvironmentMapHDR(const Device& _device, const nwString& _path,
+	VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	return Load(_device, _path, 3, VK_FORMAT_R32G32B32A32_SFLOAT/*not used internally since is forced*/, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+}
 
-// _type: 0 == 2D, 1 == array, 2 == cube
+
+// _type: 0 == 2D, 1 == array, 2 == cube, 3 == environment acceleration texture (only HDR)
 bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 	VkFormat _format, uint32 _sliceCount /*= 0*/, VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
 	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE*/,
@@ -284,6 +341,12 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 
 	if (ext == "ktx")
 	{
+		// ktx cannot be environment acceleration texture HDR only
+		if (_type == 3)
+		{
+			return false;
+		}
+
 		fileStream.open(_path.c_str(), std::ios::binary);
 
 		TinyKtx_Callbacks callbacks{
@@ -377,6 +440,11 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 		case 2:
 			result = LoadCube(_device, buffer, size, needMipMapsGenerated, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, mipmapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
+
+			// will never hit this because I put a branch at the beginning, but for clarification I keep in this way
+		case 3:
+			result = false;
+			break;
 		
 		case 0:
 		default:
@@ -435,6 +503,10 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 			result = LoadCube(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 			break;
 
+		case 3:
+			result = LoadEnvironmentMapHDR(_device, buffer, size, true, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			break;
+
 		case 0:
 		default:
 			result = Load2D(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
@@ -445,6 +517,12 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 	}
 	else
 	{
+		// normal image cannot be environment acceleration texture HDR only
+		if (_type == 3)
+		{
+			return false;
+		}
+
 		int w;
 		int h;
 		int c;	// don't care I forced to 4 due Vulkan limitation (note: this will return the actual component on file all he times, simple do not care about)
@@ -477,6 +555,11 @@ bool Texture::Load(const Device& _device, const nwString& _path, uint8 _type,
 
 		case 2:
 			result = LoadCube(_device, buffer, size, true, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, nullptr, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+			break;
+
+			// will never hit this because I put a branch at the beginning, but for clarification I keep in this way
+		case 3:
+			result = false;
 			break;
 
 		case 0:
@@ -834,6 +917,152 @@ bool Texture::LoadCube(const Device& _device, const void* _buffer, size _size, b
 	m_sampler.Create(_device.GetDevice());
 
 	m_view.Create(_device.GetDevice(), m_image, VK_IMAGE_VIEW_TYPE_CUBE, _format, VK_IMAGE_ASPECT_COLOR_BIT, 0, m_mipmaps, 0, 6, { VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G, VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A }, 0);
+
+	// Update descriptor image info member that can be used for setting up descriptor sets
+	UpdateDescriptor();
+
+	return true;
+}
+
+
+bool Texture::LoadEnvironmentMapHDR(const Device& _device, const float* _buffer, size _size, bool _needGenerateMipmaps,
+	VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
+	uint64* _mipmpapsOffsets /*= nullptr*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	VkCommandBuffer copyCmd;
+	VkBuffer stagingBuffer;
+	size bufferOffset;
+
+	const uint32 rx = m_width;
+	const uint32 ry = m_height;
+
+	// Create importance sampling data
+	eos::Vector<EnvironmentAcceleration, TexturesAllocator, GetAllocator> ea(rx * ry);
+	eos::Vector<float, TexturesAllocator, GetAllocator> importanceBias(rx * ry);
+	float cosTheta0 = 1.0f;
+	const float stepPhi = float(2.0f * NIX_PI) / float(rx);
+	const float stepTheta = float(NIX_PI) / float(ry);
+	for (uint32 y = 0; y < ry; ++y)
+	{
+		const float theta1 = float(y + 1) * stepTheta;
+		const float cosTheta1 = std::cos(theta1);
+		const float area = (cosTheta0 - cosTheta1) * stepPhi;
+		cosTheta0 = cosTheta1;
+
+		for (uint32 x = 0; x < rx; ++x)
+		{
+			const uint32 idx = y * rx + x;
+			const uint32 idx4 = idx * 4;
+			importanceBias[idx] = area * std::max(_buffer[idx4], std::max(_buffer[idx4 + 1], _buffer[idx4 + 2]));
+		}
+	}
+
+	const float inv_env_integral = 1.0f / BuildAliasMap(importanceBias, ea);
+	for (uint32 i = 0; i < rx * ry; ++i)
+	{
+		const uint32 idx4 = i * 4;
+		ea[i].m_pdf = std::max(_buffer[idx4], std::max(_buffer[idx4 + 1], _buffer[idx4 + 2])) * inv_env_integral;
+	}
+
+
+	const size newSize = rx * ry * sizeof(EnvironmentAcceleration);
+
+
+	uint8* stagedMemory = StagingBufferManager::Instance().Stage(newSize, 16, copyCmd, stagingBuffer, bufferOffset);
+	eos::MemUtils::MemCpy(stagedMemory, ea.data(), newSize);
+
+	eos::Vector<VkBufferImageCopy, TexturesAllocator, GetAllocator> bufferCopyRegions;
+
+	VkImageSubresourceRange subresourceRange = {};
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.layerCount = 1;
+
+	uint32 maxLodLevel = m_mipmaps;
+	// mipmap present already in texture
+	if (!_needGenerateMipmaps)
+	{
+		// Setup buffer copy regions for each mip level
+		for (uint32 i = 0; i < m_mipmaps; ++i)
+		{
+			VkBufferImageCopy bufferCopyRegion = {};
+			bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			bufferCopyRegion.imageSubresource.mipLevel = i;
+			bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
+			bufferCopyRegion.imageSubresource.layerCount = 1;
+			bufferCopyRegion.imageExtent.width = m_width >> i;
+			bufferCopyRegion.imageExtent.height = m_height >> i;
+			bufferCopyRegion.imageExtent.depth = 1;
+			bufferCopyRegion.bufferOffset = _mipmpapsOffsets[i];
+
+			bufferCopyRegions.push_back(bufferCopyRegion);
+		}
+		subresourceRange.levelCount = m_mipmaps;
+	}
+	else
+	{
+		VkBufferImageCopy bufferCopyRegion = {};
+		bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		bufferCopyRegion.imageSubresource.mipLevel = 0;
+		bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
+		bufferCopyRegion.imageSubresource.layerCount = 1;
+		bufferCopyRegion.imageExtent.width = m_width;
+		bufferCopyRegion.imageExtent.height = m_height;
+		bufferCopyRegion.imageExtent.depth = 1;
+
+		bufferCopyRegions.push_back(bufferCopyRegion);
+
+		if (CanGenerateMipmaps(_device, VK_FORMAT_R32G32B32A32_SFLOAT))
+		{
+			maxLodLevel = m_mipmaps = static_cast<uint32>(std::floor(std::log2(std::max(m_width, m_height)))) + 1;
+		}
+		else
+		{
+			m_mipmaps = 1;
+			maxLodLevel = 0;
+		}
+
+		subresourceRange.levelCount = 1;	// in any case here still 1, will be changed after during the generation
+	}
+
+	if (!(_imageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT))
+	{
+		_imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	}
+	m_image.Create2D(_device.GetDevice(), m_width, m_height, VK_FORMAT_R32G32B32A32_SFLOAT, _imageUsageFlags, EMemoryUsage_CPU_to_GPU, EGpuMemoryType_ImageOptimal, m_mipmaps, 1, VK_SAMPLE_COUNT_1_BIT, _imageLayout, VK_IMAGE_TILING_OPTIMAL);
+
+
+	// Image barrier for optimal image (target)
+	// Optimal image will be used as destination for the copy
+	SetImageLayout(copyCmd, m_image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, subresourceRange);
+
+	// Copy mip levels from staging buffer
+	vkCmdCopyBufferToImage(copyCmd, stagingBuffer, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, static_cast<uint32>(bufferCopyRegions.size()), bufferCopyRegions.data());
+
+	// Change texture image layout to shader read after all mip levels have been copied
+	SetImageLayout(copyCmd, m_image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout, subresourceRange);
+
+	if (_needGenerateMipmaps && CanGenerateMipmaps(_device, VK_FORMAT_R32G32B32A32_SFLOAT))
+	{
+		GenerateMipmaps(_device, subresourceRange);
+	}
+
+	// Create sampler (for now a sampler is associated to the very same texture, later can be a sampler manager, and share the sampler with textures and other way round)
+	m_sampler.SetAddressModeU(_addressModeU);
+	m_sampler.SetAddressModeV(_addressModeV);
+	m_sampler.SetAddressModeW(_addressModeW);
+	m_sampler.SetMinFilter(_minFilter);
+	m_sampler.SetMagFilter(_magFilter);
+	m_sampler.SetMipMap(VK_SAMPLER_MIPMAP_MODE_LINEAR, 0.0f);
+	m_sampler.SetMaxAnisotropy(static_cast<float>(_maxAnisotrpy));
+	m_sampler.SetLod(0.0f, static_cast<float>(maxLodLevel));
+	m_sampler.SetBorderColor(VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE);
+	m_sampler.SetDepthSampler(false);
+	m_sampler.Create(_device.GetDevice());
+
+	m_view.Create(_device.GetDevice(), m_image, VK_IMAGE_VIEW_TYPE_2D, VK_FORMAT_R32G32B32A32_SFLOAT, VK_IMAGE_ASPECT_COLOR_BIT, 0, m_mipmaps, 0, 1, { VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G, VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A }, 0);
 
 	// Update descriptor image info member that can be used for setting up descriptor sets
 	UpdateDescriptor();

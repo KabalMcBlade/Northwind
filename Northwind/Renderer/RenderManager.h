@@ -23,6 +23,10 @@ class Texture;
 class Shader;
 class RenderManager final : public eos::NoCopyableMoveable
 {
+//private:
+//	using RenderManagerAllocator = eos::MemoryAllocator<eos::FreeListBestSearchAllocationPolicy, eos::MultiThreadPolicy, eos::MemoryBoundsCheck, eos::MemoryTag, eos::MemoryLog>;
+//	static RenderManagerAllocator* GetAllocator();
+
 public:
 	RenderManager();
 	~RenderManager();
@@ -30,7 +34,6 @@ public:
 	static RenderManager& Instance();
 
 	Texture* GenerateBRDF(const Device& _device, const nwString& _name, const Shader& _brdfVert, const Shader& _brdfFrag, const uint32 _dimension);
-	Texture* GenerateEnvironmentMap(const Device& _device, const nwString& _name, const Texture* _hdrTexture2D);
 	Texture* GeneratePrefilterDiffuse(const Device& _device, const nwString& _name, const Shader& _filtercube, const Shader& _prefilterDiffuse, const uint32 _dimension, const Texture* _hdrTexture2D, const Texture* _environmentMap);
 	Texture* GeneratePrefilterGlossy(const Device& _device, const nwString& _name, const Shader& _filtercube, const Shader& _prefilterGlossy, const uint32 _dimension, const Texture* _hdrTexture2D, const Texture* _environmentMap);
 

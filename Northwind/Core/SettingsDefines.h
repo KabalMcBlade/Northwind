@@ -56,6 +56,7 @@ namespace SettingsDefines
 		static uint32 kStagingBufferSize = NW_MEMORY_64_MB;
 		static uint32 kGpuDeviceLocalSize = NW_MEMORY_32_MB;
 		static uint32 kGpuHostVisibleSize = NW_MEMORY_128_MB;	// for CPU to GPU
+		//static uint32 kRenderManagerAllocatorSize = NW_MEMORY_16_KB;
 
 		// frame
 		static uint32 kRenderVertexMemorySizePerFrame = NW_MEMORY_16_MB;

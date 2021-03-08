@@ -42,10 +42,18 @@ Texture* TextureManager::Load2D(const Device& _device, const nwString& _path,
 	if (texture == nullptr)
 	{
 		texture = eosNew(Texture, GetAllocator());
-		texture->Load(_device, _path, 0, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		bool result = texture->Load(_device, _path, 0, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
@@ -65,10 +73,18 @@ Texture* TextureManager::LoadArray(const Device& _device, const nwString& _path,
 	if (texture == nullptr)
 	{
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
-		texture->Load(_device, _path, 1, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
-
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		bool result = texture->Load(_device, _path, 1, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
@@ -88,15 +104,53 @@ Texture* TextureManager::LoadCube(const Device& _device, const nwString& _path,
 	if (texture == nullptr)
 	{
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
-		texture->Load(_device, _path, 2, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		bool result = texture->Load(_device, _path, 2, _format, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
 }
 
+Texture* TextureManager::LoadEnvironmentMapHDR(const Device& _device, const nwString& _path,
+	VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	if (_path.empty())
+	{
+		return nullptr;
+	}
+
+	Texture* texture = GetTexture(_path);
+	if (texture == nullptr)
+	{
+		texture = eosNew(Texture, GetAllocator());
+		bool result = texture->Load(_device, _path, 3, VK_FORMAT_R32G32B32A32_SFLOAT/*not used internally since is forced*/, 0, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_path.c_str(), static_cast<uint32>(_path.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
+	}
+
+	return texture;
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -115,10 +169,18 @@ Texture* TextureManager::Load2D(const Device& _device, const nwString& _name, co
 	if (texture == nullptr)
 	{
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
-		texture->Load2D(_device, _buffer, _size, _needGenerateMipmaps, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		bool result = texture->Load2D(_device, _buffer, _size, _needGenerateMipmaps, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
@@ -139,10 +201,18 @@ Texture* TextureManager::LoadArray(const Device& _device, const nwString& _name,
 	if (texture == nullptr)
 	{
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
-		texture->LoadArray(_device, _buffer, _size, _needGenerateMipmaps, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		bool result = texture->LoadArray(_device, _buffer, _size, _needGenerateMipmaps, _format, _sliceCount, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
@@ -163,10 +233,50 @@ Texture* TextureManager::LoadCube(const Device& _device, const nwString& _name, 
 	if (texture == nullptr)
 	{
 		texture = eosNewAligned(Texture, GetAllocator(), 16);
-		texture->LoadCube(_device, _buffer, _size, _needGenerateMipmaps, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+		bool result = texture->LoadCube(_device, _buffer, _size, _needGenerateMipmaps, _format, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
 
-		uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
-		m_textures[hash] = texture;
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
+	}
+
+	return texture;
+}
+
+Texture* TextureManager::LoadEnvironmentMapHDR(const Device& _device, const nwString& _name, const float* _buffer, size _size, bool _needGenerateMipmaps,
+	VkFilter _magFilter /*= VK_FILTER_LINEAR*/, VkFilter _minFilter /*= VK_FILTER_LINEAR*/,
+	VkSamplerAddressMode _addressModeU /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeV /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/, VkSamplerAddressMode _addressModeW /*= VK_SAMPLER_ADDRESS_MODE_REPEAT*/,
+	uint64* _mipmpapsOffsets /*= nullptr*/,
+	VkImageUsageFlags _imageUsageFlags /*= VK_IMAGE_USAGE_SAMPLED_BIT*/, VkImageLayout _imageLayout /*= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL*/, uint32 _maxAnisotrpy /*= 1*/)
+{
+	if (_buffer == nullptr || _name.empty())
+	{
+		return nullptr;
+	}
+
+	Texture* texture = GetTexture(_name);
+	if (texture == nullptr)
+	{
+		texture = eosNewAligned(Texture, GetAllocator(), 16);
+		bool result = texture->LoadEnvironmentMapHDR(_device, _buffer, _size, _needGenerateMipmaps, _magFilter, _minFilter, _addressModeU, _addressModeV, _addressModeW, _mipmpapsOffsets, _imageUsageFlags, _imageLayout, _maxAnisotrpy);
+
+		if (result == true)
+		{
+			uint32 hash = HashTools::MakeHash32(_name.c_str(), static_cast<uint32>(_name.length()), kTextureNameHashSeed);
+			m_textures[hash] = texture;
+		}
+		else
+		{
+			eosDelete(texture, GetAllocator());
+			texture = nullptr;
+		}
 	}
 
 	return texture;
